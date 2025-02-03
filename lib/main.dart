@@ -84,10 +84,104 @@ class _ApplicationBodyState extends State<ApplicationBody> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(32),
-              child: Center(),
+              child: Center(
+                child: Builder(
+                  builder: (context) {
+                    if (selectedPage == 'home') {
+                      return Center(child: Text(':D'));
+                    }
+                    if (selectedPage == 'actions') {
+                      return ActionsPresentationPage();
+                    }
+                    return Placeholder();
+                  },
+                ),
+              ),
             ),
           ),
         ],
+      );
+}
+
+class ActionsPresentationPage extends StatelessWidget {
+  const ActionsPresentationPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      runSpacing: 32,
+      spacing: 32,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        WidgetPresentation(title: 'ElevatedButton'),
+        WidgetPresentation(title: 'FilledButton'),
+        WidgetPresentation(title: 'FilledButton.tonal'),
+        WidgetPresentation(title: 'OutlinedButton'),
+        WidgetPresentation(title: 'TextButton'),
+      ],
+    );
+  }
+}
+
+class WidgetPresentation extends StatefulWidget {
+  const WidgetPresentation({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  State<WidgetPresentation> createState() => _WidgetPresentationState();
+}
+
+class _WidgetPresentationState extends State<WidgetPresentation> {
+  bool isHovered = false;
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: MouseRegion(
+          onEnter: (event) => setState(() {
+            isHovered = true;
+          }),
+          onExit: (event) => setState(() {
+            isHovered = false;
+          }),
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).dividerColor),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            width: 350,
+            height: 400,
+            child: InkWell(
+              onTap: () {},
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      color: isHovered ? Colors.amber : Colors.transparent,
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        widget.title,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       );
 }
 
