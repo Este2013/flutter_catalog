@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/material/actions.dart';
+import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'material/state_actions.dart';
 
 void main() {
   runApp(const MainApp());
@@ -54,7 +57,13 @@ class ApplicationBody extends StatefulWidget {
 class _ApplicationBodyState extends State<ApplicationBody> {
   String selectedPage = 'home';
 
-  final List<String> pages = ['home', 'actions', 'state buttons', 'layout', 'forms'];
+  final List<String> pages = [
+    'home',
+    'actions',
+    'state buttons',
+    'forms',
+    'layout',
+  ];
 
   @override
   Widget build(BuildContext context) => Row(
@@ -67,8 +76,8 @@ class _ApplicationBodyState extends State<ApplicationBody> {
                   NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home')),
                   NavigationRailDestination(icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Actions')),
                   NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons')),
-                  NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout')),
                   NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms')),
+                  NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout')),
                   NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
                 ],
                 selectedIndex: pages.indexOf(selectedPage),
@@ -98,6 +107,9 @@ class _ApplicationBodyState extends State<ApplicationBody> {
                     if (selectedPage == 'actions') {
                       return ActionsPresentationPage();
                     }
+                    if (selectedPage == 'state buttons') {
+                      return StateActionsPresentationPage();
+                    }
                     return Placeholder();
                   },
                 ),
@@ -114,15 +126,18 @@ class WidgetPresentation extends StatefulWidget {
     required this.title,
     this.presentationWindowAlignment,
     this.link,
-    this.playGroundDialogBuilder,
     required this.variantsData,
+    this.iconBuilder,
+    this.splits = 5,
   });
 
   final String title;
   final Alignment? presentationWindowAlignment;
   final String? link;
-  final Widget Function(BuildContext)? playGroundDialogBuilder;
+  // If not provided, all variants need to be given one.
+  final Widget Function(BuildContext)? iconBuilder;
   final List<WidgetVariantData> variantsData;
+  final int splits;
 
   @override
   State<WidgetPresentation> createState() => _WidgetPresentationState();
@@ -174,7 +189,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
             width: 300,
             height: 250,
             child: InkWell(
-              onTap: () => showDialog(context: context, builder: widget.playGroundDialogBuilder ?? (_) => Placeholder()),
+              onTap: () => showDialog(context: context, builder: (_) => WidgetPresentationDialog(widget.title, variantsData: widget.variantsData, link: widget.link)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -191,15 +206,17 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                           child: Builder(
                               key: ValueKey<int>(_currentVariantIndex),
                               builder: (context) {
-                                Widget child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context, {});
+                                Widget child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context);
+                                double appMarginFactor = (widget.splits - 1) / widget.splits;
+                                double appPaddingFactor = (widget.splits - 2) / widget.splits;
                                 if (widget.presentationWindowAlignment == Alignment.bottomLeft) {
                                   return Stack(
                                     children: [
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.topRight,
-                                        heightFactor: 4 / 5,
-                                        widthFactor: 4 / 5,
+                                        heightFactor: appMarginFactor,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -213,8 +230,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          heightFactor: 3 / 5,
-                                          widthFactor: 3 / 5,
+                                          heightFactor: appPaddingFactor,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.topRight,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -228,8 +245,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.topLeft,
-                                        heightFactor: 4 / 5,
-                                        widthFactor: 4 / 5,
+                                        heightFactor: appMarginFactor,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -243,8 +260,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          heightFactor: 3 / 5,
-                                          widthFactor: 3 / 5,
+                                          heightFactor: appPaddingFactor,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.topLeft,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -258,8 +275,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.bottomRight,
-                                        heightFactor: 4 / 5,
-                                        widthFactor: 4 / 5,
+                                        heightFactor: appMarginFactor,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -273,8 +290,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          heightFactor: 3 / 5,
-                                          widthFactor: 3 / 5,
+                                          heightFactor: appPaddingFactor,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.bottomRight,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -288,8 +305,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.bottomLeft,
-                                        heightFactor: 4 / 5,
-                                        widthFactor: 4 / 5,
+                                        heightFactor: appMarginFactor,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -303,8 +320,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          heightFactor: 3 / 5,
-                                          widthFactor: 3 / 5,
+                                          heightFactor: appPaddingFactor,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.bottomLeft,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -318,7 +335,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.center,
-                                        widthFactor: 4 / 5,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -331,7 +348,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          widthFactor: 3 / 5,
+                                          widthFactor: appPaddingFactor,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
                                       )
@@ -344,7 +361,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.centerRight,
-                                        widthFactor: 4 / 5,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -356,7 +373,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          widthFactor: 3 / 5,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.centerRight,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -370,7 +387,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       Positioned.fill(
                                           child: FractionallySizedBox(
                                         alignment: Alignment.centerLeft,
-                                        widthFactor: 4 / 5,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -382,7 +399,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          widthFactor: 3 / 5,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.centerLeft,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -397,7 +414,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                           child: FractionallySizedBox(
                                         alignment: Alignment.bottomCenter,
                                         heightFactor: 5 / 6,
-                                        widthFactor: 4 / 5,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -412,8 +429,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          heightFactor: 3 / 5,
-                                          widthFactor: 3 / 5,
+                                          heightFactor: appPaddingFactor,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.bottomCenter,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -428,7 +445,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                           child: FractionallySizedBox(
                                         alignment: Alignment.topCenter,
                                         heightFactor: 5 / 6,
-                                        widthFactor: 4 / 5,
+                                        widthFactor: appMarginFactor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -443,8 +460,8 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                                       )),
                                       Positioned.fill(
                                         child: FractionallySizedBox(
-                                          heightFactor: 3 / 5,
-                                          widthFactor: 3 / 5,
+                                          heightFactor: appPaddingFactor,
+                                          widthFactor: appPaddingFactor,
                                           alignment: Alignment.topCenter,
                                           child: Align(alignment: widget.presentationWindowAlignment!, child: child),
                                         ),
@@ -477,13 +494,6 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                             ),
                           ),
                           if (_currentVariantIndex > 0) Text('(${widget.variantsData[_currentVariantIndex].name ?? 'variant $_currentVariantIndex'})'),
-                          if (widget.link != null)
-                            IconButton(
-                              onPressed: () => launchUrl(Uri.parse(widget.link!)),
-                              icon: Icon(Icons.open_in_browser),
-                              padding: EdgeInsets.all(4),
-                              constraints: BoxConstraints(maxHeight: 40),
-                            ),
                         ],
                       ),
                     ),
@@ -532,121 +542,10 @@ class SettingsDialog extends StatelessWidget {
       );
 }
 
-// class WidgetPresentationDialog extends StatefulWidget {
-//   const WidgetPresentationDialog({super.key, required this.variantsData});
-
-//   final List<WidgetVariantData> variantsData;
-
-//   @override
-//   State<WidgetPresentationDialog> createState() => _WidgetPresentationDialogState();
-// }
-
-// class _WidgetPresentationDialogState extends State<WidgetPresentationDialog> {
-//   late String selected;
-
-//   @override
-//   void initState() {
-//     selected = widget.variantsData.first.name;
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) => AlertDialog(
-//         title: Text('IconButton'),
-//         actions: [FilledButton(onPressed: Navigator.of(context).pop, child: Text('Close'))],
-//         content: SizedBox(
-//           width: double.maxFinite,
-//           child: Row(
-//             children: [
-//               if (widget.variantsData.length > 1)
-//                 SizedBox(
-//                   width: 200,
-//                   child: Builder(
-//                     builder: (context) => ListView(
-//                       children: [
-//                         Card(
-//                           clipBehavior: Clip.hardEdge,
-//                           color: (selected == widget.variantsData.first.name) ? Theme.of(context).colorScheme.secondaryContainer : null,
-//                           child: InkWell(
-//                             onTap: () => setState(() => selected = widget.variantsData.first.name),
-//                             child: Padding(
-//                               padding: const EdgeInsets.all(8.0),
-//                               child: Row(
-//                                 children: [
-//                                   Expanded(child: Center(child: widget.variantsData.first.iconBuilder(context))),
-//                                   Expanded(flex: 2, child: Text(widget.variantsData.first.name)),
-//                                 ],
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         Divider(),
-//                         for (var variant in widget.variantsData.sublist(1))
-//                           Card(
-//                             clipBehavior: Clip.hardEdge,
-//                             color: (selected == variant.name) ? Theme.of(context).colorScheme.secondaryContainer : null,
-//                             child: InkWell(
-//                               onTap: () => setState(() => selected = variant.name),
-//                               child: Padding(
-//                                 padding: const EdgeInsets.all(8.0),
-//                                 child: Row(
-//                                   children: [
-//                                     Expanded(child: Center(child: variant.iconBuilder(context))),
-//                                     Expanded(flex: 2, child: Text(variant.name)),
-//                                   ],
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               if (widget.variantsData.length > 1) VerticalDivider(),
-//               Expanded(
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.stretch,
-//                   children: [
-//                     Expanded(
-//                       child: Container(
-//                         decoration: BoxDecoration(
-//                           color: Theme.of(context).scaffoldBackgroundColor,
-//                           border: Border.all(color: Theme.of(context).dividerColor, width: 5),
-//                           borderRadius: BorderRadius.circular(15),
-//                         ),
-//                         child: Builder(
-//                           builder: (context) {
-//                             var data = widget.variantsData.firstWhere((v) => v.name == selected);
-//                             return data.widgetBuilder?.call(context, data.data) ?? Placeholder();
-//                           },
-//                         ),
-//                       ),
-//                     ),
-//                     Divider(),
-//                     Expanded(
-//                         flex: 2,
-//                         child: Builder(
-//                           builder: (context) {
-//                             var data = widget.variantsData.firstWhere((v) => v.name == selected);
-//                             if (data.controlsBuilder == null) return Center(child: Text('No controls were provided.'));
-//                             return SingleChildScrollView(child: data.controlsBuilder?.call(context, data.data));
-//                           },
-//                         )),
-//                   ],
-//                 ),
-//               )
-//             ],
-//           ),
-//         ),
-//       );
-// }
-
 class WidgetVariantData extends ChangeNotifier {
   final String? name;
-  final Widget Function(BuildContext) iconBuilder;
-  final Widget Function(BuildContext, Map<String, dynamic> data)? widgetBuilder;
+  final Widget Function(BuildContext)? iconBuilder;
+  final Widget Function(BuildContext)? widgetBuilder;
 
   WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, Map<String, dynamic>? defaultData});
 }
-
-// enum WidgetVariantDataValueType { folder, chooseOne, chooseMultiple, bool, str, int, double, color }
