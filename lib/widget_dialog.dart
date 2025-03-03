@@ -5,13 +5,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'main.dart';
 
 class WidgetPresentationDialog extends StatefulWidget {
-  const WidgetPresentationDialog(this.mainVariantName, {super.key, required this.variantsData, this.link, this.defaultIconBuilder});
+  const WidgetPresentationDialog(this.mainVariantName, {super.key, required this.variantsData, this.link, this.defaultIconBuilder, this.defaultOptionsBuilder});
 
   final String mainVariantName;
 
   final Widget Function(BuildContext)? defaultIconBuilder;
   final List<WidgetVariantData> variantsData;
   final String? link;
+  final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? defaultOptionsBuilder;
 
   @override
   State<WidgetPresentationDialog> createState() => _WidgetPresentationDialogState();
@@ -92,7 +93,18 @@ class _WidgetPresentationDialogState extends State<WidgetPresentationDialog> {
                 ),
               if (widget.variantsData.length > 1) VerticalDivider(),
               Expanded(
-                child: DialogPresentationSection(widget.mainVariantName, variantsData: widget.variantsData, selected: selected),
+                child: DialogPresentationSection(
+                  widget.mainVariantName,
+                  variantsData: widget.variantsData,
+                  selected: selected,
+                  optionsBuilder: widget.variantsData
+                          .firstWhere(
+                            (v) => v.name == selected,
+                            orElse: () => widget.variantsData.firstWhere((v) => v.name == null),
+                          )
+                          .optionsBuilder ??
+                      widget.defaultOptionsBuilder,
+                ),
               )
             ],
           ),
@@ -100,21 +112,44 @@ class _WidgetPresentationDialogState extends State<WidgetPresentationDialog> {
       );
 }
 
-class DialogPresentationSection extends StatelessWidget {
+class DialogPresentationSection extends StatefulWidget {
   const DialogPresentationSection(
     this.mainVariantName, {
     super.key,
     required this.variantsData,
     required this.selected,
+    required this.optionsBuilder,
   });
 
   final String mainVariantName;
   final List<WidgetVariantData> variantsData;
   final String selected;
+  final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
+
+  //TODO: SET NEW OPTIONS TO PARENT WIDGET. REFRESH WIDGETBUILDER CALL USING NEW OPTIONS.
+
+  @override
+  State<DialogPresentationSection> createState() => _DialogPresentationSectionState();
+}
+
+class _DialogPresentationSectionState extends State<DialogPresentationSection> {
+  late bool showOptions;
+  Map<String, dynamic>? currentOptions;
+
+  @override
+  void initState() {
+    if (widget.optionsBuilder != null) {
+      showOptions = true;
+    } else {
+      showOptions = false;
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var data = variantsData.firstWhere((v) => (v.name ?? mainVariantName) == selected);
+    var data = widget.variantsData.firstWhere((v) => (v.name ?? widget.mainVariantName) == widget.selected);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -125,10 +160,14 @@ class DialogPresentationSection extends StatelessWidget {
                 border: Border.all(color: Theme.of(context).dividerColor, width: 5),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Center(child: data.widgetBuilder?.call(context) ?? Placeholder())),
+              child: Center(child: data.widgetBuilder?.call(context, null) ?? Placeholder())),
         ),
-        Divider(),
-        Expanded(flex: 2, child: Placeholder()),
+        if (showOptions) Divider(),
+        if (showOptions)
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: widget.optionsBuilder?.call(currentOptions, (options) => setState(() => currentOptions = options)) ?? Placeholder(),
+          ),
       ],
     );
   }

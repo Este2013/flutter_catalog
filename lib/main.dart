@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/material/actions.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'material/state_actions.dart';
 
@@ -129,6 +127,7 @@ class WidgetPresentation extends StatefulWidget {
     required this.variantsData,
     this.iconBuilder,
     this.splits = 5,
+    this.defaultOptionsBuilder,
   });
 
   final String title;
@@ -141,6 +140,8 @@ class WidgetPresentation extends StatefulWidget {
 
   @override
   State<WidgetPresentation> createState() => _WidgetPresentationState();
+
+  final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? defaultOptionsBuilder;
 }
 
 class _WidgetPresentationState extends State<WidgetPresentation> {
@@ -189,7 +190,14 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
             width: 300,
             height: 250,
             child: InkWell(
-              onTap: () => showDialog(context: context, builder: (_) => WidgetPresentationDialog(widget.title, variantsData: widget.variantsData, link: widget.link)),
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (_) => WidgetPresentationDialog(
+                        widget.title,
+                        variantsData: widget.variantsData,
+                        link: widget.link,
+                        defaultOptionsBuilder: widget.defaultOptionsBuilder,
+                      )),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -206,7 +214,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                           child: Builder(
                               key: ValueKey<int>(_currentVariantIndex),
                               builder: (context) {
-                                Widget child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context);
+                                Widget child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context, null);
                                 double appMarginFactor = (widget.splits - 1) / widget.splits;
                                 double appPaddingFactor = (widget.splits - 2) / widget.splits;
                                 if (widget.presentationWindowAlignment == Alignment.bottomLeft) {
@@ -524,10 +532,7 @@ class SettingsDialog extends StatelessWidget {
                   Spacer(),
                   SegmentedButton<bool>(
                     showSelectedIcon: false,
-                    onSelectionChanged: (selection) {
-                      print(selection);
-                      appCtrl.darkMode = selection.first;
-                    },
+                    onSelectionChanged: (selection) => appCtrl.darkMode = selection.first,
                     selected: {appCtrl.darkMode},
                     segments: <ButtonSegment<bool>>[
                       ButtonSegment(value: false, icon: Icon(Symbols.light_mode, fill: 1)),
@@ -545,7 +550,8 @@ class SettingsDialog extends StatelessWidget {
 class WidgetVariantData extends ChangeNotifier {
   final String? name;
   final Widget Function(BuildContext)? iconBuilder;
-  final Widget Function(BuildContext)? widgetBuilder;
+  final Widget Function(BuildContext, Map<String, dynamic>? options)? widgetBuilder;
+  final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
 
-  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, Map<String, dynamic>? defaultData});
+  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder});
 }

@@ -22,22 +22,22 @@ class ActionsPresentationPage extends StatelessWidget {
                   WidgetVariantData(
                     null,
                     iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-                    widgetBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
+                    widgetBuilder: (p0, _) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
                   ),
                   WidgetVariantData(
                     'Filled',
                     iconBuilder: (p0) => IconButton.filled(onPressed: () {}, icon: Icon(Icons.person)),
-                    widgetBuilder: (p0) => IconButton.filled(onPressed: () {}, icon: Icon(Icons.person)),
+                    widgetBuilder: (p0, _) => IconButton.filled(onPressed: () {}, icon: Icon(Icons.person)),
                   ),
                   WidgetVariantData(
                     'Filled tonal',
                     iconBuilder: (p0) => IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.person)),
-                    widgetBuilder: (p0) => IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.person)),
+                    widgetBuilder: (p0, _) => IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.person)),
                   ),
                   WidgetVariantData(
                     'Outlined',
                     iconBuilder: (p0) => IconButton.outlined(onPressed: () {}, icon: Icon(Icons.person)),
-                    widgetBuilder: (p0) => IconButton.outlined(onPressed: () {}, icon: Icon(Icons.person)),
+                    widgetBuilder: (p0, _) => IconButton.outlined(onPressed: () {}, icon: Icon(Icons.person)),
                   ),
                 ],
               ),
@@ -48,14 +48,27 @@ class ActionsPresentationPage extends StatelessWidget {
                   WidgetVariantData(
                     null,
                     iconBuilder: (p0) => Icon(Icons.text_fields_outlined),
-                    widgetBuilder: (p0) => TextButton(onPressed: () {}, child: Text('Hello!')),
+                    widgetBuilder: (p0, opt) => TextButton(onPressed: () {}, child: Text(opt?['Name'] ?? 'Click me')),
                   ),
                   WidgetVariantData(
                     'Icon',
                     iconBuilder: (p0) => Icon(Symbols.arrow_selector_tool, fill: 1),
-                    widgetBuilder: (p0) => TextButton.icon(onPressed: () {}, icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Click me')),
+                    widgetBuilder: (p0, opt) => TextButton.icon(onPressed: () {}, icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text(opt?['Name'] ?? 'Click me')),
                   ),
                 ],
+                defaultOptionsBuilder: (currentOptions, submitNewOptions) => Row(
+                  spacing: 8,
+                  children: [
+                    Text('Title'),
+                    SizedBox(
+                      width: 200,
+                      child: TextField(
+                        key: Key('TextButtonName'),
+                        onChanged: (value) => submitNewOptions({'Name': value.isEmpty ? null : value}),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               WidgetPresentation(
                 title: 'ElevatedButton',
@@ -64,12 +77,12 @@ class ActionsPresentationPage extends StatelessWidget {
                   WidgetVariantData(
                     null,
                     iconBuilder: (p0) => Icon(Icons.text_fields_outlined),
-                    widgetBuilder: (p0) => ElevatedButton(onPressed: () {}, child: Text('Click me')),
+                    widgetBuilder: (p0, opt) => ElevatedButton(onPressed: () {}, child: Text(opt?['Name'] ?? 'Click me')),
                   ),
                   WidgetVariantData(
                     'Icon',
                     iconBuilder: (p0) => Icon(Symbols.arrow_selector_tool, fill: 1),
-                    widgetBuilder: (p0) => ElevatedButton.icon(onPressed: () {}, icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Click me')),
+                    widgetBuilder: (p0, opt) => ElevatedButton.icon(onPressed: () {}, icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text(opt?['Name'] ?? 'Click me')),
                   ),
                 ],
               ),
@@ -82,22 +95,22 @@ class ActionsPresentationPage extends StatelessWidget {
                   WidgetVariantData(
                     null,
                     iconBuilder: (p0) => Icon(Symbols.circle, fill: 1),
-                    widgetBuilder: (p0) => FilledButton(onPressed: () {}, child: Text('( ·ω· )')),
+                    widgetBuilder: (p0, opt) => FilledButton(onPressed: () {}, child: Text(opt?['Name'] ?? '( ·ω· )')),
                   ),
                   WidgetVariantData(
                     'Tonal',
                     iconBuilder: (p0) => Icon(Symbols.ev_shadow),
-                    widgetBuilder: (p0) => FilledButton.tonal(onPressed: () {}, child: Text('( ·ω· )')),
+                    widgetBuilder: (p0, opt) => FilledButton.tonal(onPressed: () {}, child: Text(opt?['Name'] ?? '( ·ω· )')),
                   ),
                   WidgetVariantData(
                     'Icon',
                     iconBuilder: (p0) => Icon(Icons.add_circle),
-                    widgetBuilder: (p0) => FilledButton.icon(onPressed: () {}, icon: Icon(Icons.emoji_emotions), label: Text('( ·ω· )')),
+                    widgetBuilder: (p0, opt) => FilledButton.icon(onPressed: () {}, icon: Icon(Icons.emoji_emotions), label: Text(opt?['Name'] ?? '( ·ω· )')),
                   ),
                   WidgetVariantData(
                     'Tonal Icon',
                     iconBuilder: (p0) => Icon(Symbols.ev_shadow_add),
-                    widgetBuilder: (p0) => FilledButton.tonalIcon(onPressed: () {}, icon: Icon(Icons.emoji_emotions), label: Text('( ·ω· )')),
+                    widgetBuilder: (p0, opt) => FilledButton.tonalIcon(onPressed: () {}, icon: Icon(Icons.emoji_emotions), label: Text(opt?['Name'] ?? '( ·ω· )')),
                   ),
                 ],
               ),
@@ -110,7 +123,7 @@ class ActionsPresentationPage extends StatelessWidget {
                   WidgetVariantData(
                     null,
                     iconBuilder: (p0) => Icon(Icons.check_box_outline_blank),
-                    widgetBuilder: (p0) => FloatingActionButton(
+                    widgetBuilder: (p0, opt) => FloatingActionButton(
                       onPressed: () {},
                       child: Icon(Icons.edit),
                     ),
@@ -118,7 +131,7 @@ class ActionsPresentationPage extends StatelessWidget {
                   WidgetVariantData(
                     'Extended',
                     iconBuilder: (p0) => Icon(Symbols.right_panel_close),
-                    widgetBuilder: (p0) => FloatingActionButton.extended(
+                    widgetBuilder: (p0, opt) => FloatingActionButton.extended(
                       onPressed: () {},
                       icon: Icon(Icons.add),
                       label: Text('Create'),

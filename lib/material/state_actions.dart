@@ -32,7 +32,7 @@ class StateActionsPresentationPage extends StatelessWidget {
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0) {
+                      widgetBuilder: (p0, _) {
                         ValueNotifier<bool> state1 = ValueNotifier(true);
                         ValueNotifier<bool?> state2 = ValueNotifier(false);
                         return AnimatedBuilder(
@@ -65,7 +65,7 @@ class StateActionsPresentationPage extends StatelessWidget {
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0) {
+                      widgetBuilder: (p0, _) {
                         ValueNotifier<bool> state1 = ValueNotifier(true);
                         return AnimatedBuilder(
                           animation: state1,
@@ -100,7 +100,7 @@ class StateActionsPresentationPage extends StatelessWidget {
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.date_range)),
-                      widgetBuilder: (p0) => ClipRect(
+                      widgetBuilder: (p0, _) => ClipRect(
                         child: SingleChildScrollView(
                           child: OverflowBox(
                             fit: OverflowBoxFit.deferToChild,
@@ -136,7 +136,7 @@ class StateActionsPresentationPage extends StatelessWidget {
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0) {
+                      widgetBuilder: (p0, _) {
                         ValueNotifier<Set<String>> selected = ValueNotifier({'Songs'});
                         return AnimatedBuilder(
                           animation: selected,
