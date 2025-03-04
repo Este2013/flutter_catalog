@@ -126,8 +126,6 @@ class DialogPresentationSection extends StatefulWidget {
   final String selected;
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
 
-  //TODO: SET NEW OPTIONS TO PARENT WIDGET. REFRESH WIDGETBUILDER CALL USING NEW OPTIONS.
-
   @override
   State<DialogPresentationSection> createState() => _DialogPresentationSectionState();
 }
@@ -160,7 +158,7 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                 border: Border.all(color: Theme.of(context).dividerColor, width: 5),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Center(child: data.widgetBuilder?.call(context, null) ?? Placeholder())),
+              child: Center(child: data.widgetBuilder?.call(context, currentOptions) ?? Placeholder())),
         ),
         if (showOptions) Divider(),
         if (showOptions)

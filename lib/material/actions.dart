@@ -56,19 +56,19 @@ class ActionsPresentationPage extends StatelessWidget {
                     widgetBuilder: (p0, opt) => TextButton.icon(onPressed: () {}, icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text(opt?['Name'] ?? 'Click me')),
                   ),
                 ],
-                defaultOptionsBuilder: (currentOptions, submitNewOptions) => Row(
-                  spacing: 8,
-                  children: [
-                    Text('Title'),
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                        key: Key('TextButtonName'),
-                        onChanged: (value) => submitNewOptions({'Name': value.isEmpty ? null : value}),
-                      ),
-                    ),
-                  ],
-                ),
+                // defaultOptionsBuilder: (currentOptions, submitNewOptions) => Row(
+                //   spacing: 8,
+                //   children: [
+                //     Text('Title'),
+                //     SizedBox(
+                //       width: 200,
+                //       child: TextField(
+                //         key: Key('TextButtonName'),
+                //         onChanged: (value) => submitNewOptions({'Name': value.isEmpty ? null : value}),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ),
               WidgetPresentation(
                 title: 'ElevatedButton',
