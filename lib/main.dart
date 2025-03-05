@@ -60,7 +60,10 @@ class MainApp extends StatelessWidget {
           // ]),
 
           appBar: AppBar(
-            leading: IconButton(onPressed: () => appCtrl.expandRail = !appCtrl.expandRail, icon: Icon(Symbols.left_panel_open)),
+            leading: IconButton(
+              onPressed: () => appCtrl.expandRail = !appCtrl.expandRail,
+              icon: Icon(appCtrl.expandRail ? Symbols.left_panel_close : Symbols.left_panel_open, fill: 1),
+            ),
             leadingWidth: 82,
             title: Text('Flutter catalog'),
             actionsPadding: EdgeInsets.symmetric(horizontal: 32),
@@ -130,11 +133,11 @@ class _ApplicationBodyState extends State<ApplicationBody> {
                     return NavigationRail(
                       extended: appCtrl.expandRail,
                       destinations: [
-                        NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home')),
-                        NavigationRailDestination(icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Actions')),
-                        NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons')),
-                        NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms')),
-                        NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout')),
+                        NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home', style: Theme.of(context).textTheme.bodyLarge)),
+                        NavigationRailDestination(icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Actions', style: Theme.of(context).textTheme.bodyLarge)),
+                        NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons', style: Theme.of(context).textTheme.bodyLarge)),
+                        NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms', style: Theme.of(context).textTheme.bodyLarge)),
+                        NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout', style: Theme.of(context).textTheme.bodyLarge)),
                         // NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
                       ],
                       selectedIndex: pages.indexOf(selectedPage),
