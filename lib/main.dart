@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/actions.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import 'material/state_actions.dart';
@@ -11,11 +12,33 @@ void main() {
   runApp(const MainApp());
 }
 
+enum StyleSheet {
+  material('Material'),
+  cupertino('Cupertino');
+
+  final String displayName;
+  const StyleSheet(this.displayName);
+}
+
 class AppCtrl extends ChangeNotifier {
+  bool _expandRail = false;
+  bool get expandRail => _expandRail;
+  set expandRail(bool b) {
+    _expandRail = b;
+    notifyListeners();
+  }
+
   bool _darkMode = false;
   bool get darkMode => _darkMode;
   set darkMode(bool b) {
     _darkMode = b;
+    notifyListeners();
+  }
+
+  StyleSheet _styleSheet = StyleSheet.material;
+  StyleSheet get styleSheet => _styleSheet;
+  set styleSheet(StyleSheet s) {
+    _styleSheet = s;
     notifyListeners();
   }
 }
@@ -36,6 +59,38 @@ class MainApp extends StatelessWidget {
           //   Icon(Icons.settings),
           // ]),
 
+          appBar: AppBar(
+            leading: IconButton(onPressed: () => appCtrl.expandRail = !appCtrl.expandRail, icon: Icon(Symbols.left_panel_open)),
+            leadingWidth: 82,
+            title: Text('Flutter catalog'),
+            actionsPadding: EdgeInsets.symmetric(horizontal: 32),
+            actions: [
+              AnimatedBuilder(
+                animation: appCtrl,
+                builder: (context, _) => IconButton(
+                  onPressed: () => appCtrl.darkMode = !appCtrl.darkMode,
+                  tooltip: '${appCtrl.darkMode ? 'Dark' : 'Light'} Mode',
+                  icon: Icon(appCtrl.darkMode ? Icons.dark_mode : Icons.light_mode),
+                ),
+              ),
+              AnimatedBuilder(
+                animation: appCtrl,
+                builder: (context, _) => IconButton(
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Not implemented'),
+                            content: Text('Cupertino design sheet is not yet implemented.'),
+                          )),
+                  tooltip: '${appCtrl.styleSheet.displayName} Design',
+                  icon: SvgPicture.asset(
+                    'assets/logos/Google_Material_Design_Logo.svg',
+                    semanticsLabel: 'Material Icon',
+                  ),
+                ),
+              ),
+            ],
+          ),
           body: ApplicationBody(),
         ),
       ),
@@ -69,27 +124,32 @@ class _ApplicationBodyState extends State<ApplicationBody> {
         children: [
           SingleChildScrollView(
             child: IntrinsicHeight(
-              child: NavigationRail(
-                destinations: [
-                  NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home')),
-                  NavigationRailDestination(icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Actions')),
-                  NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons')),
-                  NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms')),
-                  NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout')),
-                  NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
-                ],
-                selectedIndex: pages.indexOf(selectedPage),
-                onDestinationSelected: (value) => setState(() {
-                  if (value < pages.length) {
-                    selectedPage = pages[value];
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) => SettingsDialog(),
+              child: AnimatedBuilder(
+                  animation: appCtrl,
+                  builder: (context, _) {
+                    return NavigationRail(
+                      extended: appCtrl.expandRail,
+                      destinations: [
+                        NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home')),
+                        NavigationRailDestination(icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Actions')),
+                        NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons')),
+                        NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms')),
+                        NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout')),
+                        // NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
+                      ],
+                      selectedIndex: pages.indexOf(selectedPage),
+                      onDestinationSelected: (value) => setState(() {
+                        if (value < pages.length) {
+                          selectedPage = pages[value];
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => SettingsDialog(),
+                          );
+                        }
+                      }),
                     );
-                  }
-                }),
-              ),
+                  }),
             ),
           ),
           VerticalDivider(),

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -96,37 +95,6 @@ class StateActionsPresentationPage extends StatelessWidget {
               spacing: 32,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                WidgetPresentation(
-                  title: 'DatePicker',
-                  presentationWindowAlignment: null,
-                  variantsData: [
-                    WidgetVariantData(
-                      null,
-                      iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.date_range)),
-                      widgetBuilder: (p0, options) => Navigator(
-                        clipBehavior: Clip.hardEdge,
-                        onGenerateRoute: (settings) => MaterialPageRoute(
-                          builder: (context) => Material(
-                            color: Colors.transparent,
-                            child: Center(
-                              child: FloatingActionButton(
-                                onPressed: () => showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(3000),
-                                  useRootNavigator: false,
-                                ),
-                                child: Icon(Symbols.calendar_month),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                  link: 'https://api.flutter.dev/flutter/material/showDatePicker.html?_gl=1*ingwgt*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTczODc0ODAwMS40NS4xLjE3Mzg3NTI1MTYuMC4wLjA.',
-                ),
                 WidgetPresentation(
                   title: 'SegmentedButton',
                   presentationWindowAlignment: Alignment.topCenter,
@@ -464,6 +432,54 @@ class StateActionsPresentationPage extends StatelessWidget {
                       },
                     )
                   ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Row(
+                spacing: 16,
+                children: [
+                  Text('Time-picking widgets:', style: Theme.of(context).textTheme.titleLarge),
+                  Expanded(child: Divider()),
+                ],
+              ),
+            ),
+            Wrap(
+              runSpacing: 32,
+              spacing: 32,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                WidgetPresentation(
+                  title: 'DatePicker',
+                  presentationWindowAlignment: null,
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.date_range)),
+                      widgetBuilder: (p0, options) => Navigator(
+                        clipBehavior: Clip.hardEdge,
+                        onGenerateRoute: (settings) => MaterialPageRoute(
+                          builder: (context) => Material(
+                            color: Colors.transparent,
+                            child: Center(
+                              child: FloatingActionButton(
+                                onPressed: () => showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(3000),
+                                  useRootNavigator: false,
+                                ),
+                                child: Icon(Symbols.calendar_month),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                  link: 'https://api.flutter.dev/flutter/material/showDatePicker.html?_gl=1*ingwgt*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTczODc0ODAwMS40NS4xLjE3Mzg3NTI1MTYuMC4wLjA.',
                 ),
                 WidgetPresentation(
                   title: 'TimePicker',
