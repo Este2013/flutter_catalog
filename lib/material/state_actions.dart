@@ -15,6 +15,7 @@ class StateActionsPresentationPage extends StatelessWidget {
           spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(height: 16),
             Row(
               spacing: 16,
               children: [
@@ -98,7 +99,7 @@ class StateActionsPresentationPage extends StatelessWidget {
                 WidgetPresentation(
                   title: 'SegmentedButton',
                   presentationWindowAlignment: Alignment.topCenter,
-                  splits: 7,
+                  presentationSplits: 7,
                   defaultOptionsBuilder: (currentOptions, submitNewOptions) => Column(
                     spacing: 8,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -433,6 +434,54 @@ class StateActionsPresentationPage extends StatelessWidget {
                     )
                   ],
                 ),
+                WidgetPresentation(
+                  title: 'DropdownButton',
+                  presentationWindowAlignment: Alignment.topCenter,
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.radio_button_checked),
+                      widgetBuilder: (p0, options) {
+                        ValueNotifier<String> value = ValueNotifier('happi');
+                        return AnimatedBuilder(
+                            key: Key('DropdownButton builder'),
+                            animation: value,
+                            builder: (_, __) => DropdownButton(
+                                  items: [
+                                    DropdownMenuItem(value: 'happi', child: Text('Happi')),
+                                    DropdownMenuItem(value: 'sod', child: Text('Sod'), onTap: () => value.value = 'sod'),
+                                    DropdownMenuItem(value: 'anggy', child: Text('Anggy')),
+                                  ],
+                                  value: value.value,
+                                  onChanged: (v) => value.value = v ?? 'anggy',
+                                ));
+                      },
+                    )
+                  ],
+                  deprecationMessage: 'Prefer using DropdownMenu instead, the more recent version compliant to Material3.',
+                  link: 'https://api.flutter.dev/flutter/material/DropdownButton-class.html?_gl=1*oke3ux*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTI1NTc5MS43MC4xLjE3NDEyNTY1NDAuMC4wLjA.',
+                ),
+                WidgetPresentation(
+                  title: 'DropdownMenu',
+                  presentationWindowAlignment: Alignment.topCenter,
+                  // TODO Actual dropdownmenu options
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.radio_button_checked),
+                      widgetBuilder: (p0, options) => DropdownMenu(
+                        initialSelection: 'happi',
+                        dropdownMenuEntries: [
+                          DropdownMenuEntry(value: 'happi', label: 'Happi'),
+                          DropdownMenuEntry(value: 'sod', label: 'Sod'),
+                          DropdownMenuEntry(value: 'anggy', label: 'Anggy'),
+                        ],
+                      ),
+                    )
+                  ],
+                  link: 'https://api.flutter.dev/flutter/material/DropdownMenu-class.html',
+                ),
               ],
             ),
             Padding(
@@ -568,6 +617,7 @@ class StateActionsPresentationPage extends StatelessWidget {
                 )
               ],
             ),
+            SizedBox(height: 16),
           ],
         ),
       );

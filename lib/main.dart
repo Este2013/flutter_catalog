@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/actions.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
+import 'material/layouts.dart';
 import 'material/state_actions.dart';
 
 void main() {
@@ -49,56 +51,55 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: appCtrl,
-      builder: (context, child) => MaterialApp(
-        theme: appCtrl.darkMode ? ThemeData.dark() : ThemeData(),
-        home: Scaffold(
-          // drawer: NavigationDrawer(children: [
-          //   Icon(Icons.settings),
-          // ]),
+  Widget build(BuildContext context) => AnimatedBuilder(
+        animation: appCtrl,
+        builder: (context, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: appCtrl.darkMode ? ThemeData.dark() : ThemeData(),
+          home: Scaffold(
+            // drawer: NavigationDrawer(children: [
+            //   Icon(Icons.settings),
+            // ]),
 
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () => appCtrl.expandRail = !appCtrl.expandRail,
-              icon: Icon(appCtrl.expandRail ? Symbols.left_panel_close : Symbols.left_panel_open, fill: 1),
-            ),
-            leadingWidth: 82,
-            title: Text('Flutter catalog'),
-            actionsPadding: EdgeInsets.symmetric(horizontal: 32),
-            actions: [
-              AnimatedBuilder(
-                animation: appCtrl,
-                builder: (context, _) => IconButton(
-                  onPressed: () => appCtrl.darkMode = !appCtrl.darkMode,
-                  tooltip: '${appCtrl.darkMode ? 'Dark' : 'Light'} Mode',
-                  icon: Icon(appCtrl.darkMode ? Icons.dark_mode : Icons.light_mode),
-                ),
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () => appCtrl.expandRail = !appCtrl.expandRail,
+                icon: Icon(appCtrl.expandRail ? Symbols.left_panel_close : Symbols.left_panel_open, fill: 1),
               ),
-              AnimatedBuilder(
-                animation: appCtrl,
-                builder: (context, _) => IconButton(
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text('Not implemented'),
-                            content: Text('Cupertino design sheet is not yet implemented.'),
-                          )),
-                  tooltip: '${appCtrl.styleSheet.displayName} Design',
-                  icon: SvgPicture.asset(
-                    'assets/logos/Google_Material_Design_Logo.svg',
-                    semanticsLabel: 'Material Icon',
+              leadingWidth: 82,
+              title: Text('Flutter catalog${kDebugMode ? ' (debug mode)' : ''}'),
+              actionsPadding: EdgeInsets.symmetric(horizontal: 32),
+              actions: [
+                AnimatedBuilder(
+                  animation: appCtrl,
+                  builder: (context, _) => IconButton(
+                    onPressed: () => appCtrl.darkMode = !appCtrl.darkMode,
+                    tooltip: '${appCtrl.darkMode ? 'Dark' : 'Light'} Mode',
+                    icon: Icon(appCtrl.darkMode ? Icons.dark_mode : Icons.light_mode),
                   ),
                 ),
-              ),
-            ],
+                AnimatedBuilder(
+                  animation: appCtrl,
+                  builder: (context, _) => IconButton(
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Not implemented'),
+                              content: Text('Cupertino design sheet is not yet implemented.'),
+                            )),
+                    tooltip: '${appCtrl.styleSheet.displayName} Design',
+                    icon: SvgPicture.asset(
+                      'assets/logos/Google_Material_Design_Logo.svg',
+                      semanticsLabel: 'Material Icon',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            body: ApplicationBody(),
           ),
-          body: ApplicationBody(),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class ApplicationBody extends StatefulWidget {
@@ -115,10 +116,10 @@ class _ApplicationBodyState extends State<ApplicationBody> {
 
   final List<String> pages = [
     'home',
+    'layout',
     'actions',
     'state buttons',
     'forms',
-    'layout',
   ];
 
   @override
@@ -134,10 +135,10 @@ class _ApplicationBodyState extends State<ApplicationBody> {
                       extended: appCtrl.expandRail,
                       destinations: [
                         NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home', style: Theme.of(context).textTheme.bodyLarge)),
-                        NavigationRailDestination(icon: Icon(Symbols.arrow_selector_tool, fill: 1), label: Text('Actions', style: Theme.of(context).textTheme.bodyLarge)),
+                        NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout', style: Theme.of(context).textTheme.bodyLarge)),
+                        NavigationRailDestination(icon: Icon(Symbols.touch_app, fill: 1), label: Text('Actions', style: Theme.of(context).textTheme.bodyLarge)),
                         NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons', style: Theme.of(context).textTheme.bodyLarge)),
                         NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms', style: Theme.of(context).textTheme.bodyLarge)),
-                        NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout', style: Theme.of(context).textTheme.bodyLarge)),
                         // NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
                       ],
                       selectedIndex: pages.indexOf(selectedPage),
@@ -158,12 +159,15 @@ class _ApplicationBodyState extends State<ApplicationBody> {
           VerticalDivider(),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.all(32),
+              padding: EdgeInsets.only(left: 32, right: 16),
               child: Center(
                 child: Builder(
                   builder: (context) {
                     if (selectedPage == 'home') {
                       return Center(child: Text(':D'));
+                    }
+                    if (selectedPage == 'layout') {
+                      return LayoutsPresentationPage();
                     }
                     if (selectedPage == 'actions') {
                       return ActionsPresentationPage();
@@ -185,21 +189,28 @@ class WidgetPresentation extends StatefulWidget {
   const WidgetPresentation({
     super.key,
     required this.title,
+    this.presentationCardWidget,
     this.presentationWindowAlignment,
+    this.presentationSplits = 5,
+    this.presentationDeletePadding = false,
     this.link,
     required this.variantsData,
     this.iconBuilder,
-    this.splits = 5,
     this.defaultOptionsBuilder,
+    this.deprecationMessage,
   });
 
   final String title;
   final Alignment? presentationWindowAlignment;
+  final Widget? presentationCardWidget;
+  final int presentationSplits;
+  final bool presentationDeletePadding;
+
   final String? link;
   // If not provided, all variants need to be given one.
   final Widget Function(BuildContext)? iconBuilder;
   final List<WidgetVariantData> variantsData;
-  final int splits;
+  final String? deprecationMessage;
 
   @override
   State<WidgetPresentation> createState() => _WidgetPresentationState();
@@ -277,9 +288,15 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                           child: Builder(
                               key: ValueKey<int>(_currentVariantIndex),
                               builder: (context) {
-                                Widget child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context, null);
-                                double appMarginFactor = (widget.splits - 1) / widget.splits;
-                                double appPaddingFactor = (widget.splits - 2) / widget.splits;
+                                Widget child;
+                                if (widget.presentationCardWidget != null) {
+                                  child = widget.presentationCardWidget!;
+                                } else {
+                                  child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context, null);
+                                }
+                                double appMarginFactor = (widget.presentationSplits - 1) / widget.presentationSplits;
+                                double appPaddingFactor = widget.presentationDeletePadding ? appMarginFactor - .03 : (widget.presentationSplits - 2) / widget.presentationSplits;
+
                                 if (widget.presentationWindowAlignment == Alignment.bottomLeft) {
                                   return Stack(
                                     children: [
@@ -556,7 +573,16 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                     child: Padding(
                       padding: EdgeInsets.all(8),
                       child: Row(
+                        spacing: 8,
                         children: [
+                          if (widget.deprecationMessage != null)
+                            IconButton(
+                              splashRadius: null,
+                              padding: EdgeInsets.zero,
+                              tooltip: widget.deprecationMessage!,
+                              icon: Icon(Icons.warning),
+                              onPressed: () {},
+                            ),
                           Expanded(
                             child: Text(
                               widget.title,

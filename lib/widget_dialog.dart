@@ -153,12 +153,16 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
       children: [
         Expanded(
           child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                border: Border.all(color: Theme.of(context).dividerColor, width: 5),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Center(child: data.widgetBuilder?.call(context, currentOptions) ?? Placeholder())),
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              border: Border.all(color: Theme.of(context).dividerColor, width: 5),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Center(child: data.widgetBuilder?.call(context, currentOptions) ?? Placeholder()),
+            ),
+          ),
         ),
         if (showOptions) Divider(),
         if (showOptions)
