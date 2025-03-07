@@ -151,7 +151,143 @@ class LayoutsPresentationPage extends StatelessWidget {
                     ],
                   ),
                   variantsData: [
-                    // TODO Scaffold demo
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Symbols.house_siding),
+                      optionsBuilder: (currentOptions, submitNewOptions) => Column(
+                        spacing: 8,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              Text('UI elements', style: Theme.of(context).textTheme.titleMedium),
+                              FilterChip(
+                                label: Text('AppBar'),
+                                onSelected: (v) => submitNewOptions((currentOptions ?? {})..['appBar'] = v),
+                                selected: currentOptions?['appBar'] ?? true,
+                              ),
+                              FilterChip(
+                                label: Text('BottomNavBar'),
+                                onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomNavBar'] = v),
+                                selected: currentOptions?['bottomNavBar'] ?? true,
+                              ),
+                              FilterChip(
+                                label: Text('BottomSheet'),
+                                onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomSheet'] = v),
+                                selected: currentOptions?['bottomSheet'] ?? false,
+                              ),
+                            ],
+                          ),
+                          Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
+                            Text('Body:'),
+                            Checkbox(
+                              value: currentOptions?['body'] ?? true,
+                              onChanged: (v) => submitNewOptions((currentOptions ?? {})..['body'] = v),
+                            ),
+                            FilterChip(
+                              label: Text('extendBody'),
+                              onSelected: (currentOptions?['body'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['extendBody'] = v) : null,
+                              selected: currentOptions?['extendBody'] ?? false,
+                            ),
+                            FilterChip(
+                              label: Text('extendBodyBehindAppBar'),
+                              onSelected: (currentOptions?['body'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['extendBodyBehindAppBar'] = v) : null,
+                              selected: currentOptions?['extendBodyBehindAppBar'] ?? false,
+                            ),
+                          ]),
+                          Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
+                            Text('Drawers:'),
+                            FilterChip(
+                              label: Text('Drawer'),
+                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['drawer'] = v),
+                              selected: currentOptions?['drawer'] ?? false,
+                            ),
+                            FilterChip(
+                              label: Text('EndDrawer'),
+                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['endDrawer'] = v),
+                              selected: currentOptions?['endDrawer'] ?? false,
+                            ),
+                            if (!(currentOptions?['appBar'] ?? true))
+                              Tooltip(
+                                message: 'In this example, you need the AppBar to open drawers.\nBy default, AppBar handles drawers automatically.',
+                                child: Icon(Icons.info),
+                              )
+                          ]),
+                        ],
+                      ),
+                      widgetBuilder: (p0, options) => Scaffold(
+                        key: Key('demo scaffold'),
+                        appBar: (options?['appBar'] ?? true) ? AppBar(title: Text('AppBar')) : null,
+                        body: (options?['body'] ?? true)
+                            ? ListView(
+                                children: [
+                                  for (int i = 0; i < 1000; i++)
+                                    ListTile(
+                                      leading: Container(
+                                        height: 50,
+                                        width: 50,
+                                        color: [
+                                          Colors.deepPurple,
+                                          Colors.purple,
+                                          Colors.indigo,
+                                          Colors.blue,
+                                          Colors.green,
+                                          Colors.lime,
+                                          Colors.yellow,
+                                          Colors.amber,
+                                          Colors.orange,
+                                          Colors.red,
+                                          Colors.red.shade900
+                                        ][(i / 10).floor() % 10],
+                                      ),
+                                      title: Text('Music #$i'),
+                                      subtitle: Text('by artist #${(i / 10).floor()}'),
+                                      onTap: () {},
+                                      trailing: Row(
+                                        spacing: 8,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.more_horiz),
+                                        ],
+                                      ),
+                                    )
+                                ],
+                              )
+                            : null,
+                        bottomSheet: (options?['bottomSheet'] ?? false)
+                            ? BottomSheet(
+                                onClosing: () {},
+                                builder: (context) => Card(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(onPressed: () {}, icon: Icon(Icons.skip_previous)),
+                                        IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
+                                        IconButton(onPressed: () {}, icon: Icon(Icons.skip_next)),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : null,
+                        bottomNavigationBar: (options?['bottomNavBar'] ?? true)
+                            ? BottomNavigationBar(items: [
+                                BottomNavigationBarItem(icon: Icon(Symbols.music_note), label: 'Songs'),
+                                BottomNavigationBarItem(icon: Icon(Symbols.artist, fill: 1), label: 'Artists'),
+                                BottomNavigationBarItem(icon: Icon(Symbols.album, fill: 1), label: 'Albums'),
+                              ])
+                            : null,
+                        drawer: (options?['drawer'] ?? true) ? Drawer() : null,
+                        endDrawer: (options?['endDrawer'] ?? true) ? Drawer() : null,
+                        extendBody: (options?['extendBody'] ?? true),
+                        extendBodyBehindAppBar: (options?['extendBodyBehindAppBar'] ?? true),
+                      ),
+                    )
                   ],
                   link: 'https://api.flutter.dev/flutter/material/MaterialApp-class.html',
                 ),
