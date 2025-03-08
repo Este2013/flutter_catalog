@@ -150,74 +150,111 @@ class LayoutsPresentationPage extends StatelessWidget {
                       )
                     ],
                   ),
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => Column(
+                    spacing: 8,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          Text('UI elements', style: Theme.of(context).textTheme.titleMedium),
+                          FilterChip(
+                            label: Text('AppBar'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['appBar'] = v),
+                            selected: currentOptions?['appBar'] ?? true,
+                          ),
+                          FilterChip(
+                            label: Text('BottomNavBar'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomNavBar'] = v),
+                            selected: currentOptions?['bottomNavBar'] ?? true,
+                          ),
+                          FilterChip(
+                            label: Text('BottomSheet'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomSheet'] = v),
+                            selected: currentOptions?['bottomSheet'] ?? false,
+                          ),
+                        ],
+                      ),
+                      Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
+                        Text('Body:'),
+                        Checkbox(
+                          value: currentOptions?['body'] ?? true,
+                          onChanged: (v) => submitNewOptions((currentOptions ?? {})..['body'] = v),
+                        ),
+                        FilterChip(
+                          label: Text('extendBody'),
+                          onSelected: (currentOptions?['body'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['extendBody'] = v) : null,
+                          selected: currentOptions?['extendBody'] ?? false,
+                        ),
+                        FilterChip(
+                          label: Text('extendBodyBehindAppBar'),
+                          onSelected: (currentOptions?['body'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['extendBodyBehindAppBar'] = v) : null,
+                          selected: currentOptions?['extendBodyBehindAppBar'] ?? false,
+                        ),
+                      ]),
+                      Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
+                        Text('Drawers:'),
+                        FilterChip(
+                          label: Text('Drawer'),
+                          onSelected: (v) => submitNewOptions((currentOptions ?? {})..['drawer'] = v),
+                          selected: currentOptions?['drawer'] ?? false,
+                        ),
+                        FilterChip(
+                          label: Text('EndDrawer'),
+                          onSelected: (v) => submitNewOptions((currentOptions ?? {})..['endDrawer'] = v),
+                          selected: currentOptions?['endDrawer'] ?? false,
+                        ),
+                        if (!(currentOptions?['appBar'] ?? true))
+                          Tooltip(
+                            message: 'In this example, you need the AppBar to open drawers.\nBy default, AppBar handles drawers automatically.',
+                            child: Icon(Icons.info),
+                          )
+                      ]),
+                      Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
+                        Text('FloatingActionButton:'),
+                        Checkbox(
+                          value: currentOptions?['floatingActionButton'] ?? false,
+                          onChanged: (v) => submitNewOptions((currentOptions ?? {})..['floatingActionButton'] = v),
+                        ),
+                        DropdownMenu(
+                          dropdownMenuEntries: [
+                            for (var l in [
+                              FloatingActionButtonLocation.centerDocked,
+                              FloatingActionButtonLocation.centerFloat,
+                              FloatingActionButtonLocation.centerTop,
+                              FloatingActionButtonLocation.endContained,
+                              FloatingActionButtonLocation.endDocked,
+                              FloatingActionButtonLocation.endFloat,
+                              FloatingActionButtonLocation.endTop,
+                              FloatingActionButtonLocation.miniCenterDocked,
+                              FloatingActionButtonLocation.miniCenterFloat,
+                              FloatingActionButtonLocation.miniCenterTop,
+                              FloatingActionButtonLocation.miniEndDocked,
+                              FloatingActionButtonLocation.miniEndFloat,
+                              FloatingActionButtonLocation.miniEndTop,
+                              FloatingActionButtonLocation.miniStartDocked,
+                              FloatingActionButtonLocation.startFloat,
+                              FloatingActionButtonLocation.miniStartTop,
+                              FloatingActionButtonLocation.startDocked,
+                              FloatingActionButtonLocation.startFloat,
+                              FloatingActionButtonLocation.startTop,
+                            ])
+                              DropdownMenuEntry(value: l, label: l.toString().split('.')[1])
+                          ],
+                          initialSelection: FloatingActionButtonLocation.endFloat,
+                          enabled: currentOptions?['floatingActionButton'] ?? false,
+                          label: Text('Location'),
+                          onSelected: (v) => submitNewOptions((currentOptions ?? {})..['floatingActionButtonLocation'] = v),
+                        )
+                      ]),
+                    ],
+                  ),
                   variantsData: [
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => Icon(Symbols.house_siding),
-                      optionsBuilder: (currentOptions, submitNewOptions) => Column(
-                        spacing: 8,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              Text('UI elements', style: Theme.of(context).textTheme.titleMedium),
-                              FilterChip(
-                                label: Text('AppBar'),
-                                onSelected: (v) => submitNewOptions((currentOptions ?? {})..['appBar'] = v),
-                                selected: currentOptions?['appBar'] ?? true,
-                              ),
-                              FilterChip(
-                                label: Text('BottomNavBar'),
-                                onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomNavBar'] = v),
-                                selected: currentOptions?['bottomNavBar'] ?? true,
-                              ),
-                              FilterChip(
-                                label: Text('BottomSheet'),
-                                onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomSheet'] = v),
-                                selected: currentOptions?['bottomSheet'] ?? false,
-                              ),
-                            ],
-                          ),
-                          Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
-                            Text('Body:'),
-                            Checkbox(
-                              value: currentOptions?['body'] ?? true,
-                              onChanged: (v) => submitNewOptions((currentOptions ?? {})..['body'] = v),
-                            ),
-                            FilterChip(
-                              label: Text('extendBody'),
-                              onSelected: (currentOptions?['body'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['extendBody'] = v) : null,
-                              selected: currentOptions?['extendBody'] ?? false,
-                            ),
-                            FilterChip(
-                              label: Text('extendBodyBehindAppBar'),
-                              onSelected: (currentOptions?['body'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['extendBodyBehindAppBar'] = v) : null,
-                              selected: currentOptions?['extendBodyBehindAppBar'] ?? false,
-                            ),
-                          ]),
-                          Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
-                            Text('Drawers:'),
-                            FilterChip(
-                              label: Text('Drawer'),
-                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['drawer'] = v),
-                              selected: currentOptions?['drawer'] ?? false,
-                            ),
-                            FilterChip(
-                              label: Text('EndDrawer'),
-                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['endDrawer'] = v),
-                              selected: currentOptions?['endDrawer'] ?? false,
-                            ),
-                            if (!(currentOptions?['appBar'] ?? true))
-                              Tooltip(
-                                message: 'In this example, you need the AppBar to open drawers.\nBy default, AppBar handles drawers automatically.',
-                                child: Icon(Icons.info),
-                              )
-                          ]),
-                        ],
-                      ),
                       widgetBuilder: (p0, options) => Scaffold(
                         key: Key('demo scaffold'),
                         appBar: (options?['appBar'] ?? true) ? AppBar(title: Text('AppBar')) : null,
@@ -282,10 +319,12 @@ class LayoutsPresentationPage extends StatelessWidget {
                                 BottomNavigationBarItem(icon: Icon(Symbols.album, fill: 1), label: 'Albums'),
                               ])
                             : null,
-                        drawer: (options?['drawer'] ?? true) ? Drawer() : null,
-                        endDrawer: (options?['endDrawer'] ?? true) ? Drawer() : null,
-                        extendBody: (options?['extendBody'] ?? true),
-                        extendBodyBehindAppBar: (options?['extendBodyBehindAppBar'] ?? true),
+                        drawer: (options?['drawer'] ?? false) ? Drawer() : null,
+                        endDrawer: (options?['endDrawer'] ?? false) ? Drawer() : null,
+                        extendBody: (options?['extendBody'] ?? false),
+                        extendBodyBehindAppBar: options?['extendBodyBehindAppBar'] ?? false,
+                        floatingActionButton: (options?['floatingActionButton'] ?? false) ? FloatingActionButton(onPressed: () {}, child: Icon(Icons.settings)) : null,
+                        floatingActionButtonLocation: options?['floatingActionButtonLocation'],
                       ),
                     )
                   ],
