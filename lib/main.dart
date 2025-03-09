@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/actions.dart';
+import 'package:flutter_catalog/material/material_home.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -130,30 +131,28 @@ class _ApplicationBodyState extends State<ApplicationBody> {
             child: IntrinsicHeight(
               child: AnimatedBuilder(
                   animation: appCtrl,
-                  builder: (context, _) {
-                    return NavigationRail(
-                      extended: appCtrl.expandRail,
-                      destinations: [
-                        NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home', style: Theme.of(context).textTheme.bodyLarge)),
-                        NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout', style: Theme.of(context).textTheme.bodyLarge)),
-                        NavigationRailDestination(icon: Icon(Symbols.touch_app, fill: 1), label: Text('Actions', style: Theme.of(context).textTheme.bodyLarge)),
-                        NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons', style: Theme.of(context).textTheme.bodyLarge)),
-                        NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms', style: Theme.of(context).textTheme.bodyLarge)),
-                        // NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
-                      ],
-                      selectedIndex: pages.indexOf(selectedPage),
-                      onDestinationSelected: (value) => setState(() {
-                        if (value < pages.length) {
-                          selectedPage = pages[value];
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => SettingsDialog(),
-                          );
-                        }
-                      }),
-                    );
-                  }),
+                  builder: (context, _) => NavigationRail(
+                        extended: appCtrl.expandRail,
+                        destinations: [
+                          NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home', style: Theme.of(context).textTheme.bodyLarge)),
+                          NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout', style: Theme.of(context).textTheme.bodyLarge)),
+                          NavigationRailDestination(icon: Icon(Symbols.touch_app, fill: 1), label: Text('Actions', style: Theme.of(context).textTheme.bodyLarge)),
+                          NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons', style: Theme.of(context).textTheme.bodyLarge)),
+                          NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms', style: Theme.of(context).textTheme.bodyLarge)),
+                          // NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
+                        ],
+                        selectedIndex: pages.indexOf(selectedPage),
+                        onDestinationSelected: (value) => setState(() {
+                          if (value < pages.length) {
+                            selectedPage = pages[value];
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => SettingsDialog(),
+                            );
+                          }
+                        }),
+                      )),
             ),
           ),
           VerticalDivider(),
@@ -164,8 +163,55 @@ class _ApplicationBodyState extends State<ApplicationBody> {
                 child: Builder(
                   builder: (context) {
                     if (selectedPage == 'home') {
-                      return Center(child: Text(':D'));
+                      return PresentationCard(
+                        title: 'Material icons',
+                        // TODO trailingTitle: IconButton(onPressed: onPressed, icon: icon),
+                        child: InfiniteIconScroll(
+                          size: Size(300, 200),
+                          iconSize: 50,
+                        ),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => Scaffold(
+                                    appBar: AppBar(
+                                      title: Text('Material icons'),
+                                      leadingWidth: 82,
+                                      actionsPadding: EdgeInsets.symmetric(horizontal: 32),
+                                      actions: [
+                                        AnimatedBuilder(
+                                          animation: appCtrl,
+                                          builder: (context, _) => IconButton(
+                                            onPressed: () => appCtrl.darkMode = !appCtrl.darkMode,
+                                            tooltip: '${appCtrl.darkMode ? 'Dark' : 'Light'} Mode',
+                                            icon: Icon(appCtrl.darkMode ? Icons.dark_mode : Icons.light_mode),
+                                          ),
+                                        ),
+                                        AnimatedBuilder(
+                                          animation: appCtrl,
+                                          builder: (context, _) => IconButton(
+                                            onPressed: () => showDialog(
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                      title: Text('Not implemented'),
+                                                      content: Text('Cupertino design sheet is not yet implemented.'),
+                                                    )),
+                                            tooltip: '${appCtrl.styleSheet.displayName} Design',
+                                            icon: SvgPicture.asset(
+                                              'assets/logos/Google_Material_Design_Logo.svg',
+                                              semanticsLabel: 'Material Icon',
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    body: Center(
+                                      child: Text('icon stuff'),
+                                    ),
+                                  )),
+                        ),
+                      );
                     }
+
                     if (selectedPage == 'layout') {
                       return LayoutsPresentationPage();
                     }
@@ -247,6 +293,336 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
   }
 
   @override
+  Widget build(BuildContext context) => PresentationCard(
+        title: widget.title,
+        leadingTitle: (widget.deprecationMessage != null)
+            ? IconButton(
+                splashRadius: null,
+                padding: EdgeInsets.zero,
+                tooltip: widget.deprecationMessage!,
+                icon: Icon(Icons.warning),
+                onPressed: () {},
+              )
+            : null,
+        trailingTitle: (_currentVariantIndex > 0) ? Text('(${widget.variantsData[_currentVariantIndex].name ?? 'variant $_currentVariantIndex'})') : null,
+        onTap: () => showDialog(
+            context: context,
+            builder: (_) => WidgetPresentationDialog(
+                  widget.title,
+                  variantsData: widget.variantsData,
+                  link: widget.link,
+                  defaultOptionsBuilder: widget.defaultOptionsBuilder,
+                )),
+        child: AnimatedSwitcher(
+          duration: Duration(milliseconds: 500),
+          transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+          child: Builder(
+              key: ValueKey<int>(_currentVariantIndex),
+              builder: (context) {
+                Widget child;
+                if (widget.presentationCardWidget != null) {
+                  child = widget.presentationCardWidget!;
+                } else {
+                  child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context, null);
+                }
+                double appMarginFactor = (widget.presentationSplits - 1) / widget.presentationSplits;
+                double appPaddingFactor = widget.presentationDeletePadding ? appMarginFactor - .03 : (widget.presentationSplits - 2) / widget.presentationSplits;
+
+                if (widget.presentationWindowAlignment == Alignment.bottomLeft) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.topRight,
+                        heightFactor: appMarginFactor,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              bottom: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          heightFactor: appPaddingFactor,
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.topRight,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.bottomRight) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.topLeft,
+                        heightFactor: appMarginFactor,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              bottom: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(15)),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          heightFactor: appPaddingFactor,
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.topLeft,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.topLeft) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.bottomRight,
+                        heightFactor: appMarginFactor,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              top: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15)),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          heightFactor: appPaddingFactor,
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.bottomRight,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.topRight) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.bottomLeft,
+                        heightFactor: appMarginFactor,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              top: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(15)),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          heightFactor: appPaddingFactor,
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.bottomLeft,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.center) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.center,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          widthFactor: appPaddingFactor,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.centerLeft) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.centerRight,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.centerRight,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.centerRight) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.centerLeft,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.topCenter) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.bottomCenter,
+                        heightFactor: 5 / 6,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              top: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          heightFactor: appPaddingFactor,
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.bottomCenter,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+                if (widget.presentationWindowAlignment == Alignment.bottomCenter) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                          child: FractionallySizedBox(
+                        alignment: Alignment.topCenter,
+                        heightFactor: 5 / 6,
+                        widthFactor: appMarginFactor,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            border: Border(
+                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                              bottom: BorderSide(color: Theme.of(context).dividerColor, width: 5),
+                            ),
+                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
+                          ),
+                        ),
+                      )),
+                      Positioned.fill(
+                        child: FractionallySizedBox(
+                          heightFactor: appPaddingFactor,
+                          widthFactor: appPaddingFactor,
+                          alignment: Alignment.topCenter,
+                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
+                        ),
+                      )
+                    ],
+                  );
+                }
+
+                if (widget.presentationWindowAlignment == null) {
+                  return Center(
+                    child: child,
+                  );
+                }
+                return Placeholder();
+              }),
+        ),
+      );
+}
+
+class PresentationCard extends StatefulWidget {
+  const PresentationCard({
+    super.key,
+    required this.title,
+    this.onTap,
+    this.child,
+    this.leadingTitle,
+    this.trailingTitle,
+  });
+
+  final String title;
+  final Widget? child;
+  final VoidCallback? onTap;
+  final Widget? leadingTitle, trailingTitle;
+
+  @override
+  State<PresentationCard> createState() => _PresentationCardState();
+}
+
+class _PresentationCardState extends State<PresentationCard> {
+  bool isHovered = false;
+
+  @override
   Widget build(BuildContext context) => ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: MouseRegion(
@@ -264,14 +640,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
             width: 300,
             height: 250,
             child: InkWell(
-              onTap: () => showDialog(
-                  context: context,
-                  builder: (_) => WidgetPresentationDialog(
-                        widget.title,
-                        variantsData: widget.variantsData,
-                        link: widget.link,
-                        defaultOptionsBuilder: widget.defaultOptionsBuilder,
-                      )),
+              onTap: widget.onTap,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -282,290 +651,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 200),
                         color: isHovered ? Colors.purple.withAlpha(200) : Colors.transparent,
-                        child: AnimatedSwitcher(
-                          duration: Duration(milliseconds: 500),
-                          transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-                          child: Builder(
-                              key: ValueKey<int>(_currentVariantIndex),
-                              builder: (context) {
-                                Widget child;
-                                if (widget.presentationCardWidget != null) {
-                                  child = widget.presentationCardWidget!;
-                                } else {
-                                  child = widget.variantsData[_currentVariantIndex].widgetBuilder!(context, null);
-                                }
-                                double appMarginFactor = (widget.presentationSplits - 1) / widget.presentationSplits;
-                                double appPaddingFactor = widget.presentationDeletePadding ? appMarginFactor - .03 : (widget.presentationSplits - 2) / widget.presentationSplits;
-
-                                if (widget.presentationWindowAlignment == Alignment.bottomLeft) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.topRight,
-                                        heightFactor: appMarginFactor,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              bottom: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          heightFactor: appPaddingFactor,
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.topRight,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.bottomRight) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.topLeft,
-                                        heightFactor: appMarginFactor,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              bottom: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(15)),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          heightFactor: appPaddingFactor,
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.topLeft,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.topLeft) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.bottomRight,
-                                        heightFactor: appMarginFactor,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              top: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15)),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          heightFactor: appPaddingFactor,
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.bottomRight,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.topRight) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.bottomLeft,
-                                        heightFactor: appMarginFactor,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              top: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                            borderRadius: BorderRadius.only(topRight: Radius.circular(15)),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          heightFactor: appPaddingFactor,
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.bottomLeft,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.center) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.center,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          widthFactor: appPaddingFactor,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.centerLeft) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.centerRight,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.centerRight,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.centerRight) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.centerLeft,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.centerLeft,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.topCenter) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.bottomCenter,
-                                        heightFactor: 5 / 6,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              top: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          heightFactor: appPaddingFactor,
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.bottomCenter,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-                                if (widget.presentationWindowAlignment == Alignment.bottomCenter) {
-                                  return Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: FractionallySizedBox(
-                                        alignment: Alignment.topCenter,
-                                        heightFactor: 5 / 6,
-                                        widthFactor: appMarginFactor,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                            border: Border(
-                                              right: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              left: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                              bottom: BorderSide(color: Theme.of(context).dividerColor, width: 5),
-                                            ),
-                                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
-                                          ),
-                                        ),
-                                      )),
-                                      Positioned.fill(
-                                        child: FractionallySizedBox(
-                                          heightFactor: appPaddingFactor,
-                                          widthFactor: appPaddingFactor,
-                                          alignment: Alignment.topCenter,
-                                          child: Align(alignment: widget.presentationWindowAlignment!, child: child),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                }
-
-                                if (widget.presentationWindowAlignment == null) {
-                                  return Center(
-                                    child: child,
-                                  );
-                                }
-                                return Placeholder();
-                              }),
-                        ),
+                        child: widget.child,
                       ),
                     ),
                   ),
@@ -575,14 +661,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                       child: Row(
                         spacing: 8,
                         children: [
-                          if (widget.deprecationMessage != null)
-                            IconButton(
-                              splashRadius: null,
-                              padding: EdgeInsets.zero,
-                              tooltip: widget.deprecationMessage!,
-                              icon: Icon(Icons.warning),
-                              onPressed: () {},
-                            ),
+                          if (widget.leadingTitle != null) widget.leadingTitle!,
                           Expanded(
                             child: Text(
                               widget.title,
@@ -590,7 +669,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          if (_currentVariantIndex > 0) Text('(${widget.variantsData[_currentVariantIndex].name ?? 'variant $_currentVariantIndex'})'),
+                          if (widget.trailingTitle != null) widget.trailingTitle!,
                         ],
                       ),
                     ),
