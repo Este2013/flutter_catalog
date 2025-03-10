@@ -249,6 +249,33 @@ class LayoutsPresentationPage extends StatelessWidget {
                           onSelected: (v) => submitNewOptions((currentOptions ?? {})..['floatingActionButtonLocation'] = v),
                         )
                       ]),
+                      Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
+                        Text('PersistentFooterButtons:'),
+                        Checkbox(
+                          value: currentOptions?['persistentFooterButtons'] ?? false,
+                          onChanged: (v) => submitNewOptions((currentOptions ?? {})..['persistentFooterButtons'] = v),
+                        ),
+                        DropdownMenu(
+                          dropdownMenuEntries: [
+                            for (var l in [
+                              AlignmentDirectional.bottomCenter,
+                              AlignmentDirectional.bottomEnd,
+                              AlignmentDirectional.bottomStart,
+                              AlignmentDirectional.center,
+                              AlignmentDirectional.centerEnd,
+                              AlignmentDirectional.centerStart,
+                              AlignmentDirectional.topCenter,
+                              AlignmentDirectional.topEnd,
+                              AlignmentDirectional.topStart,
+                            ])
+                              DropdownMenuEntry(value: l, label: l.toString().split('.')[1])
+                          ],
+                          initialSelection: AlignmentDirectional.centerEnd,
+                          enabled: currentOptions?['persistentFooterButtons'] ?? false,
+                          label: Text('Alignment'),
+                          onSelected: (v) => submitNewOptions((currentOptions ?? {})..['persistentFooterAlignment'] = v),
+                        )
+                      ]),
                     ],
                   ),
                   variantsData: [
@@ -325,6 +352,8 @@ class LayoutsPresentationPage extends StatelessWidget {
                         extendBodyBehindAppBar: options?['extendBodyBehindAppBar'] ?? false,
                         floatingActionButton: (options?['floatingActionButton'] ?? false) ? FloatingActionButton(onPressed: () {}, child: Icon(Icons.settings)) : null,
                         floatingActionButtonLocation: options?['floatingActionButtonLocation'],
+                        persistentFooterAlignment: options?['persistentFooterAlignment'] ?? AlignmentDirectional.centerEnd,
+                        persistentFooterButtons: (options?['persistentFooterButtons'] ?? false) ? [OutlinedButton(onPressed: () {}, child: Text('Licenses'))] : null,
                       ),
                     )
                   ],

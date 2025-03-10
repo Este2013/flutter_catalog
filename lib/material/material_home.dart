@@ -18,9 +18,12 @@ class IconsPage extends StatefulWidget {
 class _IconsPageState extends State<IconsPage> with TickerProviderStateMixin {
   List<IconData> iconList = [];
   List<String> iconNameList = [];
-  FontListType _fontListType = FontListType.outlined;
 
+  int viewMode = 0;
+
+  FontListType _fontListType = FontListType.outlined;
   final double _iconFontSize = 60.0;
+
   double iconWeight = 400;
   double iconGrade = 0;
   double iconOpticalSize = 48;
@@ -321,6 +324,25 @@ class _IconsPageState extends State<IconsPage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
+                      Divider(),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(7),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text('View', style: Theme.of(context).textTheme.titleMedium)),
+                            SegmentedButton(
+                              segments: [
+                                ButtonSegment(value: 0, icon: Icon(Symbols.view_comfy_alt), tooltip: 'Comfy'),
+                                ButtonSegment(value: 1, icon: Icon(Symbols.grid_view), tooltip: 'Dense'),
+                                ButtonSegment(value: 2, icon: Icon(Symbols.view_list), tooltip: 'With tags'),
+                              ],
+                              selected: {viewMode},
+                              showSelectedIcon: false,
+                              onSelectionChanged: (p0) => setState(() => viewMode = p0.first),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -348,28 +370,58 @@ class _IconsPageState extends State<IconsPage> with TickerProviderStateMixin {
                                   }
                                 });
                               },
-                              child: Tooltip(
-                                message: iconNameForIndex,
-                                ignorePointer: true,
-                                child: AnimatedBuilder(
-                                  animation: Listenable.merge([fillController]),
-                                  builder: (context, child) => VariedIcon.varied(
-                                    iconDataForIndex,
-                                    size: _iconFontSize,
-                                    fill: fillController.value,
-                                    weight: iconWeight,
-                                    grade: iconGrade,
-                                    opticalSize: iconOpticalSize,
-                                  ),
-                                ),
-                              ),
+                              child: viewMode != 2
+                                  ? Tooltip(
+                                      message: iconNameForIndex,
+                                      ignorePointer: true,
+                                      child: AnimatedBuilder(
+                                        animation: Listenable.merge([fillController]),
+                                        builder: (context, child) => VariedIcon.varied(
+                                          iconDataForIndex,
+                                          size: viewMode == 0 ? _iconFontSize : 40,
+                                          fill: fillController.value,
+                                          weight: iconWeight,
+                                          grade: iconGrade,
+                                          opticalSize: iconOpticalSize,
+                                        ),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                      child: Row(
+                                        children: [
+                                          AnimatedBuilder(
+                                            animation: Listenable.merge([fillController]),
+                                            builder: (context, child) => VariedIcon.varied(
+                                              iconDataForIndex,
+                                              size: viewMode == 0 ? _iconFontSize : 40,
+                                              fill: fillController.value,
+                                              weight: iconWeight,
+                                              grade: iconGrade,
+                                              opticalSize: iconOpticalSize,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              iconNameForIndex.replaceAll('_', ' '),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                             ),
                           );
                         },
                         childCount: searchActive ? matches.length : iconNameList.length,
                       ),
-                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 150,
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: (viewMode == 0)
+                            ? 150
+                            : viewMode == 1
+                                ? 70
+                                : 300,
+                        mainAxisExtent: viewMode == 2 ? 70 : null,
                       ),
                     ),
                   ],
