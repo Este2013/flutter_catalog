@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:material_symbols_icons/get.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:material_symbols_icons/symbols_map.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,13 +15,27 @@ class IconsPage extends StatefulWidget {
   State<IconsPage> createState() => _IconsPageState();
 }
 
-class _IconsPageState extends State<IconsPage> {
+class _IconsPageState extends State<IconsPage> with TickerProviderStateMixin {
   List<IconData> iconList = [];
   List<String> iconNameList = [];
   FontListType _fontListType = FontListType.outlined;
 
   final double _iconFontSize = 60.0;
+  double iconWeight = 400;
+  double iconGrade = 0;
+  double iconOpticalSize = 48;
 
+  // fill control
+  late Animation<double> fillTween;
+  late AnimationController fillController;
+
+  // Search
+  bool _isSearchFocused = false;
+  late TextEditingController searchController;
+  bool get searchActive => searchController.text.isNotEmpty;
+  List<int> matches = [];
+
+  // Data
   Map<String, IconData> materialSymbolsOutlinedMap = {};
   Map<String, IconData> materialSymbolsRoundedMap = {};
   Map<String, IconData> materialSymbolsSharpMap = {};
@@ -44,6 +57,25 @@ class _IconsPageState extends State<IconsPage> {
     iconNameList = materialSymbolsOutlinedMap.keys.toList();
     // make a list of renamed icons
     renamedMaterialSymbolsMapKeys = renamedMaterialSymbolsMap.keys.toList();
+
+    // fill control
+    fillController = AnimationController(duration: Durations.short2, vsync: this);
+    fillTween = Tween<double>(begin: 0, end: 1).animate(fillController);
+
+    // search
+    searchController = TextEditingController()
+      ..addListener(
+        () {
+          setState(() {
+            if (searchActive) {
+              matches = searchIconNameList(searchController.text);
+            } else {
+              matches = [];
+            }
+          });
+        },
+      );
+
     super.initState();
   }
 
@@ -68,6 +100,28 @@ class _IconsPageState extends State<IconsPage> {
             break;
         }
       });
+
+  List<int> searchIconNameList(String searchString) {
+    List<int> matchIndices = [];
+    searchString = searchString.toLowerCase();
+    for (int i = 0; i < iconNameList.length; i++) {
+      if (iconNameList[i].toLowerCase().contains(searchString)) {
+        matchIndices.add(i);
+      }
+    }
+    for (int j = 0; j < renamedMaterialSymbolsMapKeys.length; j++) {
+      if (renamedMaterialSymbolsMapKeys[j].toLowerCase().contains(searchString)) {
+        // get renamed name and find it's indices
+        final iconWasRenamedTo = renamedMaterialSymbolsMap[renamedMaterialSymbolsMapKeys[j]]!; // we know this is a valid key
+        int i = iconNameList.indexOf(iconWasRenamedTo);
+        if (i != -1 && !matchIndices.contains(i)) {
+          // add to list if it's not there already
+          matchIndices.add(i);
+        }
+      }
+    }
+    return matchIndices;
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -104,95 +158,222 @@ class _IconsPageState extends State<IconsPage> {
         ),
         body: Row(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              width: 300,
-              child: Column(
-                spacing: 8,
-                children: [
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Open in website',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            maxLines: 3,
-                          ),
-                          SizedBox.square(
-                            dimension: 40,
-                            child: IconButton.outlined(
-                              color: Colors.grey,
-                              onPressed: () {
-                                launchUrl(Uri.parse('https://fonts.google.com/icons?icon.set=Material+Symbols'));
-                              },
-                              icon: const Icon(Symbols.open_in_new),
+            FocusTraversalGroup(
+              policy: OrderedTraversalPolicy(),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                width: 300,
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  child: Column(
+                    spacing: 8,
+                    children: [
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(0),
+                        child: Card(
+                          clipBehavior: Clip.hardEdge,
+                          margin: EdgeInsets.zero,
+                          child: InkWell(
+                            onTap: () => launchUrl(Uri.parse('https://fonts.google.com/icons?icon.set=Material+Symbols')),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    'Open in website',
+                                    textAlign: TextAlign.left,
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    maxLines: 3,
+                                  ),
+                                  SizedBox.square(
+                                    dimension: 40,
+                                    child: IconButton.outlined(
+                                      color: Colors.grey,
+                                      onPressed: () => launchUrl(Uri.parse('https://fonts.google.com/icons?icon.set=Material+Symbols')),
+                                      icon: const Icon(Symbols.open_in_new),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Expanded(child: Text('Style')),
-                      SegmentedButton(
-                        segments: [
-                          ButtonSegment(value: FontListType.outlined, icon: Icon(Symbols.square), tooltip: 'Outlined'),
-                          ButtonSegment(value: FontListType.rounded, icon: Icon(Symbols.circle), tooltip: 'Rounded'),
-                          ButtonSegment(value: FontListType.sharp, icon: Icon(Symbols.cut), tooltip: 'Sharp'),
-                        ],
-                        selected: {_fontListType},
-                        showSelectedIcon: false,
-                        onSelectionChanged: (p0) => _onFontListTypeChange(p0.firstOrNull),
+                      Divider(),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(1),
+                        child: Focus(
+                          onFocusChange: (focus) {
+                            setState(() {
+                              _isSearchFocused = focus;
+                            });
+                          },
+                          child: TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              label: Text('Search'),
+                              // icon: Icon(Icons.search),
+                              suffixIcon: _isSearchFocused
+                                  ? IconButton(
+                                      icon: const Icon(Symbols.close),
+                                      onPressed: () {
+                                        FocusScope.of(context).unfocus();
+                                        searchController.clear();
+                                      },
+                                    )
+                                  : null,
+                            ),
+                            controller: searchController,
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(2),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text('Style', style: Theme.of(context).textTheme.titleMedium)),
+                            SegmentedButton(
+                              segments: [
+                                ButtonSegment(value: FontListType.outlined, icon: Icon(Symbols.square), tooltip: 'Outlined'),
+                                ButtonSegment(value: FontListType.rounded, icon: Icon(Symbols.circle), tooltip: 'Rounded'),
+                                ButtonSegment(value: FontListType.sharp, icon: Icon(Symbols.cut), tooltip: 'Sharp'),
+                              ],
+                              selected: {_fontListType},
+                              showSelectedIcon: false,
+                              onSelectionChanged: (p0) => _onFontListTypeChange(p0.firstOrNull),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(3),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text('Fill', style: Theme.of(context).textTheme.titleMedium)),
+                            AnimatedBuilder(
+                              animation: fillController,
+                              builder: (context, child) => Switch(
+                                  value: fillController.isForwardOrCompleted,
+                                  onChanged: (v) {
+                                    if (fillController.isForwardOrCompleted) {
+                                      fillController.reverse();
+                                    } else {
+                                      fillController.forward();
+                                    }
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(4),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text('Weight', style: Theme.of(context).textTheme.titleMedium)),
+                            Slider(
+                              value: iconWeight,
+                              onChanged: (w) => setState(
+                                () => iconWeight = w,
+                              ),
+                              min: 100,
+                              max: 700,
+                              divisions: 6,
+                              label: iconWeight.floor().toString(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(5),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text('Grade', style: Theme.of(context).textTheme.titleMedium)),
+                            Slider(
+                              value: iconGrade,
+                              onChanged: (w) => setState(
+                                () => iconGrade = w,
+                              ),
+                              min: -25,
+                              max: 200,
+                              divisions: 9,
+                              label: iconGrade.floor().toString(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FocusTraversalOrder(
+                        order: NumericFocusOrder(6),
+                        child: Row(
+                          children: [
+                            Expanded(child: Text('Optical size', style: Theme.of(context).textTheme.titleMedium)),
+                            Slider(
+                              value: iconOpticalSize,
+                              onChanged: (w) => setState(
+                                () => iconOpticalSize = w,
+                              ),
+                              min: 20,
+                              max: 48,
+                              divisions: 5,
+                              label: "${iconOpticalSize.floor()} dp",
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
             VerticalDivider(),
             Expanded(
-              child: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final iconNameForIndex = /* TODO searchActive ? iconNameList[matches[index]] : */ iconNameList[index];
-                        final iconDataForIndex = /* TODO searchActive ? iconList[matches[index]] : */ iconList[index];
-                        return Card(
-                          clipBehavior: Clip.hardEdge,
-                          child: InkWell(
-                            onTap: () {
-                              final iconName = 'Symbols.$iconNameForIndex';
-                              Clipboard.setData(ClipboardData(text: iconName)).then((_) {
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied "$iconName" to the clipboard.')));
-                                }
-                              });
-                            },
-                            child: Tooltip(
-                              message: iconNameForIndex,
-                              child: VariedIcon.varied(
-                                iconDataForIndex,
-                                size: _iconFontSize,
+              child: Focus(
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final iconNameForIndex = searchActive ? iconNameList[matches[index]] : iconNameList[index];
+                          final iconDataForIndex = searchActive ? iconList[matches[index]] : iconList[index];
+                          return Card(
+                            clipBehavior: Clip.hardEdge,
+                            child: InkWell(
+                              onTap: () {
+                                final iconName = 'Symbols.$iconNameForIndex';
+                                Clipboard.setData(ClipboardData(text: iconName)).then((_) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Copied "$iconName" to the clipboard.')));
+                                  }
+                                });
+                              },
+                              child: Tooltip(
+                                message: iconNameForIndex,
+                                ignorePointer: true,
+                                child: AnimatedBuilder(
+                                  animation: Listenable.merge([fillController]),
+                                  builder: (context, child) => VariedIcon.varied(
+                                    iconDataForIndex,
+                                    size: _iconFontSize,
+                                    fill: fillController.value,
+                                    weight: iconWeight,
+                                    grade: iconGrade,
+                                    opticalSize: iconOpticalSize,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                      childCount: /* TODO searchActive ? matches.length : */ iconNameList.length,
+                          );
+                        },
+                        childCount: searchActive ? matches.length : iconNameList.length,
+                      ),
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 150,
+                      ),
                     ),
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 150,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -299,7 +480,6 @@ class _InfiniteIconScrollState extends State<InfiniteIconScroll> with SingleTick
       if (offset > 1) {
         offset = 0;
       }
-      ;
     });
   }
 
