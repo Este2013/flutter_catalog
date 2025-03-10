@@ -7,6 +7,7 @@ import 'package:flutter_catalog/material/material_home.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'material/layouts.dart';
 import 'material/state_actions.dart';
@@ -165,49 +166,44 @@ class _ApplicationBodyState extends State<ApplicationBody> {
                     if (selectedPage == 'home') {
                       return PresentationCard(
                         title: 'Material icons',
-                        // TODO trailingTitle: IconButton(onPressed: onPressed, icon: icon),
-                        child: InfiniteIconScroll(
-                          size: Size(300, 200),
-                          iconSize: 50,
+                        trailingTitle: IconButton(
+                          onPressed: () => launchUrl(Uri.parse('https://fonts.google.com/icons?icon.size=24&icon.color=%23e8eaed')),
+                          icon: Icon(Icons.open_in_new),
+                        ),
+                        child: IconTheme(
+                          data: Theme.of(context).iconTheme.copyWith(size: 40),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(Icons.favorite),
+                                  Icon(Icons.star),
+                                  Icon(Icons.abc),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(Icons.cake),
+                                  Icon(Icons.qr_code),
+                                  Icon(Icons.headset),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(Icons.explore),
+                                  Icon(Icons.thumb_up),
+                                  Icon(Icons.more_horiz),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                         onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => Scaffold(
-                                    appBar: AppBar(
-                                      title: Text('Material icons'),
-                                      leadingWidth: 82,
-                                      actionsPadding: EdgeInsets.symmetric(horizontal: 32),
-                                      actions: [
-                                        AnimatedBuilder(
-                                          animation: appCtrl,
-                                          builder: (context, _) => IconButton(
-                                            onPressed: () => appCtrl.darkMode = !appCtrl.darkMode,
-                                            tooltip: '${appCtrl.darkMode ? 'Dark' : 'Light'} Mode',
-                                            icon: Icon(appCtrl.darkMode ? Icons.dark_mode : Icons.light_mode),
-                                          ),
-                                        ),
-                                        AnimatedBuilder(
-                                          animation: appCtrl,
-                                          builder: (context, _) => IconButton(
-                                            onPressed: () => showDialog(
-                                                context: context,
-                                                builder: (context) => AlertDialog(
-                                                      title: Text('Not implemented'),
-                                                      content: Text('Cupertino design sheet is not yet implemented.'),
-                                                    )),
-                                            tooltip: '${appCtrl.styleSheet.displayName} Design',
-                                            icon: SvgPicture.asset(
-                                              'assets/logos/Google_Material_Design_Logo.svg',
-                                              semanticsLabel: 'Material Icon',
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    body: Center(
-                                      child: Text('icon stuff'),
-                                    ),
-                                  )),
+                          MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
                         ),
                       );
                     }
