@@ -33,9 +33,11 @@ class LayoutsPresentationPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                           color: Theme.of(context).scaffoldBackgroundColor,
                         ),
-                        child: MaterialApp(
-                          debugShowCheckedModeBanner: false,
-                          home: Center(child: Icon(Icons.home, color: Theme.of(context).iconTheme.color)),
+                        child: IgnorePointer(
+                          child: MaterialApp(
+                            debugShowCheckedModeBanner: false,
+                            home: Center(child: Icon(Icons.home, color: Theme.of(context).iconTheme.color)),
+                          ),
                         ),
                       ),
                     )
@@ -359,6 +361,11 @@ class LayoutsPresentationPage extends StatelessWidget {
                   ],
                   link: 'https://api.flutter.dev/flutter/material/MaterialApp-class.html',
                 ),
+                Row(
+                  spacing: 16,
+                  children: [Text('Navigation', style: Theme.of(context).textTheme.titleLarge), Expanded(child: Divider())],
+                ),
+                // TODO
               ],
             ),
           ),

@@ -2,15 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/actions.dart';
 import 'package:flutter_catalog/material/material_home.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'material/layouts.dart';
-import 'material/state_actions.dart';
 
 void main() {
   runApp(const MainApp());
@@ -59,10 +54,6 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: appCtrl.darkMode ? ThemeData.dark() : ThemeData(),
           home: Scaffold(
-            // drawer: NavigationDrawer(children: [
-            //   Icon(Icons.settings),
-            // ]),
-
             appBar: AppBar(
               leading: IconButton(
                 onPressed: () => appCtrl.expandRail = !appCtrl.expandRail,
@@ -98,132 +89,9 @@ class MainApp extends StatelessWidget {
                 ),
               ],
             ),
-            body: ApplicationBody(),
+            body: MaterialApplicationBody(),
           ),
         ),
-      );
-}
-
-class ApplicationBody extends StatefulWidget {
-  const ApplicationBody({
-    super.key,
-  });
-
-  @override
-  State<ApplicationBody> createState() => _ApplicationBodyState();
-}
-
-class _ApplicationBodyState extends State<ApplicationBody> {
-  String selectedPage = 'home';
-
-  final List<String> pages = [
-    'home',
-    'layout',
-    'actions',
-    'state buttons',
-    'forms',
-  ];
-
-  @override
-  Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SingleChildScrollView(
-            child: IntrinsicHeight(
-              child: AnimatedBuilder(
-                  animation: appCtrl,
-                  builder: (context, _) => NavigationRail(
-                        extended: appCtrl.expandRail,
-                        destinations: [
-                          NavigationRailDestination(icon: Icon(Icons.home), label: Text('Home', style: Theme.of(context).textTheme.bodyLarge)),
-                          NavigationRailDestination(icon: Icon(Symbols.dashboard, fill: 1), label: Text('Layout', style: Theme.of(context).textTheme.bodyLarge)),
-                          NavigationRailDestination(icon: Icon(Symbols.touch_app, fill: 1), label: Text('Actions', style: Theme.of(context).textTheme.bodyLarge)),
-                          NavigationRailDestination(icon: Icon(Symbols.check_box, fill: 1), label: Text('State Buttons', style: Theme.of(context).textTheme.bodyLarge)),
-                          NavigationRailDestination(icon: Icon(Symbols.checklist_rtl, fill: 1), label: Text('Forms', style: Theme.of(context).textTheme.bodyLarge)),
-                          // NavigationRailDestination(icon: Icon(Symbols.settings, fill: 1), label: Text('Settings')),
-                        ],
-                        selectedIndex: pages.indexOf(selectedPage),
-                        onDestinationSelected: (value) => setState(() {
-                          if (value < pages.length) {
-                            selectedPage = pages[value];
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (context) => SettingsDialog(),
-                            );
-                          }
-                        }),
-                      )),
-            ),
-          ),
-          VerticalDivider(),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 32, right: 16),
-              child: Center(
-                child: Builder(
-                  builder: (context) {
-                    if (selectedPage == 'home') {
-                      return PresentationCard(
-                        title: 'Material icons',
-                        trailingTitle: IconButton(
-                          onPressed: () => launchUrl(Uri.parse('https://fonts.google.com/icons?icon.size=24&icon.color=%23e8eaed')),
-                          icon: Icon(Icons.open_in_new),
-                        ),
-                        child: IconTheme(
-                          data: Theme.of(context).iconTheme.copyWith(size: 40),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(Icons.favorite),
-                                  Icon(Icons.star),
-                                  Icon(Icons.abc),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(Icons.cake),
-                                  Icon(Icons.qr_code),
-                                  Icon(Icons.headset),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(Icons.explore),
-                                  Icon(Icons.thumb_up),
-                                  Icon(Icons.more_horiz),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
-                        ),
-                      );
-                    }
-
-                    if (selectedPage == 'layout') {
-                      return LayoutsPresentationPage();
-                    }
-                    if (selectedPage == 'actions') {
-                      return ActionsPresentationPage();
-                    }
-                    if (selectedPage == 'state buttons') {
-                      return StateActionsPresentationPage();
-                    }
-                    return Placeholder();
-                  },
-                ),
-              ),
-            ),
-          ),
-        ],
       );
 }
 
@@ -619,58 +487,62 @@ class _PresentationCardState extends State<PresentationCard> {
   bool isHovered = false;
 
   @override
-  Widget build(BuildContext context) => ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: MouseRegion(
-          onEnter: (event) => setState(() {
-            isHovered = true;
-          }),
-          onExit: (event) => setState(() {
-            isHovered = false;
-          }),
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).dividerColor),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            width: 300,
-            height: 250,
-            child: InkWell(
-              onTap: widget.onTap,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 200),
-                        color: isHovered ? Colors.purple.withAlpha(200) : Colors.transparent,
-                        child: widget.child,
+  Widget build(BuildContext context) => SizedBox(
+        width: 300,
+        height: 250,
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+              side: BorderSide(
+                color: Theme.of(context).dividerColor.withAlpha(150),
+              )),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: MouseRegion(
+              onEnter: (event) => setState(() {
+                isHovered = true;
+              }),
+              onExit: (event) => setState(() {
+                isHovered = false;
+              }),
+              child: InkWell(
+                onTap: widget.onTap,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          color: isHovered ? Colors.purple.withAlpha(200) : Colors.transparent,
+                          child: widget.child,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Row(
-                        spacing: 8,
-                        children: [
-                          if (widget.leadingTitle != null) widget.leadingTitle!,
-                          Expanded(
-                            child: Text(
-                              widget.title,
-                              style: Theme.of(context).textTheme.titleLarge,
-                              overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          spacing: 8,
+                          children: [
+                            if (widget.leadingTitle != null) widget.leadingTitle!,
+                            Expanded(
+                              child: Text(
+                                widget.title,
+                                style: Theme.of(context).textTheme.titleLarge,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          if (widget.trailingTitle != null) widget.trailingTitle!,
-                        ],
+                            if (widget.trailingTitle != null) widget.trailingTitle!,
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
