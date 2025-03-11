@@ -581,6 +581,110 @@ class LayoutsPresentationPage extends StatelessWidget {
                   ],
                   link: 'https://api.flutter.dev/flutter/material/NavigationBar-class.html?_gl=1*1e08mrq*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcwNjQzNS45MS4xLjE3NDE3MDY2MzguMC4wLjA.',
                 ),
+                WidgetPresentation(
+                  title: 'NavigationDrawer',
+                  presentationWindowAlignment: Alignment.center,
+                  presentationDeletePadding: true,
+                  presentationCardWidget: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Column(
+                          children: [
+                            Container(color: Theme.of(context).colorScheme.primary, height: 40),
+                            Expanded(
+                              child: Container(
+                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  child: Center(
+                                    child: Text('...'),
+                                  )),
+                            ),
+                            Container(color: Theme.of(context).colorScheme.secondary, height: 40),
+                          ],
+                        ),
+                      ),
+                      Positioned.directional(
+                        textDirection: TextDirection.ltr,
+                        bottom: 20,
+                        end: 10,
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                            boxShadow: [BoxShadow(offset: Offset(2, 2))],
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(child: Container(color: Colors.grey.shade800.withAlpha(100))),
+                      Positioned(
+                        width: 100,
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surfaceContainerLow,
+                            borderRadius: BorderRadius.horizontal(right: Radius.circular(15)),
+                            boxShadow: [BoxShadow(offset: Offset(2, 2))],
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              for (var e in [
+                                (Icons.home, true),
+                                (Icons.send, false),
+                                (Icons.folder, false),
+                                (Icons.favorite, false),
+                                (Icons.more_horiz, false),
+                              ])
+                                Container(
+                                  decoration: (e.$2) ? BoxDecoration(color: Theme.of(context).colorScheme.secondaryContainer, borderRadius: BorderRadius.circular(16)) : null,
+                                  padding: EdgeInsets.all(4),
+                                  child: Row(children: [Icon(e.$1, size: 20)]),
+                                )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  variantsData: [
+                    WidgetVariantData(
+                      // TODO THIS
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.phone_iphone),
+                      widgetBuilder: (p0, options) {
+                        ValueNotifier<int> selected = ValueNotifier(0);
+                        return AnimatedBuilder(
+                          animation: selected,
+                          builder: (context, _) => Scaffold(
+                            drawer: NavigationDrawer(
+                              selectedIndex: selected.value,
+                              onDestinationSelected: (value) => selected.value = value,
+                              children: [
+                                NavigationDrawerDestination(icon: Icon(Symbols.globe), label: Text('Global')),
+                                NavigationDrawerDestination(icon: Icon(Icons.star), label: Text('For you')),
+                              ],
+                            ),
+                            body: Center(
+                              child: Builder(
+                                builder: (context) => FloatingActionButton.extended(
+                                  onPressed: () => Scaffold.of(context).openDrawer(),
+                                  label: Text('Open drawer'),
+                                  icon: Icon(Symbols.left_panel_open),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                  link:
+                      'https://api.flutter.dev/flutter/material/NavigationDrawer-class.html?_gl=1*t94b1t*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcxMzM0OC45Mi4xLjE3NDE3MTM1MzAuMC4wLjA.',
+                ),
               ],
             ),
           ),

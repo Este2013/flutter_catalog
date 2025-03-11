@@ -201,7 +201,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                     Positioned.fill(
                       child: FractionallySizedBox(
                         alignment: windowAlignmentInCard!,
-                        heightFactor: widget.presentationWindowAlignment == Alignment.center ? null : 5 / 6,
+                        heightFactor: [Alignment.center, Alignment.centerLeft, Alignment.centerRight].contains(widget.presentationWindowAlignment) ? null : 5 / 6,
                         widthFactor: appMarginFactor,
                         child: Container(decoration: windowDecoInCard),
                       ),
