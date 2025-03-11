@@ -365,7 +365,23 @@ class LayoutsPresentationPage extends StatelessWidget {
                   spacing: 16,
                   children: [Text('Navigation', style: Theme.of(context).textTheme.titleLarge), Expanded(child: Divider())],
                 ),
-                // TODO
+                WidgetPresentation(
+                  title: 'AppBar',
+                  presentationWindowAlignment: Alignment.topCenter,
+                  presentationDeletePadding: true,
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.phone_iphone),
+                      widgetBuilder: (p0, options) => Scaffold(
+                        appBar: AppBar(
+                          title: Text('Title'),
+                        ),
+                      ),
+                    )
+                  ],
+                  link: 'https://api.flutter.dev/flutter/widgets/WidgetsApp-class.html',
+                ),
               ],
             ),
           ),
