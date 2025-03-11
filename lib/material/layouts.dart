@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
@@ -369,18 +370,216 @@ class LayoutsPresentationPage extends StatelessWidget {
                   title: 'AppBar',
                   presentationWindowAlignment: Alignment.topCenter,
                   presentationDeletePadding: true,
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => Column(
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          FilterChip(
+                            label: Text('Title'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['title'] = v),
+                            selected: currentOptions?['title'] ?? true,
+                          ),
+                          FilterChip(
+                            label: Text('Center title'),
+                            onSelected: (currentOptions?['title'] ?? true) ? (v) => submitNewOptions((currentOptions ?? {})..['centerTitle'] = v) : null,
+                            selected: currentOptions?['centerTitle'] ?? false,
+                          ),
+                          FilterChip(
+                            label: Text('Actions'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['actions'] = v),
+                            selected: currentOptions?['actions'] ?? true,
+                          ),
+                          FilterChip(
+                            label: Text('Background color'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bgColor'] = v),
+                            selected: currentOptions?['bgColor'] ?? true,
+                          ),
+                          FilterChip(
+                            label: Text('Leading'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['leading'] = v),
+                            selected: currentOptions?['leading'] ?? false,
+                          ),
+                          FilterChip(
+                            label: Text('Bottom'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottom'] = v),
+                            selected: currentOptions?['bottom'] ?? false,
+                          ),
+                          FilterChip(
+                            label: Text('FlexibleSpace'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['flexibleSpace'] = v),
+                            selected: currentOptions?['flexibleSpace'] ?? false,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.phone_iphone),
+                      widgetBuilder: (p0, options) => DefaultTabController(
+                        length: 3,
+                        child: Scaffold(
+                          appBar: AppBar(
+                            centerTitle: options?['centerTitle'] ?? false,
+                            title: (options?['title'] ?? true) ? Text('AppBar', style: TextStyle(color: (options?['bgColor'] ?? true) ? Theme.of(context).colorScheme.onPrimary : null)) : null,
+                            backgroundColor: (options?['bgColor'] ?? true) ? Theme.of(context).colorScheme.primary : null,
+                            actions: (options?['actions'] ?? true)
+                                ? [
+                                    IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+                                    IconButton(onPressed: () {}, icon: Icon(Icons.settings)),
+                                    IconButton(onPressed: () {}, icon: Icon(Icons.account_circle)),
+                                  ]
+                                : null,
+                            iconTheme: IconThemeData(color: (options?['bgColor'] ?? true) ? Theme.of(context).colorScheme.onPrimary : null),
+                            leading: (options?['leading'] ?? false) ? IconButton(onPressed: () {}, icon: Icon(Icons.home)) : null,
+                            automaticallyImplyLeading: false,
+                            bottom: (options?['bottom'] ?? false)
+                                ? TabBar(
+                                    indicatorColor: (options?['bgColor'] ?? true) ? Theme.of(context).colorScheme.onPrimary : null,
+                                    labelColor: (options?['bgColor'] ?? true) ? Theme.of(context).colorScheme.onPrimary : null,
+                                    unselectedLabelColor: (options?['bgColor'] ?? true) ? Theme.of(context).colorScheme.onPrimaryFixedVariant : null,
+                                    tabs: [
+                                      Tab(icon: Icon(Icons.directions_car)),
+                                      Tab(icon: Icon(Icons.directions_transit)),
+                                      Tab(icon: Icon(Icons.directions_bike)),
+                                    ],
+                                  )
+                                : null,
+                            flexibleSpace: (options?['flexibleSpace'] ?? false)
+                                ? FlexibleSpaceBar(
+                                    background: Container(
+                                        decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [Colors.blue, Colors.lightGreen],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    )),
+                                  )
+                                : null,
+                            primary: false,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                  link: 'https://api.flutter.dev/flutter/material/AppBar-class.html?_gl=1*gsq41x*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcwNjQzNS45MS4xLjE3NDE3MDY0NTguMC4wLjA.',
+                ),
+                WidgetPresentation(
+                  title: 'BottomAppBar',
+                  presentationWindowAlignment: Alignment.bottomCenter,
+                  presentationDeletePadding: true,
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => Column(
+                    children: [
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          FilterChip(
+                            label: Text('Color'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['color'] = v),
+                            selected: currentOptions?['color'] ?? false,
+                          ),
+                          FilterChip(
+                            label: Text('Floating action button'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['fab'] = v),
+                            selected: currentOptions?['fab'] ?? false,
+                          ),
+                          DropdownMenu(
+                            label: Text('Notch shape'),
+                            enabled: currentOptions?['fab'] ?? false,
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['notch'] = v),
+                            dropdownMenuEntries: [
+                              DropdownMenuEntry(value: null, label: 'None'),
+                              DropdownMenuEntry(value: const CircularNotchedRectangle(), label: 'Circular'),
+                              DropdownMenuEntry(
+                                  value: AutomaticNotchedShape(
+                                    ContinuousRectangleBorder(),
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.circular(16),
+                                      ),
+                                    ),
+                                    // RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    // ),
+                                  ),
+                                  label: 'Rounded rectangle'),
+                            ],
+                            initialSelection: null,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                   variantsData: [
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => Icon(Icons.phone_iphone),
                       widgetBuilder: (p0, options) => Scaffold(
-                        appBar: AppBar(
-                          title: Text('Title'),
+                        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+                        floatingActionButton: (options?['fab'] ?? false)
+                            ? FloatingActionButton(
+                                shape: (options?['notch'] is CircularNotchedRectangle) ? CircleBorder() : null,
+                                onPressed: () {},
+                                child: Icon(Icons.add),
+                              )
+                            : null,
+                        bottomNavigationBar: BottomAppBar(
+                          color: (options?['color'] ?? false) ? Theme.of(context).colorScheme.secondary : null,
+                          shape: options?['notch'],
+                          child: IconButtonTheme(
+                              data: IconButtonThemeData(style: IconButton.styleFrom(foregroundColor: (options?['color'] ?? false) ? Theme.of(context).colorScheme.onSecondary : null)),
+                              child: Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    tooltip: 'Open navigation menu',
+                                    icon: const Icon(Icons.menu),
+                                    onPressed: () {},
+                                  ),
+                                  IconButton(tooltip: 'Search', icon: const Icon(Icons.search), onPressed: () {}),
+                                  IconButton(tooltip: 'Favorite', icon: const Icon(Icons.favorite), onPressed: () {}),
+                                ],
+                              )),
                         ),
                       ),
                     )
                   ],
-                  link: 'https://api.flutter.dev/flutter/widgets/WidgetsApp-class.html',
+                  link: 'https://api.flutter.dev/flutter/material/BottomAppBar-class.html?_gl=1*1mqwwjz*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcwNDE1OC45MC4xLjE3NDE3MDQxNjAuMC4wLjA.',
+                ),
+                WidgetPresentation(
+                  title: 'NavigationBar',
+                  presentationWindowAlignment: Alignment.bottomCenter,
+                  presentationDeletePadding: true,
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.phone_iphone),
+                      widgetBuilder: (p0, options) {
+                        ValueNotifier<int> selected = ValueNotifier(0);
+                        return AnimatedBuilder(
+                          animation: selected,
+                          builder: (context, _) => Scaffold(
+                            bottomNavigationBar: NavigationBar(
+                              destinations: [
+                                NavigationDestination(icon: Icon(Icons.newspaper), label: 'News'),
+                                NavigationDestination(icon: Icon(Symbols.globe), label: 'Global'),
+                                NavigationDestination(icon: Icon(Icons.star), label: 'For you'),
+                              ],
+                              selectedIndex: selected.value,
+                              onDestinationSelected: (value) => selected.value = value,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                  link: 'https://api.flutter.dev/flutter/material/NavigationBar-class.html?_gl=1*1e08mrq*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcwNjQzNS45MS4xLjE3NDE3MDY2MzguMC4wLjA.',
                 ),
               ],
             ),

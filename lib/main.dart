@@ -216,14 +216,6 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
                     )
                   ],
                 );
-                // }
-
-                // if (widget.presentationWindowAlignment == null) {
-                //   return Center(
-                //     child: child,
-                //   );
-                // }
-                return Placeholder();
               }),
         ),
       );
