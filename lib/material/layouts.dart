@@ -839,7 +839,67 @@ class LayoutsPresentationPage extends StatelessWidget {
                       },
                     )
                   ],
-                  link: 'https://api.flutter.dev/flutter/material/NavigationBar-class.html?_gl=1*1e08mrq*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcwNjQzNS45MS4xLjE3NDE3MDY2MzguMC4wLjA.',
+                  link: 'https://api.flutter.dev/flutter/material/NavigationRail-class.html?_gl=1*12nuz3i*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTgwMDYyOC45Ni4xLjE3NDE4MDA3NDguMC4wLjA.',
+                ),
+                WidgetPresentation(
+                  title: 'TabBar',
+                  presentationWindowAlignment: Alignment.topCenter,
+                  presentationDeletePadding: true,
+                  presentationCardWidget: DefaultTabController(
+                    length: 3,
+                    child: TabBar(tabs: [
+                      Tab(text: 'Video', icon: Icon(Icons.videocam)),
+                      Tab(text: 'Photo', icon: Icon(Icons.photo)),
+                      Tab(text: 'Audio', icon: Icon(Icons.audiotrack)),
+                    ]),
+                  ),
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => Wrap(),
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.phone_iphone),
+                      widgetBuilder: (p0, options) => DefaultTabController(
+                        length: 3,
+                        child: Column(
+                          children: [
+                            TabBar(
+                              tabs: [
+                                Tab(text: 'Video', icon: Icon(Icons.videocam)),
+                                Tab(text: 'Photo', icon: Icon(Icons.photo)),
+                                Tab(text: 'Audio', icon: Icon(Icons.audiotrack)),
+                              ],
+                              // TODO OPTIONS
+                            ),
+                            Expanded(
+                                child: TabBarView(children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('TabBarView, page 0'),
+                                  Icon(Icons.videocam),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('TabBarView, page 1'),
+                                  Icon(Icons.photo),
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('TabBarView, page 2'),
+                                  Icon(Icons.audiotrack),
+                                ],
+                              )
+                            ]))
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                  link: 'https://api.flutter.dev/flutter/material/TabBar-class.html?_gl=1*6xqxg6*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTgwMDYyOC45Ni4xLjE3NDE4MDA2MzAuMC4wLjA.',
                 ),
               ],
             ),
