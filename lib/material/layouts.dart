@@ -505,11 +505,16 @@ class LayoutsPresentationPage extends StatelessWidget {
                                         bottom: Radius.circular(16),
                                       ),
                                     ),
-                                    // RoundedRectangleBorder(
-                                    //   borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    // ),
                                   ),
                                   label: 'Rounded rectangle'),
+                              // DropdownMenuEntry(
+                              //   value: AutomaticNotchedShape(
+                              //     ContinuousRectangleBorder(),
+                              //     StadiumBorder(),
+
+                              //   ),
+                              //   label: 'Stadium',
+                              // ),
                             ],
                             initialSelection: null,
                           ),
@@ -633,10 +638,10 @@ class LayoutsPresentationPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               for (var e in [
-                                (Icons.home, true),
+                                (Icons.inbox, true),
                                 (Icons.send, false),
                                 (Icons.folder, false),
-                                (Icons.favorite, false),
+                                (Icons.delete, false),
                                 (Icons.more_horiz, false),
                               ])
                                 Container(
@@ -652,7 +657,6 @@ class LayoutsPresentationPage extends StatelessWidget {
                   ),
                   variantsData: [
                     WidgetVariantData(
-                      // TODO THIS
                       null,
                       iconBuilder: (p0) => Icon(Icons.phone_iphone),
                       widgetBuilder: (p0, options) {
@@ -663,9 +667,22 @@ class LayoutsPresentationPage extends StatelessWidget {
                             drawer: NavigationDrawer(
                               selectedIndex: selected.value,
                               onDestinationSelected: (value) => selected.value = value,
+                              tilePadding: EdgeInsets.only(top: 8, left: 8, right: 8),
                               children: [
-                                NavigationDrawerDestination(icon: Icon(Symbols.globe), label: Text('Global')),
-                                NavigationDrawerDestination(icon: Icon(Icons.star), label: Text('For you')),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FloatingActionButton.extended(
+                                    onPressed: () {},
+                                    icon: Icon(Symbols.edit),
+                                    label: Text('New message'),
+                                  ),
+                                ),
+                                Divider(),
+                                NavigationDrawerDestination(icon: Icon(Symbols.inbox), label: Text('Inbox')),
+                                NavigationDrawerDestination(icon: Icon(Symbols.send), label: Text('Sent')),
+                                NavigationDrawerDestination(icon: Icon(Symbols.folder), label: Text('Archived')),
+                                NavigationDrawerDestination(icon: Icon(Symbols.delete), label: Text('Deleted')),
+                                NavigationDrawerDestination(icon: Icon(Icons.more_horiz), label: Text('More')),
                               ],
                             ),
                             body: Center(
@@ -684,6 +701,145 @@ class LayoutsPresentationPage extends StatelessWidget {
                   ],
                   link:
                       'https://api.flutter.dev/flutter/material/NavigationDrawer-class.html?_gl=1*t94b1t*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcxMzM0OC45Mi4xLjE3NDE3MTM1MzAuMC4wLjA.',
+                ),
+                WidgetPresentation(
+                  title: 'NavigationRail',
+                  presentationWindowAlignment: Alignment.centerLeft,
+                  presentationDeletePadding: true,
+                  presentationCardWidget: Builder(builder: (_) {
+                    ValueNotifier<int> selected = ValueNotifier(0);
+                    return AnimatedBuilder(
+                      animation: selected,
+                      builder: (context, _) => Row(
+                        children: [
+                          NavigationRail(
+                            destinations: [
+                              NavigationRailDestination(icon: Icon(Symbols.music_note, fill: 1), label: Text('Musics')),
+                              NavigationRailDestination(icon: Icon(Symbols.artist, fill: 1), label: Text('Artists')),
+                              NavigationRailDestination(icon: Icon(Symbols.album, fill: 1), label: Text('Albums')),
+                            ],
+                            selectedIndex: selected.value,
+                            onDestinationSelected: (value) => selected.value = value,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      FilterChip(
+                        label: Text('Leading'),
+                        onSelected: (v) => submitNewOptions((currentOptions ?? {})..['leading'] = v),
+                        selected: (currentOptions?['leading'] ?? false),
+                      ),
+                      FilterChip(
+                        label: Text('Trailing'),
+                        onSelected: (v) => submitNewOptions((currentOptions ?? {})..['trailing'] = v),
+                        selected: (currentOptions?['trailing'] ?? false),
+                      ),
+                      Row(
+                        spacing: 8,
+                        children: [
+                          Text('Group alignment'),
+                          SegmentedButton<double>(
+                            segments: [
+                              ButtonSegment(value: -1, label: Text('-1')),
+                              ButtonSegment(value: 0, label: Text('0')),
+                              ButtonSegment(value: 1, label: Text('+1')),
+                            ],
+                            showSelectedIcon: false,
+                            selected: {currentOptions?['align'] ?? -1},
+                            onSelectionChanged: (p0) => submitNewOptions((currentOptions ?? {})..['align'] = p0.first),
+                          )
+                        ],
+                      ),
+                      Row(
+                        spacing: 8,
+                        children: [
+                          Text('Label type'),
+                          SegmentedButton(
+                            segments: [
+                              ButtonSegment(value: NavigationRailLabelType.none, label: Text('None')),
+                              ButtonSegment(value: NavigationRailLabelType.selected, label: Text('Selected')),
+                              ButtonSegment(value: NavigationRailLabelType.all, label: Text('All')),
+                            ],
+                            showSelectedIcon: false,
+                            selected: {currentOptions?['label'] ?? NavigationRailLabelType.none},
+                            onSelectionChanged: (p0) => submitNewOptions((currentOptions ?? {})..['label'] = p0.first),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  variantsData: [
+                    WidgetVariantData(
+                      null,
+                      iconBuilder: (p0) => Icon(Icons.phone_iphone),
+                      widgetBuilder: (p0, options) {
+                        ValueNotifier<int> selected = ValueNotifier(0);
+                        ValueNotifier<bool> isExtended = ValueNotifier(false);
+                        return AnimatedBuilder(
+                          animation: (Listenable.merge([selected, isExtended])),
+                          builder: (context, _) => Row(
+                            children: [
+                              NavigationRail(
+                                extended: isExtended.value,
+                                leading: (options?['leading'] ?? false)
+                                    ? Card(
+                                        clipBehavior: Clip.hardEdge,
+                                        child: InkWell(
+                                          onTap: () {},
+                                          child: SizedBox(
+                                            width: isExtended.value ? 230 : null,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(16.0),
+                                              child: Row(
+                                                spacing: 8,
+                                                children: [
+                                                  Icon(Icons.explore),
+                                                  if (isExtended.value) Text('Discover'),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                                destinations: [
+                                  NavigationRailDestination(icon: Icon(Symbols.music_note, fill: 1), label: Text('Musics')),
+                                  NavigationRailDestination(icon: Icon(Symbols.artist, fill: 1), label: Text('Artists')),
+                                  NavigationRailDestination(icon: Icon(Symbols.album, fill: 1), label: Text('Albums')),
+                                  NavigationRailDestination(icon: Icon(Symbols.playlist_play, fill: 1), label: Text('Playlists')),
+                                  NavigationRailDestination(icon: Icon(Symbols.genres, fill: 1), label: Text('Genres')),
+                                ],
+                                trailing: (options?['trailing'] ?? false) ? IconButton(onPressed: () {}, icon: Icon(Icons.settings)) : null,
+                                selectedIndex: selected.value,
+                                onDestinationSelected: (value) => selected.value = value,
+                                groupAlignment: options?['align'],
+                                labelType: isExtended.value ? NavigationRailLabelType.none : options?['label'],
+                              ),
+                              Expanded(
+                                child: Container(
+                                  color: Theme.of(context).colorScheme.onInverseSurface,
+                                  child: Center(
+                                    child: FloatingActionButton.extended(
+                                      onPressed: () => isExtended.value = !isExtended.value,
+                                      icon: Icon(isExtended.value ? Symbols.left_panel_close : Symbols.left_panel_open),
+                                      label: Text(isExtended.value ? 'Collapse rail' : 'Extend rail'),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                  link: 'https://api.flutter.dev/flutter/material/NavigationBar-class.html?_gl=1*1e08mrq*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTcwNjQzNS45MS4xLjE3NDE3MDY2MzguMC4wLjA.',
                 ),
               ],
             ),
