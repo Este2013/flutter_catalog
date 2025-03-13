@@ -31,7 +31,6 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
 
   @override
   Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SingleChildScrollView(
             child: IntrinsicHeight(
@@ -64,19 +63,25 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
           VerticalDivider(),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 32, right: 16),
+              padding: EdgeInsets.only(left: 32, right: 16, top: 16),
               child: Center(
                 child: Builder(
                   builder: (context) {
                     if (selectedPage == 'home') {
                       return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        spacing: 16,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            spacing: 16,
+                            children: [
+                              Text('Online resources', style: Theme.of(context).textTheme.titleLarge),
+                              Expanded(child: Divider()),
+                            ],
+                          ),
                           SizedBox(
                             height: 100,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
+                            child: Wrap(
                               children: [
                                 Card(
                                   clipBehavior: Clip.hardEdge,
@@ -140,46 +145,30 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
                               ],
                             ),
                           ),
-                          PresentationCard(
-                            title: 'Material icons',
-                            trailingTitle: IconButton(
-                              onPressed: () => launchUrl(Uri.parse('https://fonts.google.com/icons?icon.size=24&icon.color=%23e8eaed')),
-                              icon: Icon(Icons.open_in_new),
-                            ),
-                            child: IconTheme(
-                              data: Theme.of(context).iconTheme.copyWith(size: 40),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Icon(Icons.favorite),
-                                      Icon(Icons.star),
-                                      Icon(Icons.abc),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Icon(Icons.cake),
-                                      Icon(Icons.qr_code),
-                                      Icon(Icons.headset),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Icon(Icons.explore),
-                                      Icon(Icons.thumb_up),
-                                      Icon(Icons.more_horiz),
-                                    ],
-                                  ),
-                                ],
+                          Row(
+                            spacing: 16,
+                            children: [
+                              Text('Style', style: Theme.of(context).textTheme.titleLarge),
+                              Expanded(child: Divider()),
+                            ],
+                          ),
+                          Card(
+                            clipBehavior: Clip.hardEdge,
+                            child: InkWell(
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
                               ),
-                            ),
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 16, bottom: 16, left: 16, right: 22),
+                                child: Row(
+                                  spacing: 16,
+                                  children: [
+                                    Icon(Icons.emoji_symbols, size: 50),
+                                    Text('Material Design 3', style: Theme.of(context).textTheme.titleMedium),
+                                    Icon(Icons.explore),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],
