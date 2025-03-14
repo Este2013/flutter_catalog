@@ -186,17 +186,10 @@ class _IconsPageState extends State<IconsPage> with TickerProviderStateMixin {
                                   Text(
                                     'Open in website',
                                     textAlign: TextAlign.left,
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    style: Theme.of(context).textTheme.titleMedium,
                                     maxLines: 3,
                                   ),
-                                  SizedBox.square(
-                                    dimension: 40,
-                                    child: IconButton.outlined(
-                                      color: Colors.grey,
-                                      onPressed: () => launchUrl(Uri.parse('https://fonts.google.com/icons?icon.set=Material+Symbols')),
-                                      icon: const Icon(Symbols.open_in_new),
-                                    ),
-                                  ),
+                                  SizedBox.square(dimension: 40, child: Icon(Symbols.open_in_new)),
                                 ],
                               ),
                             ),
@@ -536,43 +529,16 @@ class _InfiniteIconScrollState extends State<InfiniteIconScroll> with SingleTick
   }
 
   @override
-  Widget build(BuildContext context) {
-    // var iconsData = icons5x5; // TODO Why is 3 a magic number here?
-    // double wShifter = offset * widget.size.width * iconsData.first.length / 3;
-    // double hShifter = offset * widget.size.height * iconsData.length / 3;
-    // return Stack(
-    //   children: [
-    //     for (var iconList in iconsData.indexed)
-    //       for (var icon in iconList.$2.indexed)
-    //         Builder(builder: (context) {
-    //           double left = iconList.$1 * wIconSpacing - wShifter;
-    //           double top = icon.$1 * hIconSpacing - hShifter;
-
-    //           if (left < -iconSize) left += iconsData[iconList.$1].length * wIconSpacing;
-    //           if (top < -iconSize) top += iconList.$2.length * hIconSpacing;
-
-    //           return Positioned(
-    //             left: left,
-    //             top: top,
-    //             child: Icon(
-    //               icon.$2,
-    //               size: iconSize,
-    //             ),
-    //           );
-    //         })
-    //   ],
-    // );
-    return CustomPaint(
-      size: widget.size,
-      painter: IconGridPainter(
-        offset: offset,
-        iconsData: icons5x5,
-        iconSize: iconSize,
-        wIconSpacing: wIconSpacing,
-        hIconSpacing: hIconSpacing,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => CustomPaint(
+        size: widget.size,
+        painter: IconGridPainter(
+          offset: offset,
+          iconsData: icons5x5,
+          iconSize: iconSize,
+          wIconSpacing: wIconSpacing,
+          hIconSpacing: hIconSpacing,
+        ),
+      );
 
   @override
   void dispose() {

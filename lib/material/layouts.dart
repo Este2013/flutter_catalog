@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
