@@ -135,11 +135,7 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
                             TableCell(
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(color: colorScheme!.tertiary, borderRadius: BorderRadius.circular(8)),
-                                ),
+                                child: ColorDemoContainer(colorScheme!.tertiary),
                               ),
                             ),
                             TableCell(
@@ -357,6 +353,69 @@ Tertiary: \n\t\t- A color used as a contrasting accent that can balance primary 
                         ],
                       ),
                       Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 8,
+                        children: [
+                          Text('Surface colors', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+                          Tooltip(message: "Surface colors are used for backgrounds and large, low-emphasis areas of the screen.", child: Icon(Icons.info))
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Basic surfaces: '),
+                          for (var e in [
+                            ('SurfaceDim', colorScheme!.surfaceDim, "A color that's always darkest in the dark or light theme."),
+                            ('Surface', colorScheme!.surface, "The background color for widgets like Scaffold."),
+                            ('SurfaceBright', colorScheme!.surfaceBright, "A color that's always the lightest in the dark or light theme."),
+                          ])
+                            Tooltip(message: '${e.$1}\n${e.$3}', child: ColorDemoContainer(e.$2)),
+                        ],
+                      ),
+                      // for (var e in [
+                      //   ('Surface', colorScheme!.surface, "The background color for widgets like Scaffold."),
+                      //   ('SurfaceBright', colorScheme!.surfaceBright, "A color that's always the lightest in the dark or light theme."),
+                      //   ('SurfaceDim', colorScheme!.surfaceDim, "A color that's always darkest in the dark or light theme."),
+                      // ])
+                      //   Row(
+                      //     spacing: 8,
+                      //     children: [
+                      //       ColorDemoContainer(e.$2),
+                      //       Text(e.$1),
+                      //       Spacer(),
+                      //       Tooltip(message: e.$3, child: Icon(Icons.info)),
+                      //     ],
+                      //   ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          for (var e in [
+                            ('SurfaceContainerLowest', colorScheme!.surfaceContainerLowest, "A surface container color with the lightest tone and the least emphasis relative to the surface."),
+                            (
+                              'SurfaceContainerLow',
+                              colorScheme!.surfaceContainerLow,
+                              "A surface container color with a lighter tone that creates less emphasis than surfaceContainer but more emphasis than surfaceContainerLowest."
+                            ),
+                            (
+                              'SurfaceContainer',
+                              colorScheme!.surfaceContainer,
+                              "A recommended color role for a distinct area within the surface.\nSurface container color roles are independent of elevation."
+                            ),
+                            (
+                              'SurfaceContainerHigh',
+                              colorScheme!.surfaceContainerHigh,
+                              "A surface container color with a darker tone. It is used to create more emphasis than surfaceContainer but less emphasis than surfaceContainerHighest."
+                            ),
+                            (
+                              'SurfaceContainerHighest',
+                              colorScheme!.surfaceContainerHighest,
+                              "A surface container color with the darkest tone. It is used to create the most emphasis against the surface."
+                            ),
+                          ])
+                            Tooltip(message: '${e.$1}\n${e.$3}', child: ColorDemoContainer(e.$2)),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -370,14 +429,6 @@ Tertiary: \n\t\t- A color used as a contrasting accent that can balance primary 
 
   /* ColorScheme buildColorScheme() => ColorScheme(        
         // Surfaces
-        surface: ,
-        surfaceBright: ,
-        surfaceContainer: ,
-        surfaceContainerHigh: ,
-        surfaceContainerHighest: ,
-        surfaceContainerLow: ,
-        surfaceContainerLowest: ,
-        surfaceDim: ,
         surfaceTint: ,
         onSurface: ,
         onSurfaceVariant: ,
@@ -608,7 +659,7 @@ class _ColorDemoContainerState extends State<ColorDemoContainer> {
         child: Container(
           width: 40,
           height: 40,
-          decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(8), border: Border.all(color: Theme.of(context).colorScheme.onSurface)),
           // child: AnimatedOpacity(
           //   opacity: isHovered ? 1 : 1,
           //   duration: Durations.medium1,
