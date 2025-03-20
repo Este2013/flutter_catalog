@@ -23,7 +23,9 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
 
   @override
   void didChangeDependencies() {
-    colorScheme = Theme.of(context).colorScheme.copyWith();
+    setState(() {
+      colorScheme = Theme.of(context).colorScheme.copyWith();
+    });
     super.didChangeDependencies();
   }
 
@@ -101,292 +103,238 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
                         ),
                       ),
                       Divider(),
-                      Table(
-                        columnWidths: {3: FlexColumnWidth(.2)},
-                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                      Column(
                         children: [
-                          TableRow(children: [
-                            TableCell(child: Text('Primary', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center)),
-                            TableCell(child: Text('Secondary', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center)),
-                            TableCell(child: Text('Tertiary', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(color: colorScheme!.primary, borderRadius: BorderRadius.circular(8)),
+                          // Group 1: Titles for Primary, Secondary, Tertiary with info icon on same row
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    'Primary',
+                                    style: Theme.of(context).textTheme.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(color: colorScheme!.secondary, borderRadius: BorderRadius.circular(8)),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    'Secondary',
+                                    style: Theme.of(context).textTheme.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.tertiary),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Tooltip(
-                                  message: '''Primary: \n\t\t- The color displayed most frequently across your app’s screens and components.
-Secondary: \n\t\t- An accent color used for less prominent components in the UI, such as filter chips.
-Tertiary: \n\t\t- A color used as a contrasting accent that can balance primary and secondary colors or bring heightened attention to an element, such as an input field.''',
-                                  child: Icon(Icons.info),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    'Tertiary',
+                                    style: Theme.of(context).textTheme.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ]),
-                          // onXary
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('On X-ary', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onPrimary),
+                            ],
+                          ),
+
+                          // Row: ColorDemoContainers for Primary, Secondary, Tertiary (no info icon here)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Center(
+                                  child: ColorDemoContainer(colorScheme!.primary, name: 'primary', explanation: "The color displayed most frequently across your app’s screens and components."),
+                                ),
                               ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onSecondary),
+                              Expanded(
+                                child: Center(
+                                  child: ColorDemoContainer(
+                                    colorScheme!.secondary,
+                                    name: 'secondary',
+                                    explanation: "An accent color used for less prominent components in the UI, such as filter chips.",
+                                  ),
+                                ),
                               ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onTertiary),
+                              Expanded(
+                                child: Center(
+                                  child: ColorDemoContainer(
+                                    colorScheme!.tertiary,
+                                    name: 'tertiary',
+                                    explanation: "A contrasting accent that can balance primary and secondary colors or bring heightened attention to an element.",
+                                  ),
+                                ),
                               ),
+                            ],
+                          ),
+
+                          // Group 2: "On X-ary"
+                          SizedBox(height: 4),
+                          Text(
+                            'On X-ary',
+                            style: Theme.of(context).textTheme.titleSmall,
+                            textAlign: TextAlign.center,
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.onPrimary, name: 'onPrimary')),
+                              Center(child: ColorDemoContainer(colorScheme!.onSecondary, name: 'onSecondary')),
+                              Center(child: ColorDemoContainer(colorScheme!.onTertiary, name: 'onTertiary')),
+                            ],
+                          ),
+
+                          // Group 3: "Fixed"
+                          SizedBox(height: 4),
+                          Tooltip(
+                            message: 'A substitute for Container that\'s the same color for the dark and light themes.',
+                            child: Text(
+                              'Fixed',
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TableCell(child: Align(alignment: Alignment.center, child: Tooltip(message: 'Clearly legible when drawn on X-ary.', child: Icon(Icons.info))))
-                          ]),
-                          // XaryFixed
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('Fixed', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.primaryFixed),
-                              ),
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.primaryFixed, name: 'primaryFixed')),
+                              Center(child: ColorDemoContainer(colorScheme!.secondaryFixed, name: 'secondaryFixed')),
+                              Center(child: ColorDemoContainer(colorScheme!.tertiaryFixed, name: 'tertiaryFixed')),
+                            ],
+                          ),
+
+                          // Group 4: "OnFixed"
+                          SizedBox(height: 4),
+                          Tooltip(
+                            message: 'Used for text and icons that exist on top of elements having Fixed color.',
+                            child: Text(
+                              'OnFixed',
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.secondaryFixed),
-                              ),
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.onPrimaryFixed, name: 'onPrimaryFixed')),
+                              Center(child: ColorDemoContainer(colorScheme!.onSecondaryFixed, name: 'onSecondaryFixed')),
+                              Center(child: ColorDemoContainer(colorScheme!.onTertiaryFixed, name: 'onTertiaryFixed')),
+                            ],
+                          ),
+
+                          // Group 5: "OnFixedVar"
+                          SizedBox(height: 4),
+                          Tooltip(
+                            message: 'A lower-emphasis option for text and icons than onFixed.',
+                            child: Text(
+                              'OnFixedVar',
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.tertiaryFixed),
-                              ),
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.onPrimaryFixedVariant, name: 'onPrimaryFixedVariant')),
+                              Center(child: ColorDemoContainer(colorScheme!.onSecondaryFixedVariant, name: 'onSecondaryFixedVariant')),
+                              Center(child: ColorDemoContainer(colorScheme!.onTertiaryFixedVariant, name: 'onTertiaryFixedVariant')),
+                            ],
+                          ),
+
+                          // Group 6: "FixedDim"
+                          SizedBox(height: 4),
+                          Tooltip(
+                            message: 'Used for elements needing more emphasis than Fixed.',
+                            child: Text(
+                              'FixedDim',
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TableCell(
-                                child: Align(
-                                    alignment: Alignment.center, child: Tooltip(message: 'A substitute for Container that\'s the same color for the dark and light themes.', child: Icon(Icons.info))))
-                          ]),
-                          // onXaryFixed
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('OnFixed', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onPrimaryFixed),
-                              ),
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.primaryFixedDim, name: 'primaryFixedDim')),
+                              Center(child: ColorDemoContainer(colorScheme!.secondaryFixedDim, name: 'secondaryFixedDim')),
+                              Center(child: ColorDemoContainer(colorScheme!.tertiaryFixedDim, name: 'tertiaryFixedDim')),
+                            ],
+                          ),
+
+                          // Group 7: "Container"
+                          SizedBox(height: 4),
+                          Tooltip(
+                            message: 'Used for elements needing less emphasis than X-ary',
+                            child: Text(
+                              'Container',
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onSecondaryFixed),
-                              ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.primaryContainer, name: 'primaryContainer')),
+                              Center(child: ColorDemoContainer(colorScheme!.secondaryContainer, name: 'secondaryContainer')),
+                              Center(child: ColorDemoContainer(colorScheme!.tertiaryContainer, name: 'tertiaryContainer')),
+                            ],
+                          ),
+
+                          // Group 8: "OnContainer"
+                          SizedBox(height: 4),
+                          Tooltip(
+                            message: 'Clearly legible when drawn on Container.',
+                            child: Text(
+                              'OnContainer',
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
                             ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onTertiaryFixed),
-                              ),
-                            ),
-                            TableCell(
-                                child:
-                                    Align(alignment: Alignment.center, child: Tooltip(message: 'Used for text and icons that exist on top of elements having Fixed color.', child: Icon(Icons.info))))
-                          ]),
-                          // onXaryFixedVariant
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('OnFixedVar', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onPrimaryFixedVariant),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onSecondaryFixedVariant),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onTertiaryFixedVariant),
-                              ),
-                            ),
-                            TableCell(child: Align(alignment: Alignment.center, child: Tooltip(message: 'A lower-emphasis option for text and icons than onFixed.', child: Icon(Icons.info))))
-                          ]),
-                          // XaryFixedDim
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('FixedDim', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.primaryFixedDim),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.secondaryFixedDim),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.tertiaryFixedDim),
-                              ),
-                            ),
-                            TableCell(child: Align(alignment: Alignment.center, child: Tooltip(message: 'Used for elements needing more emphasis than Fixed.', child: Icon(Icons.info))))
-                          ]),
-                          // XaryContainer
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('Container', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.primaryContainer),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.secondaryContainer),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.tertiaryContainer),
-                              ),
-                            ),
-                            TableCell(child: Align(alignment: Alignment.center, child: Tooltip(message: 'Used for elements needing less emphasis than X-ary', child: Icon(Icons.info))))
-                          ]),
-                          // onXaryContainer
-                          TableRow(children: [
-                            TableCell(child: SizedBox()),
-                            TableCell(child: Text('OnContainer', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center)),
-                            TableCell(child: SizedBox()),
-                            TableCell(child: SizedBox()),
-                          ]),
-                          TableRow(children: [
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onPrimaryContainer),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onSecondaryContainer),
-                              ),
-                            ),
-                            TableCell(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: ColorDemoContainer(colorScheme!.onTertiaryContainer),
-                              ),
-                            ),
-                            TableCell(child: Align(alignment: Alignment.center, child: Tooltip(message: 'Clearly legible when drawn on Container.', child: Icon(Icons.info))))
-                          ]),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Center(child: ColorDemoContainer(colorScheme!.onPrimaryContainer, name: 'onPrimaryContainer')),
+                              Center(child: ColorDemoContainer(colorScheme!.onSecondaryContainer, name: 'onSecondaryContainer')),
+                              Center(child: ColorDemoContainer(colorScheme!.onTertiaryContainer, name: 'onTertiaryContainer')),
+                            ],
+                          ),
                         ],
                       ),
+
                       Divider(),
+                      // Surfaces
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         spacing: 8,
                         children: [
                           Text('Surface colors', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
-                          Tooltip(message: "Surface colors are used for backgrounds and large, low-emphasis areas of the screen.", child: Icon(Icons.info))
+                          Tooltip(message: "Surface colors are used for backgrounds and large, low-emphasis areas of the screen.", child: Icon(Symbols.info_i, size: 16))
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text('Basic surfaces: '),
+                          Text('   Dim'),
                           for (var e in [
                             ('SurfaceDim', colorScheme!.surfaceDim, "A color that's always darkest in the dark or light theme."),
                             ('Surface', colorScheme!.surface, "The background color for widgets like Scaffold."),
                             ('SurfaceBright', colorScheme!.surfaceBright, "A color that's always the lightest in the dark or light theme."),
                           ])
-                            Tooltip(message: '${e.$1}\n${e.$3}', child: ColorDemoContainer(e.$2)),
+                            ColorDemoContainer(e.$2, name: e.$1, explanation: e.$3),
+                          Text('Bright'),
                         ],
                       ),
-                      // for (var e in [
-                      //   ('Surface', colorScheme!.surface, "The background color for widgets like Scaffold."),
-                      //   ('SurfaceBright', colorScheme!.surfaceBright, "A color that's always the lightest in the dark or light theme."),
-                      //   ('SurfaceDim', colorScheme!.surfaceDim, "A color that's always darkest in the dark or light theme."),
-                      // ])
-                      //   Row(
-                      //     spacing: 8,
-                      //     children: [
-                      //       ColorDemoContainer(e.$2),
-                      //       Text(e.$1),
-                      //       Spacer(),
-                      //       Tooltip(message: e.$3, child: Icon(Icons.info)),
-                      //     ],
-                      //   ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Lowest'),
+                          Text('← Container surfaces →', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
+                          Text('Highest'),
+                        ],
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -413,7 +361,7 @@ Tertiary: \n\t\t- A color used as a contrasting accent that can balance primary 
                               "A surface container color with the darkest tone. It is used to create the most emphasis against the surface."
                             ),
                           ])
-                            Tooltip(message: '${e.$1}\n${e.$3}', child: ColorDemoContainer(e.$2)),
+                            ColorDemoContainer(e.$2, name: e.$1, explanation: e.$3),
                         ],
                       )
                     ],
@@ -471,14 +419,14 @@ class Demo extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Navigator(
-          key: Key('color demo navigator'),
-          clipBehavior: Clip.hardEdge,
-          onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(colorScheme: colorScheme),
-              home: Scaffold(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(colorScheme: colorScheme),
+          home: Navigator(
+            key: Key('color demo navigator'),
+            clipBehavior: Clip.hardEdge,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+              builder: (context) => Scaffold(
                 appBar: AppBar(
                   title: Text('AppBar'),
                   actionsPadding: EdgeInsets.only(right: 8),
@@ -536,8 +484,6 @@ class DemoBody extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            // Icon Widget
-            const Icon(Icons.star, size: 50, color: Colors.orange),
             const SizedBox(height: 10),
 
             // ListTile Widget
@@ -641,9 +587,11 @@ class DemoBody extends StatelessWidget {
 }
 
 class ColorDemoContainer extends StatefulWidget {
-  const ColorDemoContainer(this.color, {super.key});
+  const ColorDemoContainer(this.color, {super.key, required this.name, this.explanation});
 
   final Color color;
+  final String name;
+  final String? explanation;
 
   @override
   State<ColorDemoContainer> createState() => _ColorDemoContainerState();
@@ -656,15 +604,18 @@ class _ColorDemoContainerState extends State<ColorDemoContainer> {
   Widget build(BuildContext context) => MouseRegion(
         onEnter: (event) => setState(() => isHovered = true),
         onExit: (event) => setState(() => isHovered = false),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(8), border: Border.all(color: Theme.of(context).colorScheme.onSurface)),
-          // child: AnimatedOpacity(
-          //   opacity: isHovered ? 1 : 1,
-          //   duration: Durations.medium1,
-          //   child: Icon(Icons.copy),
-          // ),
+        child: Tooltip(
+          message: '${widget.name}${widget.explanation != null ? "\n${widget.explanation!}" : ""}',
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(color: widget.color, borderRadius: BorderRadius.circular(8), border: Border.all(color: Theme.of(context).colorScheme.onSurface)),
+            // child: AnimatedOpacity(
+            //   opacity: isHovered ? 1 : 1,
+            //   duration: Durations.medium1,
+            //   child: Icon(Icons.copy),
+            // ),
+          ),
         ),
       );
 }
