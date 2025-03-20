@@ -306,13 +306,9 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
 
                       Divider(),
                       // Surfaces
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 8,
-                        children: [
-                          Text('Surface colors', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
-                          Tooltip(message: "Surface colors are used for backgrounds and large, low-emphasis areas of the screen.", child: Icon(Symbols.info_i, size: 16))
-                        ],
+                      Tooltip(
+                        message: "Surface colors are used for backgrounds and large, low-emphasis areas of the screen.",
+                        child: Text('Surface colors', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -331,7 +327,11 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Lowest'),
-                          Text('← Container surfaces →', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
+                          Tooltip(
+                            message:
+                                'Recommended color roles for distinct areas within the surface.\nSurface container color roles are independent of elevation.\nThey are sorted from lowest to highest emphasis level.',
+                            child: Text('← Container surfaces →', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
+                          ),
                           Text('Highest'),
                         ],
                       ),
@@ -363,7 +363,108 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
                           ])
                             ColorDemoContainer(e.$2, name: e.$1, explanation: e.$3),
                         ],
-                      )
+                      ),
+                      Row(
+                        spacing: 10.5,
+                        children: [
+                          Text('On surfaces:', style: Theme.of(context).textTheme.titleSmall, textAlign: TextAlign.center),
+                          Spacer(),
+                          ColorDemoContainer(
+                            colorScheme!.onSurface,
+                            name: 'onSurface',
+                            explanation: "A color that's clearly legible when drawn on surface.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.onSurface,
+                            name: 'onSurfaceVariant',
+                            explanation: "A color that's clearly legible when drawn on surfaceVariant (deprecated)",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.surfaceTint,
+                            name: 'surfaceTint',
+                            explanation: "A color used as an overlay on a surface color to indicate a component's elevation (tint is not a part of material 3 requirements).",
+                          ),
+                          SizedBox(width: 1.5),
+                        ],
+                      ),
+
+                      Divider(),
+                      Text('Inverses', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ColorDemoContainer(
+                            colorScheme!.inversePrimary,
+                            name: 'inversePrimary',
+                            explanation: "An accent color used for displaying a highlight color on inverseSurface backgrounds, like button text in a SnackBar.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.inverseSurface,
+                            name: 'inverseSurface',
+                            explanation: "A surface color used for displaying the reverse of what’s seen in the surrounding UI, for example in a SnackBar to bring attention to an alert.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.onInverseSurface,
+                            name: 'onInverseSurface',
+                            explanation: "A color that's clearly legible when drawn on inverseSurface.",
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                      Text('Errors', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ColorDemoContainer(
+                            colorScheme!.error,
+                            name: 'error',
+                            explanation: "The color to use for input validation errors, e.g. for InputDecoration.errorText.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.onError,
+                            name: 'onError',
+                            explanation: "A color that's clearly legible when drawn on error.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.errorContainer,
+                            name: 'errorContainer',
+                            explanation: "A color used for error elements needing less emphasis than error.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.onErrorContainer,
+                            name: 'onErrorContainer',
+                            explanation: "A color that's clearly legible when drawn on errorContainer.",
+                          ),
+                        ],
+                      ),
+
+                      Divider(),
+                      Text('Miscellaneous', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ColorDemoContainer(
+                            colorScheme!.outline,
+                            name: 'outline',
+                            explanation: "A utility color that creates boundaries and emphasis to improve usability.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.outlineVariant,
+                            name: 'outlineVariant',
+                            explanation: "A utility color that creates boundaries for decorative elements when a 3:1 contrast isn’t required, such as for dividers or decorative elements.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.scrim,
+                            name: 'scrim',
+                            explanation: "A color use to paint the scrim around of modal components.",
+                          ),
+                          ColorDemoContainer(
+                            colorScheme!.shadow,
+                            name: 'shadow',
+                            explanation: "A color use to paint the drop shadows of elevated components.",
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -376,22 +477,6 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
       );
 
   /* ColorScheme buildColorScheme() => ColorScheme(        
-        // Surfaces
-        surfaceTint: ,
-        onSurface: ,
-        onSurfaceVariant: ,
-        
-        // Inverses
-        inversePrimary: ,
-        inverseSurface: ,
-        onInverseSurface: ,
-
-        // Errors
-        error: ,
-        errorContainer: ,
-        onError: ,
-        onErrorContainer: ,
-
         // Misc
         outline: ,
         outlineVariant: ,
