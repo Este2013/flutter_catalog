@@ -149,8 +149,10 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
   Widget build(BuildContext context) {
     var data = widget.variantsData.firstWhere((v) => (v.name ?? widget.mainVariantName) == widget.selected);
     return Column(
+      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (data.variantExplanation != null) Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge),
         Expanded(
           child: Container(
             decoration: BoxDecoration(

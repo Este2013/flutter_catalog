@@ -16,6 +16,7 @@ class ColorSchemePage extends StatefulWidget {
 class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderStateMixin {
   ColorScheme? colorScheme;
   ColorScheme? darkColorScheme;
+
   @override
   void initState() {
     super.initState();
@@ -76,30 +77,62 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
                     children: [
                       FocusTraversalOrder(
                         order: NumericFocusOrder(0),
-                        child: Card(
-                          clipBehavior: Clip.hardEdge,
-                          margin: EdgeInsets.zero,
-                          child: InkWell(
-                            onTap: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/material/ColorScheme-class.html')),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    'Open documentation',
-                                    textAlign: TextAlign.left,
-                                    style: Theme.of(context).textTheme.titleMedium,
-                                    maxLines: 3,
-                                  ),
-                                  SizedBox.square(
-                                    dimension: 40,
-                                    child: Icon(Symbols.book_2, fill: 1),
-                                  ),
-                                ],
+                        child: Row(
+                          spacing: 8,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Documentation',
+                                textAlign: TextAlign.left,
+                                style: Theme.of(context).textTheme.titleMedium,
+                                maxLines: 3,
                               ),
                             ),
-                          ),
+                            Tooltip(
+                              message: 'ColorScheme class',
+                              child: Card(
+                                clipBehavior: Clip.hardEdge,
+                                margin: EdgeInsets.zero,
+                                child: InkWell(
+                                  onTap: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/material/ColorScheme-class.html')),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SizedBox.square(
+                                          dimension: 40,
+                                          child: Icon(Symbols.book_2, fill: 1),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Tooltip(
+                              message: 'Color roles',
+                              child: Card(
+                                clipBehavior: Clip.hardEdge,
+                                margin: EdgeInsets.zero,
+                                child: InkWell(
+                                  onTap: () => launchUrl(Uri.parse('https://m3.material.io/styles/color/roles')),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SizedBox.square(
+                                          dimension: 40,
+                                          child: Icon(Symbols.color_lens, fill: 1),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Divider(),
@@ -439,7 +472,7 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
                       ),
 
                       Divider(),
-                      Text('Miscellaneous', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+                      Text('Outlines and shadows', style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -475,15 +508,6 @@ class _ColorSchemePageState extends State<ColorSchemePage> with TickerProviderSt
           ],
         ),
       );
-
-  /* ColorScheme buildColorScheme() => ColorScheme(        
-        // Misc
-        outline: ,
-        outlineVariant: ,
-        scrim: ,
-        shadow: ,
-      );
- */
 }
 
 class Demo extends StatelessWidget {

@@ -454,9 +454,10 @@ class SettingsDialog extends StatelessWidget {
 
 class WidgetVariantData extends ChangeNotifier {
   final String? name;
+  final String? variantExplanation;
   final Widget Function(BuildContext)? iconBuilder;
   final Widget Function(BuildContext, Map<String, dynamic>? options)? widgetBuilder;
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
 
-  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder});
+  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder, this.variantExplanation});
 }
