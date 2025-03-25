@@ -292,22 +292,21 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
                                 WidgetPresentation(
                                   title: 'Icon',
                                   variantsData: [
-                                    WidgetVariantData(
-                                      null,
-                                      variantExplanation: 'A graphical icon widget drawn with a glyph from a font described in an IconData.',
-                                      iconBuilder: (p0) => Icon(Symbols.emoji_symbols),
-                                      widgetBuilder: (p0, options) => Padding(
-                                        padding: EdgeInsets.all(16),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Icon(Icons.star, color: Colors.amber.shade700),
-                                            Icon(Icons.music_note),
-                                            Icon(Icons.favorite, color: Colors.red),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    WidgetVariantData(null,
+                                        variantExplanation: 'A graphical icon widget drawn with a glyph from a font described in an IconData.',
+                                        iconBuilder: (p0) => Icon(Symbols.emoji_symbols),
+                                        widgetBuilder: (p0, options) => Padding(
+                                              padding: EdgeInsets.all(16),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Icon(Icons.star, color: Colors.amber.shade700),
+                                                  Icon(Icons.music_note),
+                                                  Icon(Icons.favorite, color: Colors.red),
+                                                ],
+                                              ),
+                                            ),
+                                        themeGraph: IconThemeGraph()),
                                   ],
                                   link: 'https://api.flutter.dev/flutter/widgets/Icon-class.html',
                                 ),
@@ -370,5 +369,44 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
             ),
           ),
         ],
+      );
+}
+
+class IconThemeGraph extends StatefulWidget {
+  const IconThemeGraph({
+    super.key,
+  });
+
+  @override
+  State<IconThemeGraph> createState() => _IconThemeGraphState();
+}
+
+class _IconThemeGraphState extends State<IconThemeGraph> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text('Icon theming'),
+          bottom: TabBar(controller: tabController, tabs: [
+            Tab(icon: Icon(Icons.colorize), child: Text('Color')),
+            Tab(icon: Icon(Icons.gradient), child: Text('Fill')),
+          ]),
+        ),
+        body: TabBarView(
+          controller: tabController,
+          children: [
+            // color
+            Text('color'), // fill
+            Text('fill'),
+          ],
+        ),
       );
 }

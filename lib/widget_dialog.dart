@@ -97,18 +97,17 @@ class _WidgetPresentationDialogState extends State<WidgetPresentationDialog> {
                   widget.mainVariantName,
                   variantsData: widget.variantsData,
                   selected: selected,
-                  optionsBuilder: widget.variantsData
-                          .firstWhere(
-                            (v) => v.name == selected,
-                            orElse: () => widget.variantsData.firstWhere((v) => v.name == null),
-                          )
-                          .optionsBuilder ??
-                      widget.defaultOptionsBuilder,
+                  optionsBuilder: selectedVariant.optionsBuilder ?? widget.defaultOptionsBuilder,
                 ),
               )
             ],
           ),
         ),
+      );
+
+  WidgetVariantData get selectedVariant => widget.variantsData.firstWhere(
+        (v) => v.name == selected,
+        orElse: () => widget.variantsData.firstWhere((v) => v.name == null),
       );
 }
 
@@ -133,6 +132,7 @@ class DialogPresentationSection extends StatefulWidget {
 class _DialogPresentationSectionState extends State<DialogPresentationSection> {
   late bool showOptions;
   Map<String, dynamic>? currentOptions;
+  String? showedMode;
 
   @override
   void initState() {
@@ -152,7 +152,23 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
       spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (data.variantExplanation != null) Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge),
+        if (data.variantExplanation != null || data.themeGraph != null)
+          Row(
+            children: [
+              if (data.variantExplanation != null) Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge),
+              Spacer(),
+              if (data.themeGraph != null)
+                SegmentedButton<String?>(
+                  showSelectedIcon: false,
+                  segments: [
+                    ButtonSegment(value: null, icon: Icon(Symbols.code_blocks, fill: 1), tooltip: 'Demo'),
+                    ButtonSegment(value: 'theme', icon: Icon(Icons.color_lens), tooltip: 'Theme'),
+                  ],
+                  selected: {showedMode},
+                  onSelectionChanged: (v) => setState(() => showedMode = v.first),
+                ),
+            ],
+          ),
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -162,7 +178,13 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Center(child: data.widgetBuilder?.call(context, currentOptions) ?? Placeholder()),
+              child: Center(
+                child: showedMode == null
+                    ? data.widgetBuilder?.call(context, currentOptions) ?? Placeholder()
+                    : showedMode == 'theme'
+                        ? data.themeGraph
+                        : Placeholder(),
+              ),
             ),
           ),
         ),
