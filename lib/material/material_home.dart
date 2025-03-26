@@ -391,22 +391,143 @@ class _IconThemeGraphState extends State<IconThemeGraph> with TickerProviderStat
   }
 
   @override
+  Widget build(BuildContext context) => Navigator(
+        onGenerateRoute: (settings) => MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Text('Theming'),
+              bottom: TabBar(controller: tabController, tabs: [
+                Tab(icon: Icon(Icons.colorize), child: Text('Color')),
+                Tab(icon: Icon(Icons.gradient), child: Text('Fill')),
+              ]),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                  // color
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: 8,
+                    children: [
+                      Text("The color, once evaluated, will be further adjusted by the nearest IconTheme's IconThemeData.opacity."),
+                      Divider(),
+                      Row(
+                        spacing: 8,
+                        children: [
+                          Text('Use provided'),
+                          ActionChip(
+                            /* avatar: Icon(Icons.open_in_new), */ label: Text('Color'),
+                            onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/dart-ui/Color-class.html')),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        spacing: 8,
+                        children: [
+                          Text('If not provided, use'),
+                          ActionChip(
+                            label: Text('IconTheme.of(context).color'),
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => IconThemeDataExplorer(
+                                initPage: 'color',
+                              ),
+                            )),
+                          ),
+                        ],
+                      ),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            spacing: 8,
+                            children: [
+                              Wrap(
+                                spacing: 8,
+                                children: [
+                                  ActionChip(
+                                    label: Text('IconTheme.of'),
+                                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
+                                  ),
+                                  Text('finds the nearest IconThemeData provided by a local IconTheme widget.'),
+                                ],
+                              ),
+                              Text(' > '),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // fill
+                  Text('fill'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class IconThemeDataExplorer extends StatefulWidget {
+  const IconThemeDataExplorer({super.key, this.initPage});
+
+  final String? initPage;
+
+  @override
+  State<IconThemeDataExplorer> createState() => _IconThemeDataExplorerState();
+}
+
+class _IconThemeDataExplorerState extends State<IconThemeDataExplorer> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 2, vsync: this);
+    if (widget.initPage != null) {
+      if (widget.initPage == 'color') {
+        tabController.index = 0;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text('Icon theming'),
+          title: Text('IconThemeData'),
           bottom: TabBar(controller: tabController, tabs: [
             Tab(icon: Icon(Icons.colorize), child: Text('Color')),
             Tab(icon: Icon(Icons.gradient), child: Text('Fill')),
           ]),
         ),
-        body: TabBarView(
-          controller: tabController,
-          children: [
-            // color
-            Text('color'), // fill
-            Text('fill'),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              // color
+              Column(
+                spacing: 8,
+                children: [
+                  Row(
+                    spacing: 8,
+                    children: [
+                      Text('Use provided'),
+                      ActionChip(
+                        /* avatar: Icon(Icons.open_in_new), */ label: Text('Color'),
+                        onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/dart-ui/Color-class.html')),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              // fill
+              Text('fill'),
+            ],
+          ),
         ),
       );
 }

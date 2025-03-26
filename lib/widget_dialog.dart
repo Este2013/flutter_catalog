@@ -155,8 +155,7 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
         if (data.variantExplanation != null || data.themeGraph != null)
           Row(
             children: [
-              if (data.variantExplanation != null) Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge),
-              Spacer(),
+              if (data.variantExplanation != null) Expanded(child: Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge)) else Spacer(),
               if (data.themeGraph != null)
                 SegmentedButton<String?>(
                   showSelectedIcon: false,
