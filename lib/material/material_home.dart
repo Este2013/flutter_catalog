@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/material/color_scheme_page.dart';
@@ -430,34 +432,105 @@ class _IconThemeGraphState extends State<IconThemeGraph> with TickerProviderStat
                           Text('If not provided, use'),
                           ActionChip(
                             label: Text('IconTheme.of(context).color'),
-                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => IconThemeDataExplorer(
-                                initPage: 'color',
-                              ),
-                            )),
+                            // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (context) => IconThemeDataExplorer(
+                            //     initPage: 'color',
+                            //   ),
+                            // )),
                           ),
                         ],
                       ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            spacing: 8,
-                            children: [
-                              Wrap(
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 8,
+                        children: [
+                          Padding(padding: EdgeInsets.only(left: 16, top: 16 + 10), child: Transform.rotate(angle: pi, child: Icon(Symbols.reply))),
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 spacing: 8,
                                 children: [
-                                  ActionChip(
-                                    label: Text('IconTheme.of'),
-                                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
+                                  Row(
+                                    spacing: 8,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text('If'),
+                                      ActionChip(
+                                        label: Text('IconTheme.of'),
+                                        onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
+                                      ),
+                                      Text('finds a surrounding IconTheme widget'),
+                                    ],
                                   ),
-                                  Text('finds the nearest IconThemeData provided by a local IconTheme widget.'),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 16, top: 0),
+                                        child: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
+                                      ),
+                                      Card(
+                                        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            spacing: 8,
+                                            children: [
+                                              Text('Use corresponding'),
+                                              ActionChip(
+                                                label: Text('IconThemeData'),
+                                                onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData-class.html')),
+                                              ),
+                                              Text('\'s color'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 16, top: 0),
+                                        child: Icon(Symbols.info),
+                                      ),
+                                      Card(
+                                        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            spacing: 8,
+                                            children: [
+                                              Text('In material apps, if there is a Theme without any IconThemes specified, icon colors default to:'),
+                                              Row(spacing: 8, children: [Text('-'), ColorDisplayChip(Colors.black), Text('if ThemeData.brightness is light;')]),
+                                              Row(spacing: 8, children: [Text('-'), ColorDisplayChip(Colors.white), Text('if ThemeData.brightness is dark.')]),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    spacing: 8,
+                                    children: [
+                                      Text('Otherwise, use'),
+                                      ActionChip(
+                                        label: Text('IconThemeData.fallback()'),
+                                        onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData/IconThemeData.fallback.html')),
+                                      ),
+                                      Text('\'s color: '),
+                                      ColorDisplayChip(IconThemeData.fallback().color!),
+                                    ],
+                                  ),
                                 ],
                               ),
-                              Text(' > '),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -517,7 +590,7 @@ class _IconThemeDataExplorerState extends State<IconThemeDataExplorer> with Tick
                     children: [
                       Text('Use provided'),
                       ActionChip(
-                        /* avatar: Icon(Icons.open_in_new), */ label: Text('Color'),
+                        label: Text('Color'),
                         onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/dart-ui/Color-class.html')),
                       ),
                     ],
@@ -530,4 +603,45 @@ class _IconThemeDataExplorerState extends State<IconThemeDataExplorer> with Tick
           ),
         ),
       );
+}
+
+class ColorDisplayChip extends StatelessWidget {
+  const ColorDisplayChip(
+    this.color, {
+    super.key,
+  });
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => Chip(
+        avatar: Container(
+          height: Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14,
+          width: Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+            border: Border.all(color: Theme.of(context).dividerColor),
+          ),
+        ),
+        label: Text(color.toHex()),
+      );
+}
+
+extension HexColor on Color {
+  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+
+  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
+  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+          '${(a * 255).floor().toRadixString(16).padLeft(2, '0')}'
+          '${(r * 255).floor().toRadixString(16).padLeft(2, '0')}'
+          '${(g * 255).floor().toRadixString(16).padLeft(2, '0')}'
+          '${(b * 255).floor().toRadixString(16).padLeft(2, '0')}'
+      .toUpperCase();
 }
