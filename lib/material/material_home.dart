@@ -410,129 +410,174 @@ class _IconThemeGraphState extends State<IconThemeGraph> with TickerProviderStat
                 controller: tabController,
                 children: [
                   // color
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: 8,
-                    children: [
-                      Text("The color, once evaluated, will be further adjusted by the nearest IconTheme's IconThemeData.opacity."),
-                      Divider(),
-                      Row(
-                        spacing: 8,
-                        children: [
-                          Text('Use provided'),
-                          ActionChip(
-                            /* avatar: Icon(Icons.open_in_new), */ label: Text('Color'),
-                            onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/dart-ui/Color-class.html')),
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 8,
+                      children: [
+                        Text("The color, once evaluated, will be further adjusted by the nearest IconTheme's IconThemeData.opacity."),
+                        Divider(),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'Use provided '),
+                              WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: ActionChip(
+                                    label: Text('Color'),
+                                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/dart-ui/Color-class.html')),
+                                  ))
+                            ],
                           ),
-                        ],
-                      ),
-                      Row(
-                        spacing: 8,
-                        children: [
-                          Text('If not provided, use'),
-                          ActionChip(
-                            label: Text('IconTheme.of(context).color'),
-                            // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                            //   builder: (context) => IconThemeDataExplorer(
-                            //     initPage: 'color',
-                            //   ),
-                            // )),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'If not provided, use '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: ActionChip(
+                                  label: Text('IconTheme.of(context).color'),
+                                  // onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (context) => IconThemeDataExplorer(
+                                  //     initPage: 'color',
+                                  //   ),
+                                  // )),
+                                ),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 8,
-                        children: [
-                          Padding(padding: EdgeInsets.only(left: 16, top: 16 + 10), child: Transform.rotate(angle: pi, child: Icon(Symbols.reply))),
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                spacing: 8,
-                                children: [
-                                  Row(
-                                    spacing: 8,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text('If'),
-                                      ActionChip(
-                                        label: Text('IconTheme.of'),
-                                        onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
-                                      ),
-                                      Text('finds a surrounding IconTheme widget'),
-                                    ],
-                                  ),
-                                  Row(
-                                    spacing: 8,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 16, top: 0),
-                                        child: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
-                                      ),
-                                      Card(
-                                        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Row(
-                                            spacing: 8,
+                        ),
+                        Row(
+                          spacing: 8,
+                          children: [
+                            Padding(padding: EdgeInsets.only(left: 16), child: Transform.rotate(angle: pi, child: Icon(Symbols.reply))),
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(maxWidth: 1000),
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      spacing: 8,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            style: Theme.of(context).textTheme.bodyMedium,
                                             children: [
-                                              Text('Use corresponding'),
-                                              ActionChip(
-                                                label: Text('IconThemeData'),
-                                                onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData-class.html')),
+                                              TextSpan(text: 'If '),
+                                              WidgetSpan(
+                                                alignment: PlaceholderAlignment.middle,
+                                                child: ActionChip(
+                                                  label: Text('IconTheme.of'),
+                                                  onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
+                                                ),
                                               ),
-                                              Text('\'s color'),
+                                              TextSpan(text: ' finds a surrounding IconTheme widget'),
                                             ],
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    spacing: 8,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 16, top: 0),
-                                        child: Icon(Symbols.info),
-                                      ),
-                                      Card(
-                                        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            spacing: 8,
-                                            children: [
-                                              Text('In material apps, if there is a Theme without any IconThemes specified, icon colors default to:'),
-                                              Row(spacing: 8, children: [Text('-'), ColorDisplayChip(Colors.black), Text('if ThemeData.brightness is light;')]),
-                                              Row(spacing: 8, children: [Text('-'), ColorDisplayChip(Colors.white), Text('if ThemeData.brightness is dark.')]),
-                                            ],
-                                          ),
+                                        Row(
+                                          spacing: 8,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 16),
+                                              child: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
+                                            ),
+                                            Flexible(
+                                              child: ConstrainedBox(
+                                                constraints: BoxConstraints(maxWidth: 1000),
+                                                child: Card(
+                                                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                                  child: Padding(
+                                                      padding: const EdgeInsets.all(16.0),
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          style: Theme.of(context).textTheme.bodyMedium,
+                                                          children: [
+                                                            TextSpan(text: 'Use corresponding '),
+                                                            WidgetSpan(
+                                                              alignment: PlaceholderAlignment.middle,
+                                                              child: ActionChip(
+                                                                label: Text('IconThemeData'),
+                                                                onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData-class.html')),
+                                                              ),
+                                                            ),
+                                                            TextSpan(text: '\'s color'),
+                                                          ],
+                                                        ),
+                                                      )),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
+                                        Row(
+                                          spacing: 8,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 16, top: 0),
+                                              child: Icon(Symbols.info),
+                                            ),
+                                            Flexible(
+                                              child: ConstrainedBox(
+                                                constraints: BoxConstraints(maxWidth: 1000),
+                                                child: Card(
+                                                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(16.0),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 2.6),
+                                                        children: [
+                                                          TextSpan(text: 'In material apps, if there is a '),
+                                                          WidgetSpan(
+                                                              alignment: PlaceholderAlignment.middle,
+                                                              child: ActionChip(
+                                                                label: Text('Theme'),
+                                                                onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/material/Theme-class.html')),
+                                                              )),
+                                                          TextSpan(text: ' without any IconThemes specified, icon colors default to:\n - '),
+                                                          WidgetSpan(alignment: PlaceholderAlignment.middle, child: ColorDisplayChip(Colors.black)),
+                                                          TextSpan(text: ' if ThemeData.brightness is light;\n - '),
+                                                          WidgetSpan(alignment: PlaceholderAlignment.middle, child: ColorDisplayChip(Colors.white)),
+                                                          TextSpan(text: ' if ThemeData.brightness is dark.'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        RichText(
+                                          text: TextSpan(style: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 2.5), children: [
+                                            TextSpan(text: 'Otherwise, use '),
+                                            WidgetSpan(
+                                              alignment: PlaceholderAlignment.middle,
+                                              child: ActionChip(
+                                                label: Text('IconThemeData.fallback()'),
+                                                onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData/IconThemeData.fallback.html')),
+                                              ),
+                                            ),
+                                            TextSpan(text: '\'s color: '),
+                                            WidgetSpan(alignment: PlaceholderAlignment.middle, child: ColorDisplayChip(IconThemeData.fallback().color!)),
+                                          ]),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    spacing: 8,
-                                    children: [
-                                      Text('Otherwise, use'),
-                                      ActionChip(
-                                        label: Text('IconThemeData.fallback()'),
-                                        onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData/IconThemeData.fallback.html')),
-                                      ),
-                                      Text('\'s color: '),
-                                      ColorDisplayChip(IconThemeData.fallback().color!),
-                                    ],
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   // fill
                   Text('fill'),
