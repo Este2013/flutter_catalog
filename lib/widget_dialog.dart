@@ -152,11 +152,11 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
       spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (data.variantExplanation != null || data.themeGraph != null)
+        if (data.variantExplanation != null || data.themeExplanation != null)
           Row(
             children: [
               if (data.variantExplanation != null) Expanded(child: Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge)) else Spacer(),
-              if (data.themeGraph != null)
+              if (data.themeExplanation != null)
                 SegmentedButton<String?>(
                   showSelectedIcon: false,
                   segments: [
@@ -181,7 +181,7 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                 child: showedMode == null
                     ? data.widgetBuilder?.call(context, currentOptions) ?? Placeholder()
                     : showedMode == 'theme'
-                        ? data.themeGraph
+                        ? data.themeExplanation
                         : Placeholder(),
               ),
             ),

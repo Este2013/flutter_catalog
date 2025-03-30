@@ -459,7 +459,7 @@ class WidgetVariantData extends ChangeNotifier {
   final Widget Function(BuildContext, Map<String, dynamic>? options)? widgetBuilder;
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
 
-  final Widget? themeGraph;
+  final Widget? themeExplanation;
 
-  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder, this.variantExplanation, this.themeGraph});
+  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder, this.variantExplanation, this.themeExplanation});
 }
