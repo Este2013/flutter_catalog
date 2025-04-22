@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
+import 'material_actions_ui/icon_button_theme_data.dart';
+
 class ActionsPresentationPage extends StatelessWidget {
   const ActionsPresentationPage({
     super.key,
@@ -20,26 +22,78 @@ class ActionsPresentationPage extends StatelessWidget {
                 WidgetPresentation(
                   title: 'IconButton',
                   presentationWindowAlignment: Alignment.topRight,
+                  defaultOptionsBuilder: (currentOptions, submitNewOptions) => Column(
+                    spacing: 8,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(spacing: 8, children: [
+                        Text('isSelected:'),
+                        SegmentedButton(
+                          segments: [
+                            ButtonSegment(value: null, icon: Icon(Icons.block), tooltip: 'null'),
+                            ButtonSegment(value: true, icon: Icon(Icons.check), tooltip: 'true'),
+                            ButtonSegment(value: false, icon: Icon(Icons.close), tooltip: 'false'),
+                          ],
+                          selected: {currentOptions?['isSelected']},
+                          showSelectedIcon: false,
+                          onSelectionChanged: (p0) => submitNewOptions((currentOptions ?? {})..['isSelected'] = p0.first),
+                        ),
+                        Chip(avatar: Icon(Symbols.frame_person, fill: 1), label: Text('selectedIcon'))
+                      ]),
+                      FilterChip(
+                        avatar: Icon(Icons.chat),
+                        label: Text('Tooltip'),
+                        onSelected: (v) => submitNewOptions((currentOptions ?? {})..['tooltip'] = v ? 'Contact Edouart Charles the first' : null),
+                        selected: currentOptions?['tooltip'] != null,
+                        showCheckmark: false,
+                      )
+                    ],
+                  ),
                   variantsData: [
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0, _) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
+                      widgetBuilder: (p0, opt) => IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.person),
+                        isSelected: opt?['isSelected'],
+                        selectedIcon: Icon(Symbols.frame_person, fill: 1),
+                        tooltip: opt?['tooltip'],
+                      ),
+                      themeExplanation: IconButtonThemeExplanation(),
                     ),
                     WidgetVariantData(
                       'Filled',
                       iconBuilder: (p0) => IconButton.filled(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0, _) => IconButton.filled(onPressed: () {}, icon: Icon(Icons.person)),
+                      widgetBuilder: (p0, opt) => IconButton.filled(
+                        onPressed: () {},
+                        icon: Icon(Icons.person),
+                        isSelected: opt?['isSelected'],
+                        selectedIcon: Icon(Symbols.frame_person, fill: 1),
+                        tooltip: opt?['tooltip'],
+                      ),
                     ),
                     WidgetVariantData(
                       'Filled tonal',
                       iconBuilder: (p0) => IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0, _) => IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.person)),
+                      widgetBuilder: (p0, opt) => IconButton.filledTonal(
+                        onPressed: () {},
+                        icon: Icon(Icons.person),
+                        isSelected: opt?['isSelected'],
+                        selectedIcon: Icon(Symbols.frame_person, fill: 1),
+                        tooltip: opt?['tooltip'],
+                      ),
                     ),
                     WidgetVariantData(
                       'Outlined',
                       iconBuilder: (p0) => IconButton.outlined(onPressed: () {}, icon: Icon(Icons.person)),
-                      widgetBuilder: (p0, _) => IconButton.outlined(onPressed: () {}, icon: Icon(Icons.person)),
+                      widgetBuilder: (p0, opt) => IconButton.outlined(
+                        onPressed: () {},
+                        icon: Icon(Icons.person),
+                        isSelected: opt?['isSelected'],
+                        selectedIcon: Icon(Symbols.frame_person, fill: 1),
+                        tooltip: opt?['tooltip'],
+                      ),
                     ),
                   ],
                 ),

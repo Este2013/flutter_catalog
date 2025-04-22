@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'theme_explanations_utils.dart';
+import '../../theme_explanations_utils.dart';
 
 class IconThemeExplanation extends StatefulWidget {
   const IconThemeExplanation({
@@ -52,12 +52,12 @@ class _IconThemeExplanationState extends State<IconThemeExplanation> with Ticker
                   IconFillExplanation(),
                   // Size
                   IconSizeExplanation(),
-                  // TODO: adapt OpticalSize
-                  IconWeightExplanation(),
-                  // TODO: adapt Weight
-                  IconWeightExplanation(),
+                  // OpticalSize
+                  IconOpticalSizeExplanation(),
                   // Grade
                   IconWeightExplanation(),
+                  // Grade
+                  IconGradeExplanation(),
                   // Opacity
                   IconOpacityExplanation(),
                 ],
@@ -346,6 +346,70 @@ class IconSizeExplanation extends StatelessWidget {
   }
 }
 
+class IconOpticalSizeExplanation extends StatelessWidget {
+  const IconOpticalSizeExplanation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        spacing: 8,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("Optical size offers a way to automatically adjust the stroke weight as icon size changes."),
+          Divider(),
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
+              children: [
+                TextSpan(text: 'Use provided '),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: ActionChip(
+                    label: Text('optical size'),
+                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/opticalSize.html')),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
+              children: [
+                TextSpan(text: 'If not provided, use '),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: ActionChip(
+                    label: Text('IconTheme.of(context).opticalSize'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          InsetDisplay(
+            icon: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
+            content: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyMedium,
+                children: [
+                  TextSpan(text: 'Fallback optical size: '),
+                  WidgetSpan(
+                    child: Text(
+                      '${IconThemeData.fallback().opticalSize ?? "null"}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class IconWeightExplanation extends StatelessWidget {
   const IconWeightExplanation({super.key});
 
@@ -397,6 +461,70 @@ class IconWeightExplanation extends StatelessWidget {
                   WidgetSpan(
                     child: Text(
                       '${IconThemeData.fallback().weight ?? "null"}',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IconGradeExplanation extends StatelessWidget {
+  const IconGradeExplanation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        spacing: 8,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("Grade and weight both affect a symbol's stroke weight (thickness), but grade has a smaller impact on the size of the symbol."),
+          Divider(),
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
+              children: [
+                TextSpan(text: 'Use provided '),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: ActionChip(
+                    label: Text('grade'),
+                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/grade.html')),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
+              children: [
+                TextSpan(text: 'If not provided, use '),
+                WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
+                  child: ActionChip(
+                    label: Text('IconTheme.of(context).grade'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          InsetDisplay(
+            icon: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
+            content: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyMedium,
+                children: [
+                  TextSpan(text: 'Fallback grade: '),
+                  WidgetSpan(
+                    child: Text(
+                      '${IconThemeData.fallback().grade ?? "null"}',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),

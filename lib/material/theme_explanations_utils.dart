@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InsetDisplay extends StatefulWidget {
   const InsetDisplay({super.key, required this.icon, required this.content});
@@ -26,25 +27,23 @@ class _InsetDisplayState extends State<InsetDisplay> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(padding: const EdgeInsets.only(left: 16), child: widget.icon),
-        Flexible(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 1000),
-            child: Card(
-              color: countAncestorsOfSameType(context, InsetDisplay) % 2 == 0 ? Theme.of(context).colorScheme.surfaceContainer : Theme.of(context).colorScheme.surfaceContainerHigh,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: widget.content,
+  Widget build(BuildContext context) => Row(
+        children: [
+          Padding(padding: const EdgeInsets.only(left: 16), child: widget.icon),
+          Flexible(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 1000),
+              child: Card(
+                color: countAncestorsOfSameType(context, InsetDisplay) % 2 == 0 ? Theme.of(context).colorScheme.surfaceContainer : Theme.of(context).colorScheme.surfaceContainerHigh,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: widget.content,
+                ),
               ),
             ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 }
 
 class ColorDisplayChip extends StatelessWidget {
@@ -67,6 +66,19 @@ class ColorDisplayChip extends StatelessWidget {
           ),
         ),
         label: Text(color.toHex()),
+      );
+}
+
+class LinkChip extends StatelessWidget {
+  const LinkChip(this.title, {super.key, this.link});
+
+  final String title;
+  final String? link;
+
+  @override
+  Widget build(BuildContext context) => ActionChip(
+        label: Text(title),
+        onPressed: link != null ? () => launchUrl(Uri.parse(link!)) : null,
       );
 }
 

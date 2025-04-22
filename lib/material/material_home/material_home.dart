@@ -7,11 +7,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'actions.dart';
-import 'icons_page.dart';
-import 'layouts.dart';
+import '../material_actions/actions.dart';
+import '../icons_page.dart';
+import '../layouts.dart';
 import 'material_home_ui/icon_theme_data.dart';
-import 'state_actions.dart';
+import '../state_actions.dart';
 
 class MaterialApplicationBody extends StatefulWidget {
   const MaterialApplicationBody({

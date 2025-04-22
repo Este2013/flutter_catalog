@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/material_home.dart';
+import 'package:flutter_catalog/material/material_home/material_home.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
