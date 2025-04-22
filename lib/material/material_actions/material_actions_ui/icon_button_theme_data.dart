@@ -159,7 +159,19 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
   minWidth: kMinInteractiveDimension,
   minHeight: kMinInteractiveDimension,
 )""")),
-                        Text('Where kMinInteractiveDimension is $kMinInteractiveDimension, and then with visual density applied.'),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'Where '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('kMinInteractiveDimension', link: 'https://api.flutter.dev/flutter/material/kMinInteractiveDimension-constant.html'),
+                              ),
+                              TextSpan(text: ' is $kMinInteractiveDimension, and then with visual density applied.'),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
