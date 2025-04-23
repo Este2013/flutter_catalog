@@ -137,9 +137,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       spacing: 8,
                       children: [
-                        Text(
-                          "Optional size constraints for the button.",
-                        ),
+                        Text("Optional size constraints for the button."),
                         Divider(),
                         RichText(
                           text: TextSpan(
@@ -201,11 +199,210 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                     ),
                   ),
                   // Enable feedback
-                  Placeholder(),
-                  // TODO the rest here
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 8,
+                      children: [
+                        Text("Whether detected gestures should provide acoustic and/or haptic feedback."),
+                        Divider(),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'If '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('theme.useMaterial3 (${Theme.of(context).useMaterial3})', link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html'),
+                              ),
+                              TextSpan(text: ':'),
+                            ],
+                          ),
+                        ),
+                        InsetDisplay(
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            spacing: 8,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Use provided '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.enableFeedback')),
+                                  ],
+                                ),
+                              ),
+                              Text('If not provided:'),
+                              InsetDisplay(
+                                content: Column(
+                                  spacing: 8,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        children: [
+                                          TextSpan(text: 'Use provided '),
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        children: [
+                                          TextSpan(text: 'If not provided: use '),
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('IconButtonTheme.of(context).style.enableFeedback'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        children: [
+                                          TextSpan(text: 'If not provided: use '),
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('_IconButtonDefaultsM3.enableFeedback (true)'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text('Finally, in case something wrong happens, use true.'),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'Otherwise, use provided '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text('If not provided: use true.'),
+                      ],
+                    ),
+                  ),
+
                   // Icon size
-                  Placeholder(),
-                  // Mouse Cursor
+                  // TODO this is still a copy paste! Needs completion.
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 8,
+                      children: [
+                        Text("Whether detected gestures should provide acoustic and/or haptic feedback."),
+                        Divider(),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'If '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('theme.useMaterial3 (${Theme.of(context).useMaterial3})', link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html'),
+                              ),
+                              TextSpan(text: ':'),
+                            ],
+                          ),
+                        ),
+                        InsetDisplay(
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            spacing: 8,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Use provided '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.enableFeedback')),
+                                  ],
+                                ),
+                              ),
+                              Text('If not provided:'),
+                              InsetDisplay(
+                                content: Column(
+                                  spacing: 8,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        children: [
+                                          TextSpan(text: 'Use provided '),
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        children: [
+                                          TextSpan(text: 'If not provided: use '),
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('IconButtonTheme.of(context).style.enableFeedback'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.bodyMedium,
+                                        children: [
+                                          TextSpan(text: 'If not provided: use '),
+                                          WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('_IconButtonDefaultsM3.enableFeedback (true)'),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text('Finally, in case something wrong happens, use true.'),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'Otherwise, use provided '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text('If not provided: use true.'),
+                      ],
+                    ),
+                  ),
+
+                  // TODO the rest here
+                  //// Mouse Cursor
                   Placeholder(),
                   // Padding
                   Placeholder(),

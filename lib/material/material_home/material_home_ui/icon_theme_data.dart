@@ -88,30 +88,19 @@ class IconColorExplanation extends StatelessWidget {
               children: [
                 TextSpan(text: 'Use provided '),
                 WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: ActionChip(
-                      label: Text('Color'),
-                      onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/dart-ui/Color-class.html')),
-                    ))
+                  alignment: PlaceholderAlignment.middle,
+                  child: LinkChip('Color', link: 'https://api.flutter.dev/flutter/dart-ui/Color-class.html'),
+                )
               ],
             ),
           ),
           RichText(
             text: TextSpan(
               style: Theme.of(context).textTheme.bodyMedium,
-              children: [
-                TextSpan(text: 'If not provided, use '),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.middle,
-                  child: ActionChip(
-                    label: Text('IconTheme.of(context).color'),
-                  ),
-                )
-              ],
+              children: [TextSpan(text: 'If not provided, use '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('IconTheme.of(context).color'))],
             ),
           ),
           InsetDisplay(
-            icon: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 8,
@@ -121,19 +110,12 @@ class IconColorExplanation extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                     children: [
                       TextSpan(text: 'If '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: ActionChip(
-                          label: Text('IconTheme.of'),
-                          onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
-                        ),
-                      ),
+                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('IconTheme.of', link: 'https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
                       TextSpan(text: ' finds a surrounding IconTheme widget'),
                     ],
                   ),
                 ),
                 InsetDisplay(
-                  icon: Transform.rotate(angle: pi, child: Icon(Symbols.reply)),
                   content: RichText(
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -141,10 +123,7 @@ class IconColorExplanation extends StatelessWidget {
                         TextSpan(text: 'Use corresponding '),
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
-                          child: ActionChip(
-                            label: Text('IconThemeData'),
-                            onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData-class.html')),
-                          ),
+                          child: LinkChip('IconThemeData', link: 'https://api.flutter.dev/flutter/widgets/IconThemeData-class.html'),
                         ),
                         TextSpan(text: '\'s color'),
                       ],
@@ -159,11 +138,9 @@ class IconColorExplanation extends StatelessWidget {
                       children: [
                         TextSpan(text: 'In material apps, if there is a '),
                         WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: ActionChip(
-                              label: Text('Theme'),
-                              onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/material/Theme-class.html')),
-                            )),
+                          alignment: PlaceholderAlignment.middle,
+                          child: LinkChip('Theme', link: 'https://api.flutter.dev/flutter/material/Theme-class.html'),
+                        ),
                         TextSpan(text: ' without any IconThemes specified, icon colors default to:\n - '),
                         WidgetSpan(alignment: PlaceholderAlignment.middle, child: ColorDisplayChip(Colors.black)),
                         TextSpan(text: ' if ThemeData.brightness is light;\n - '),
@@ -178,10 +155,7 @@ class IconColorExplanation extends StatelessWidget {
                     TextSpan(text: 'Otherwise, use '),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
-                      child: ActionChip(
-                        label: Text('IconThemeData.fallback()'),
-                        onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData/IconThemeData.fallback.html')),
-                      ),
+                      child: LinkChip('IconThemeData.fallback()', link: 'https://api.flutter.dev/flutter/widgets/IconThemeData/IconThemeData.fallback.html'),
                     ),
                     TextSpan(text: '\'s color: '),
                     WidgetSpan(alignment: PlaceholderAlignment.middle, child: ColorDisplayChip(IconThemeData.fallback().color!)),
@@ -216,11 +190,9 @@ class IconFillExplanation extends StatelessWidget {
               children: [
                 TextSpan(text: 'Use provided '),
                 WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: ActionChip(
-                      label: Text('fill'),
-                      onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/fill.html')),
-                    ))
+                  alignment: PlaceholderAlignment.middle,
+                  child: LinkChip('fill', link: 'https://api.flutter.dev/flutter/widgets/Icon/fill.html'),
+                )
               ],
             ),
           ),
@@ -247,18 +219,12 @@ class IconFillExplanation extends StatelessWidget {
                   TextSpan(text: 'If '),
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
-                    child: ActionChip(
-                      label: Text('IconTheme.of'),
-                      onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconTheme/of.html')),
-                    ),
+                    child: LinkChip('IconTheme.of', link: 'https://api.flutter.dev/flutter/widgets/IconTheme/of.html'),
                   ),
                   TextSpan(text: ' finds a surrounding IconTheme widget, it uses the corresponding '),
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
-                    child: ActionChip(
-                      label: Text('IconThemeData.fill'),
-                      onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData/fill.html')),
-                    ),
+                    child: LinkChip('IconThemeData.fill', link: 'https://api.flutter.dev/flutter/widgets/IconThemeData/fill.html'),
                   ),
                   TextSpan(
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -301,10 +267,7 @@ class IconSizeExplanation extends StatelessWidget {
                 TextSpan(text: 'Use provided '),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: ActionChip(
-                    label: Text('size'),
-                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/size.html')),
-                  ),
+                  child: LinkChip('size', link: 'https://api.flutter.dev/flutter/widgets/Icon/size.html'),
                 ),
               ],
             ),
@@ -365,10 +328,7 @@ class IconOpticalSizeExplanation extends StatelessWidget {
                 TextSpan(text: 'Use provided '),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: ActionChip(
-                    label: Text('optical size'),
-                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/opticalSize.html')),
-                  ),
+                  child: LinkChip('optical size', link: 'https://api.flutter.dev/flutter/widgets/Icon/opticalSize.html'),
                 ),
               ],
             ),
@@ -429,10 +389,7 @@ class IconWeightExplanation extends StatelessWidget {
                 TextSpan(text: 'Use provided '),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: ActionChip(
-                    label: Text('weight'),
-                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/weight.html')),
-                  ),
+                  child: LinkChip('weight', link: 'https://api.flutter.dev/flutter/widgets/Icon/weight.html'),
                 ),
               ],
             ),
@@ -493,10 +450,7 @@ class IconGradeExplanation extends StatelessWidget {
                 TextSpan(text: 'Use provided '),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: ActionChip(
-                    label: Text('grade'),
-                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/Icon/grade.html')),
-                  ),
+                  child: LinkChip('grade', link: 'https://api.flutter.dev/flutter/widgets/Icon/grade.html'),
                 ),
               ],
             ),
@@ -559,10 +513,7 @@ class IconOpacityExplanation extends StatelessWidget {
                 TextSpan(text: 'Icon color is modified by '),
                 WidgetSpan(
                   alignment: PlaceholderAlignment.middle,
-                  child: ActionChip(
-                    label: Text('IconThemeData.opacity'),
-                    onPressed: () => launchUrl(Uri.parse('https://api.flutter.dev/flutter/widgets/IconThemeData/opacity.html')),
-                  ),
+                  child: LinkChip('IconThemeData.opacity', link: 'https://api.flutter.dev/flutter/widgets/IconThemeData/opacity.html'),
                 ),
               ],
             ),

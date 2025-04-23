@@ -72,6 +72,7 @@ class ActionsPresentationPage extends StatelessWidget {
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
                       ),
+                      docsLink: "https://api.flutter.dev/flutter/material/IconButton/IconButton.filled.html",
                     ),
                     WidgetVariantData(
                       'Filled tonal',
@@ -83,6 +84,7 @@ class ActionsPresentationPage extends StatelessWidget {
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
                       ),
+                      docsLink: "https://api.flutter.dev/flutter/material/IconButton/IconButton.filledTonal.html",
                     ),
                     WidgetVariantData(
                       'Outlined',
@@ -94,8 +96,10 @@ class ActionsPresentationPage extends StatelessWidget {
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
                       ),
+                      docsLink: "https://api.flutter.dev/flutter/material/IconButton/IconButton.outlined.html",
                     ),
                   ],
+                  link: 'https://api.flutter.dev/flutter/material/IconButton-class.html',
                 ),
                 WidgetPresentation(
                   title: 'TextButton',

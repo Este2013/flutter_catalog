@@ -1,10 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InsetDisplay extends StatefulWidget {
-  const InsetDisplay({super.key, required this.icon, required this.content});
+  const InsetDisplay({super.key, this.icon, this.content});
 
-  final Widget icon, content;
+  final Widget? icon, content;
 
   @override
   State<InsetDisplay> createState() => _InsetDisplayState();
@@ -29,7 +32,7 @@ class _InsetDisplayState extends State<InsetDisplay> {
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          Padding(padding: const EdgeInsets.only(left: 16), child: widget.icon),
+          Padding(padding: const EdgeInsets.only(left: 16), child: widget.icon ?? Transform.rotate(angle: pi, child: Icon(Symbols.reply))),
           Flexible(
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 1000),
@@ -37,7 +40,7 @@ class _InsetDisplayState extends State<InsetDisplay> {
                 color: countAncestorsOfSameType(context, InsetDisplay) % 2 == 0 ? Theme.of(context).colorScheme.surfaceContainer : Theme.of(context).colorScheme.surfaceContainerHigh,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: widget.content,
+                  child: widget.content ?? Placeholder(),
                 ),
               ),
             ),

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:html/parser.dart' show parse;
+import 'package:http/http.dart' as http;
 import 'main.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class WidgetPresentationDialog extends StatefulWidget {
   const WidgetPresentationDialog(this.mainVariantName, {super.key, required this.variantsData, this.link, this.defaultIconBuilder, this.defaultOptionsBuilder});
@@ -98,6 +101,7 @@ class _WidgetPresentationDialogState extends State<WidgetPresentationDialog> {
                   variantsData: widget.variantsData,
                   selected: selected,
                   optionsBuilder: selectedVariant.optionsBuilder ?? widget.defaultOptionsBuilder,
+                  docsLink: widget.link,
                 ),
               )
             ],
@@ -118,12 +122,14 @@ class DialogPresentationSection extends StatefulWidget {
     required this.variantsData,
     required this.selected,
     required this.optionsBuilder,
+    this.docsLink,
   });
 
   final String mainVariantName;
   final List<WidgetVariantData> variantsData;
   final String selected;
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
+  final String? docsLink;
 
   @override
   State<DialogPresentationSection> createState() => _DialogPresentationSectionState();
@@ -152,16 +158,17 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
       spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (data.variantExplanation != null || data.themeExplanation != null)
+        if (data.variantExplanation != null || data.themeExplanation != null || data.docsLink != null || widget.docsLink != null)
           Row(
             children: [
               if (data.variantExplanation != null) Expanded(child: Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge)) else Spacer(),
-              if (data.themeExplanation != null)
+              if (data.themeExplanation != null || data.docsLink != null || widget.docsLink != null)
                 SegmentedButton<String?>(
                   showSelectedIcon: false,
                   segments: [
                     ButtonSegment(value: null, icon: Icon(Symbols.code_blocks, fill: 1), tooltip: 'Demo'),
-                    ButtonSegment(value: 'theme', icon: Icon(Icons.color_lens), tooltip: 'Theme'),
+                    if (data.themeExplanation != null) ButtonSegment(value: 'theme', icon: Icon(Icons.color_lens), tooltip: 'Theme'),
+                    if (data.docsLink != null || widget.docsLink != null) ButtonSegment(value: 'docs', icon: Icon(Symbols.book_2, fill: 1), tooltip: 'Documentation'),
                   ],
                   selected: {showedMode},
                   onSelectionChanged: (v) => setState(() => showedMode = v.first),
@@ -182,18 +189,107 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                     ? data.widgetBuilder?.call(context, currentOptions) ?? Placeholder()
                     : showedMode == 'theme'
                         ? data.themeExplanation
-                        : Placeholder(),
+                        : showedMode == 'docs'
+                            ? DocsDisplayer(data.docsLink ?? widget.docsLink!)
+                            : Placeholder(),
               ),
             ),
           ),
         ),
-        if (showOptions) Divider(),
-        if (showOptions)
+        if (showOptions && showedMode == null) ...[
+          Divider(),
           Padding(
             padding: EdgeInsets.all(8),
             child: widget.optionsBuilder?.call(currentOptions, (options) => setState(() => currentOptions = options)) ?? Placeholder(),
-          ),
+          )
+        ],
       ],
     );
   }
+}
+
+class DocsDisplayer extends StatelessWidget {
+  const DocsDisplayer(this.url, {super.key});
+
+  final String url;
+
+  Future<String> _fetchApiPage(String url) async {
+    final resp = await http.get(Uri.parse(url));
+    if (resp.statusCode != 200) {
+      throw Exception('Failed to load documentation');
+    }
+    return resp.body;
+  }
+
+  dynamic _extractDocComment(String htmlSource) {
+    final document = parse(htmlSource);
+
+    // Look specifically for the 'desc markdown' section
+    final descSection = document.querySelector('.desc.markdown');
+
+    // Return its text (or an empty string if not found)
+    return descSection?.innerHtml.trim(); //?.text.trim() ?? '';
+  }
+
+  Future<dynamic> _fetchAndParseDoc(String apiDocUrl) async {
+    final html = await _fetchApiPage(apiDocUrl);
+    return _extractDocComment(html);
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Documentation'),
+          automaticallyImplyLeading: false,
+        ),
+        body: FutureBuilder(
+          future: _fetchAndParseDoc(url),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) return ErrorWidget(snapshot.error!);
+            if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: SingleChildScrollView(
+                child: Html(
+                  data: snapshot.data!.toString(),
+                  // you can customize link tap behavior, styling, etc.
+                  onLinkTap: (href, _, __) {
+                    if (href == null) return;
+                    if (!href.startsWith('https://api.flutter.dev/flutter/')) href = 'https://api.flutter.dev/flutter/' + href;
+                    launchUrl(Uri.parse(href));
+                  },
+                  style: {
+                    // override any tags if you like
+                    "code": Style(
+                      backgroundColor: Colors.grey.shade200,
+                      padding: HtmlPaddings.all(4),
+                    ),
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+      );
+
+  // @override
+  // Widget build(BuildContext context) => Scaffold(
+  //       appBar: AppBar(
+  //         title: Text('Documentation'),
+  //         automaticallyImplyLeading: false,
+  //       ),
+  //       body: FutureBuilder(
+  //         future: _fetchAndParseDoc(url),
+  //         builder: (context, snapshot) {
+  //           if (snapshot.hasError) return ErrorWidget(snapshot.error!);
+  //           if (snapshot.hasData)
+  //             return Padding(
+  //               padding: const EdgeInsets.symmetric(horizontal: 32.0),
+  //               child: SingleChildScrollView(child: Text(snapshot.data!)),
+  //             );
+  //           return Center(child: CircularProgressIndicator());
+  //         },
+  //       ),
+  //     );
 }
