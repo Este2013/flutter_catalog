@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -146,7 +144,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                               TextSpan(text: 'Use provided '),
                               WidgetSpan(
                                 alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('autofocus', link: 'https://api.flutter.dev/flutter/material/IconButton/autofocus.html'),
+                                child: LinkChip('constraints', link: 'https://api.flutter.dev/flutter/material/IconButton/constraints.html'),
                               ),
                               TextSpan(text: ';'),
                             ],
@@ -198,6 +196,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                       ]),
                     ),
                   ),
+
                   // Enable feedback
                   SingleChildScrollView(
                     child: Column(
@@ -300,7 +299,6 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                   ),
 
                   // Icon size
-                  // TODO this is still a copy paste! Needs completion.
                   SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -331,7 +329,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                                   style: Theme.of(context).textTheme.bodyMedium,
                                   children: [
                                     TextSpan(text: 'Use provided '),
-                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.enableFeedback')),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.iconSize')),
                                   ],
                                 ),
                               ),
@@ -348,7 +346,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                                           TextSpan(text: 'Use provided '),
                                           WidgetSpan(
                                             alignment: PlaceholderAlignment.middle,
-                                            child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                                            child: LinkChip('iconSize', link: 'https://api.flutter.dev/flutter/material/IconButton/iconSize.html'),
                                           ),
                                         ],
                                       ),
@@ -360,7 +358,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                                           TextSpan(text: 'If not provided: use '),
                                           WidgetSpan(
                                             alignment: PlaceholderAlignment.middle,
-                                            child: LinkChip('IconButtonTheme.of(context).style.enableFeedback'),
+                                            child: LinkChip('IconButtonTheme.of(context).style.iconSize'),
                                           ),
                                         ],
                                       ),
@@ -372,12 +370,12 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                                           TextSpan(text: 'If not provided: use '),
                                           WidgetSpan(
                                             alignment: PlaceholderAlignment.middle,
-                                            child: LinkChip('_IconButtonDefaultsM3.enableFeedback (true)'),
+                                            child: LinkChip('_IconButtonDefaultsM3.iconSize (24)'),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Text('Finally, in case something wrong happens, use true.'),
+                                    Text('Finally, in case something wrong happens, use 24.'),
                                   ],
                                 ),
                               )
@@ -391,12 +389,24 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                               TextSpan(text: 'Otherwise, use provided '),
                               WidgetSpan(
                                 alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                                child: LinkChip('iconSize', link: 'https://api.flutter.dev/flutter/material/IconButton/iconSize.html'),
                               ),
                             ],
                           ),
                         ),
-                        Text('If not provided: use true.'),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'If not provided, use '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('IconTheme.of(context).size'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text('Otherwise, use 24.'),
                       ],
                     ),
                   ),
