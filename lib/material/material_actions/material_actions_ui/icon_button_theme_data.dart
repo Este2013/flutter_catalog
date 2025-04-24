@@ -284,6 +284,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                             ],
                           ),
 
+                          // focusColor
                           PropertyExplanationView(
                             'focusColor',
                             shortExplanation: 'The color for the button when it has the input focus.',
@@ -344,9 +345,135 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                               ),
                             ],
                           ),
-                          // TODO
-                          Placeholder(),
-                          Placeholder(),
+
+                          // highlightColor
+                          PropertyExplanationView(
+                            'highlightColor',
+                            shortExplanation: 'Color of the button when in the down (pressed) state.',
+                            docsLink: 'https://api.flutter.dev/flutter/material/IconButton/highlightColor.html',
+                            children: [
+                              ThemeUsesMaterial3ConditionStatement(),
+                              InsetDisplayColumn(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Use provided '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.highlightColor')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'If not provided, use given '),
+                                        WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle, child: LinkChip('highlightColor', link: 'https://api.flutter.dev/flutter/material/IconButton/highlightColor.html')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Otherwise, default to '),
+                                        WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('ThemeData.highlightColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/highlightColor.html')),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'If not provided, use given '),
+                                    WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle, child: LinkChip('highlightColor', link: 'https://api.flutter.dev/flutter/material/IconButton/highlightColor.html')),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Otherwise, default to '),
+                                    WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: LinkChip('ThemeData.highlightColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/highlightColor.html')),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // hoverColor
+                          PropertyExplanationView(
+                            'hoverColor',
+                            shortExplanation: 'Color of the button when a pointer is hovering it.',
+                            docsLink: 'https://api.flutter.dev/flutter/material/IconButton/hoverColor.html',
+                            children: [
+                              ThemeUsesMaterial3ConditionStatement(),
+                              InsetDisplayColumn(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Use provided '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.hoverColor')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'If not provided, use given '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('hoverColor', link: 'https://api.flutter.dev/flutter/material/IconButton/hoverColor.html')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Otherwise, default to '),
+                                        WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('ThemeData.hoverColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/hoverColor.html')),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'If not provided, use given '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('hoverColor', link: 'https://api.flutter.dev/flutter/material/IconButton/hoverColor.html')),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Otherwise, default to '),
+                                    WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle, child: LinkChip('ThemeData.hoverColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/hoverColor.html')),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // splashColor
                           PropertyExplanationView(
                             'splashColor',
                             onlyUsedWithMaterial3Warning: true,
@@ -616,7 +743,6 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                   ),
 
                   // Visual density
-
                   PropertyExplanationView(
                     'visualDensity',
                     shortExplanation: "Defines how compact the icon button's layout will be.",
