@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/material/material_actions/material_actions_ui/icon_button_theme_data.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -105,12 +106,14 @@ class LinkChip extends StatelessWidget {
 }
 
 class PropertyExplanationView extends StatefulWidget {
-  const PropertyExplanationView(this.propertyName, {super.key, this.child, this.children, this.shortExplanation, this.docsLink}) : assert((child != null) ^ (children != null));
+  const PropertyExplanationView(this.propertyName, {super.key, this.child, this.children, this.shortExplanation, this.docsLink, this.onlyUsedWithMaterial3Warning = false})
+      : assert((child != null) ^ (children != null));
 
   final String propertyName;
   final String? shortExplanation, docsLink;
   final List<Widget>? children;
   final Widget? child;
+  final bool onlyUsedWithMaterial3Warning;
 
   @override
   State<PropertyExplanationView> createState() => PropertyExplanationStateView();
@@ -122,8 +125,17 @@ class PropertyExplanationStateView extends State<PropertyExplanationView> {
   @override
   Widget build(BuildContext context) {
     Widget header = Row(
+      spacing: 16,
       children: [
-        Expanded(child: Text(widget.shortExplanation ?? 'missing preview')),
+        Expanded(
+            child: Column(
+          spacing: 8,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (widget.shortExplanation != null) Text(widget.shortExplanation!),
+            if (widget.onlyUsedWithMaterial3Warning) OnlyUsedWithMaterial3Warning(),
+          ],
+        )),
         SegmentedButton(
           segments: [
             ButtonSegment(value: false, icon: Icon(Symbols.conversion_path), tooltip: 'Property evaluation'),
@@ -138,7 +150,6 @@ class PropertyExplanationStateView extends State<PropertyExplanationView> {
     if (showDocsPage) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 8,
         children: [
           header,
           Divider(),
@@ -148,7 +159,6 @@ class PropertyExplanationStateView extends State<PropertyExplanationView> {
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 8,
       children: [
         if (widget.shortExplanation != null || widget.docsLink != null) header,
         Divider(),
@@ -158,11 +168,14 @@ class PropertyExplanationStateView extends State<PropertyExplanationView> {
               title: Text('${widget.propertyName} Evaluation'),
               automaticallyImplyLeading: false,
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: 8,
-                children: [...?widget.children, if (widget.child != null) widget.child!],
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 8,
+                  children: [...?widget.children, if (widget.child != null) widget.child!],
+                ),
               ),
             ),
           ),
@@ -188,4 +201,29 @@ extension HexColor on Color {
           '${(g * 255).floor().toRadixString(16).padLeft(2, '0')}'
           '${(b * 255).floor().toRadixString(16).padLeft(2, '0')}'
       .toUpperCase();
+}
+
+class OnlyUsedWithMaterial3Warning extends StatelessWidget {
+  const OnlyUsedWithMaterial3Warning({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.bodyMedium,
+          children: [
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Icon(Icons.warning_rounded, color: Theme.of(context).colorScheme.error),
+            ),
+            TextSpan(text: ' Is only in use if '),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: LinkChip('theme.useMaterial3 (${Theme.of(context).useMaterial3})', link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html'),
+            ),
+            TextSpan(text: ' is false.'),
+          ],
+        ),
+      );
 }

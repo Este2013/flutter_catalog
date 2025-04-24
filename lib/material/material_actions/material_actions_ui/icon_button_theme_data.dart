@@ -52,124 +52,111 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                 controller: tabController,
                 children: [
                   // Alignment
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text(
-                          "The alignment, once evaluated, positions the icon within the IconButton's padded area.",
+                  PropertyExplanationView(
+                    'alignment',
+                    shortExplanation: "Positions the icon within the IconButton's padded area.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/alignment.html',
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('alignment', link: 'https://api.flutter.dev/flutter/material/IconButton/alignment.html'),
+                            ),
+                            TextSpan(text: ';'),
+                          ],
                         ),
-                        Divider(),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('alignment', link: 'https://api.flutter.dev/flutter/material/IconButton/alignment.html'),
-                              ),
-                              TextSpan(text: ';'),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'If not provided, use '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: ActionChip(
-                                  label: Text('Alignment.center'),
-                                  onPressed: () => launchUrl(
-                                    Uri.parse('https://api.flutter.dev/flutter/painting/Alignment/center-constant.html'),
-                                  ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'If not provided, use '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: ActionChip(
+                                label: Text('Alignment.center'),
+                                onPressed: () => launchUrl(
+                                  Uri.parse('https://api.flutter.dev/flutter/painting/Alignment/center-constant.html'),
                                 ),
                               ),
-                              TextSpan(text: '.'),
-                            ],
-                          ),
+                            ),
+                            TextSpan(text: '.'),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
 
                   // Autofocus
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text(
-                          "True if this widget will be selected as the initial focus when no other node in its scope is currently focused.",
+                  PropertyExplanationView(
+                    'autofocus',
+                    shortExplanation: "True if this widget will be selected as the initial focus when no other node in its scope is currently focused.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/autofocus.html',
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('autofocus', link: 'https://api.flutter.dev/flutter/material/IconButton/autofocus.html'),
+                            ),
+                            TextSpan(text: ';'),
+                          ],
                         ),
-                        Divider(),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('autofocus', link: 'https://api.flutter.dev/flutter/material/IconButton/autofocus.html'),
-                              ),
-                              TextSpan(text: ';'),
-                            ],
-                          ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [TextSpan(text: 'If not provided, defaults to false.')],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [TextSpan(text: 'If not provided, defaults to false.')],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
 
                   // Constraints
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text("Optional size constraints for the button."),
-                        Divider(),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('constraints', link: 'https://api.flutter.dev/flutter/material/IconButton/constraints.html'),
-                              ),
-                              TextSpan(text: ';'),
-                            ],
-                          ),
+                  PropertyExplanationView(
+                    'constraints',
+                    shortExplanation: "Optional size constraints for the button.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/constraints.html',
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('constraints', link: 'https://api.flutter.dev/flutter/material/IconButton/constraints.html'),
+                            ),
+                            TextSpan(text: ';'),
+                          ],
                         ),
-                        Text('If not provided, defaults to:'),
-                        InsetDisplay(icon: Icon(Icons.code), content: Text("""const BoxConstraints(
+                      ),
+                      Text('If not provided, defaults to:'),
+                      InsetDisplay(icon: Icon(Icons.code), content: Text("""const BoxConstraints(
   minWidth: kMinInteractiveDimension,
   minHeight: kMinInteractiveDimension,
 )""")),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Where '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('kMinInteractiveDimension', link: 'https://api.flutter.dev/flutter/material/kMinInteractiveDimension-constant.html'),
-                              ),
-                              TextSpan(text: ' is $kMinInteractiveDimension, and then with visual density applied.'),
-                            ],
-                          ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Where '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('kMinInteractiveDimension', link: 'https://api.flutter.dev/flutter/material/kMinInteractiveDimension-constant.html'),
+                            ),
+                            TextSpan(text: ' is $kMinInteractiveDimension, and then with visual density applied.'),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
 
                   // Colors
@@ -190,116 +177,111 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                         padding: const EdgeInsets.all(8.0),
                         child: TabBarView(children: [
                           // color
-                          SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              spacing: 8,
-                              children: [
-                                Text("The color to use for the icon inside the button, if the icon is enabled."),
-                                Divider(),
-                                ThemeUsesMaterial3ConditionStatement(),
-                                InsetDisplayColumn(
+                          PropertyExplanationView(
+                            'color',
+                            shortExplanation: "The color to use for the icon inside the button, if the icon is enabled.",
+                            docsLink: 'https://api.flutter.dev/flutter/material/IconButton/color.html',
+                            children: [
+                              ThemeUsesMaterial3ConditionStatement(),
+                              InsetDisplayColumn(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Use provided '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.foregroundColor')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'If not provided, use given '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('color', link: 'https://api.flutter.dev/flutter/material/IconButton/color.html')),
+                                      ],
+                                    ),
+                                  ),
+                                  Text('Otherwise, Icon widget will decide.'),
+                                ],
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                   children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                        children: [
-                                          TextSpan(text: 'Use provided '),
-                                          WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.foregroundColor')),
-                                        ],
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                        children: [
-                                          TextSpan(text: 'If not provided, use given '),
-                                          WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('color', link: 'https://api.flutter.dev/flutter/material/IconButton/color.html')),
-                                        ],
-                                      ),
-                                    ),
-                                    Text('Otherwise, Icon widget will decide.'),
+                                    TextSpan(text: 'If not provided, use given '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('color', link: 'https://api.flutter.dev/flutter/material/IconButton/color.html')),
                                   ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'If not provided, use given '),
-                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('color', link: 'https://api.flutter.dev/flutter/material/IconButton/color.html')),
-                                    ],
-                                  ),
-                                ),
-                                Text('Otherwise, Icon widget will decide.'),
-                              ],
-                            ),
+                              ),
+                              Text('Otherwise, Icon widget will decide.'),
+                            ],
                           ),
+
                           // disabledColor
-                          SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              spacing: 8,
-                              children: [
-                                Text("The color to use for the icon inside the button, if the icon is disabled."),
-                                Divider(),
-                                ThemeUsesMaterial3ConditionStatement(),
-                                InsetDisplayColumn(
+                          PropertyExplanationView(
+                            'disabledColor',
+                            shortExplanation: "The color to use for the icon inside the button, if the icon is disabled.",
+                            docsLink: 'https://api.flutter.dev/flutter/material/IconButton/disabledColor.html',
+                            children: [
+                              ThemeUsesMaterial3ConditionStatement(),
+                              InsetDisplayColumn(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Use provided '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.disabledForegroundColor')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'If not provided, use given '),
+                                        WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle, child: LinkChip('disabledColor', link: 'https://api.flutter.dev/flutter/material/IconButton/disabledColor.html')),
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Otherwise, default to '),
+                                        WidgetSpan(
+                                            alignment: PlaceholderAlignment.middle,
+                                            child: LinkChip('ThemeData.disabledColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/disabledColor.html')),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                   children: [
-                                    RichText(
-                                      text: TextSpan(
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                        children: [
-                                          TextSpan(text: 'Use provided '),
-                                          WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('style.disabledForegroundColor')),
-                                        ],
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                        children: [
-                                          TextSpan(text: 'If not provided, use given '),
-                                          WidgetSpan(
-                                              alignment: PlaceholderAlignment.middle, child: LinkChip('disabledColor', link: 'https://api.flutter.dev/flutter/material/IconButton/disabledColor.html')),
-                                        ],
-                                      ),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        style: Theme.of(context).textTheme.bodyMedium,
-                                        children: [
-                                          TextSpan(text: 'Otherwise, default to '),
-                                          WidgetSpan(
-                                              alignment: PlaceholderAlignment.middle,
-                                              child: LinkChip('ThemeData.disabledColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/disabledColor.html')),
-                                        ],
-                                      ),
-                                    ),
+                                    TextSpan(text: 'Else, use given '),
+                                    WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle, child: LinkChip('disabledColor', link: 'https://api.flutter.dev/flutter/material/IconButton/disabledColor.html')),
                                   ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'Else, use given '),
-                                      WidgetSpan(
-                                          alignment: PlaceholderAlignment.middle, child: LinkChip('disabledColor', link: 'https://api.flutter.dev/flutter/material/IconButton/disabledColor.html')),
-                                    ],
-                                  ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Otherwise, default to '),
+                                    WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: LinkChip('ThemeData.disabledColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/disabledColor.html')),
+                                  ],
                                 ),
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'Otherwise, default to '),
-                                      WidgetSpan(
-                                          alignment: PlaceholderAlignment.middle,
-                                          child: LinkChip('ThemeData.disabledColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/disabledColor.html')),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
 
                           PropertyExplanationView(
@@ -362,62 +344,60 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                               ),
                             ],
                           ),
+                          // TODO
                           Placeholder(),
                           Placeholder(),
-                          SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              spacing: 8,
-                              children: [
-                                OnlyUsedWithMaterial3Warning(),
-                                Divider(),
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'Use provided '),
-                                      WidgetSpan(
-                                        alignment: PlaceholderAlignment.middle,
-                                        child: LinkChip('splashColor', link: 'https://api.flutter.dev/flutter/material/IconButton/splashColor.html'),
-                                      ),
-                                      TextSpan(text: ';'),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'If not provided, use '),
-                                      WidgetSpan(
-                                        alignment: PlaceholderAlignment.middle,
-                                        child: LinkChip('Theme.of(context).splashColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/splashColor.html'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                InsetDisplay(
-                                  content: RichText(
-                                    text: TextSpan(
-                                      style: Theme.of(context).textTheme.bodyMedium,
-                                      children: [
-                                        TextSpan(text: 'Defaults to '),
-                                        WidgetSpan(
-                                          alignment: PlaceholderAlignment.middle,
-                                          child: ColorDisplayChip(Color(0x40CCCCCC)),
-                                        ),
-                                        TextSpan(text: ' in dark theme, and '),
-                                        WidgetSpan(
-                                          alignment: PlaceholderAlignment.middle,
-                                          child: ColorDisplayChip(Color(0x66C8C8C8)),
-                                        ),
-                                        TextSpan(text: ' in light theme.'),
-                                      ],
+                          PropertyExplanationView(
+                            'splashColor',
+                            onlyUsedWithMaterial3Warning: true,
+                            docsLink: 'https://api.flutter.dev/flutter/material/IconButton/splashColor.html',
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Use provided '),
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: LinkChip('splashColor', link: 'https://api.flutter.dev/flutter/material/IconButton/splashColor.html'),
                                     ),
+                                    TextSpan(text: ';'),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'If not provided, use '),
+                                    WidgetSpan(
+                                      alignment: PlaceholderAlignment.middle,
+                                      child: LinkChip('Theme.of(context).splashColor', link: 'https://api.flutter.dev/flutter/material/ThemeData/splashColor.html'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              InsetDisplay(
+                                content: RichText(
+                                  text: TextSpan(
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    children: [
+                                      TextSpan(text: 'Defaults to '),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: ColorDisplayChip(Color(0x40CCCCCC)),
+                                      ),
+                                      TextSpan(text: ' in dark theme, and '),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: ColorDisplayChip(Color(0x66C8C8C8)),
+                                      ),
+                                      TextSpan(text: ' in light theme.'),
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                              )
+                            ],
                           ),
                         ]),
                       ),
@@ -425,127 +405,77 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                   ),
 
                   // Enable feedback
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text("Whether detected gestures should provide acoustic and/or haptic feedback."),
-                        Divider(),
-                        ThemeUsesMaterial3ConditionStatement(),
-                        ButtonStyleButtonPropertyExplanation(propertyName: 'enableFeedback', defaultsM3Value: 'true', finalDefault: 'true'),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Otherwise, use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
-                              ),
-                            ],
-                          ),
+                  PropertyExplanationView(
+                    'enableFeedback',
+                    shortExplanation: "Whether detected gestures should provide acoustic and/or haptic feedback.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html',
+                    children: [
+                      ThemeUsesMaterial3ConditionStatement(),
+                      ButtonStyleButtonPropertyExplanation(propertyName: 'enableFeedback', defaultsM3Value: 'true', finalDefault: 'true'),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Otherwise, use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('enableFeedback', link: 'https://api.flutter.dev/flutter/material/IconButton/enableFeedback.html'),
+                            ),
+                          ],
                         ),
-                        Text('If not provided: use true.'),
-                      ],
-                    ),
+                      ),
+                      Text('If not provided: use true.'),
+                    ],
                   ),
 
                   // Icon size
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text("Whether detected gestures should provide acoustic and/or haptic feedback."),
-                        Divider(),
-                        ThemeUsesMaterial3ConditionStatement(),
-                        ButtonStyleButtonPropertyExplanation(
-                          propertyName: 'iconSize',
-                          defaultsM3Value: '24.0',
-                          finalDefault: '24.0',
+                  PropertyExplanationView(
+                    'iconSize',
+                    shortExplanation: "The size of the icon inside the button.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/iconSize.html',
+                    children: [
+                      ThemeUsesMaterial3ConditionStatement(),
+                      ButtonStyleButtonPropertyExplanation(
+                        propertyName: 'iconSize',
+                        defaultsM3Value: '24.0',
+                        finalDefault: '24.0',
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Otherwise, use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('iconSize', link: 'https://api.flutter.dev/flutter/material/IconButton/iconSize.html'),
+                            ),
+                          ],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Otherwise, use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('iconSize', link: 'https://api.flutter.dev/flutter/material/IconButton/iconSize.html'),
-                              ),
-                            ],
-                          ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'If not provided, use '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('IconTheme.of(context).size'),
+                            ),
+                          ],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'If not provided, use '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('IconTheme.of(context).size'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text('Otherwise, use 24.'),
-                      ],
-                    ),
+                      ),
+                      Text('Otherwise, use 24.'),
+                    ],
                   ),
 
                   // Mouse Cursor
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text("The cursor for a mouse pointer when it enters or is hovering over the button."),
-                        Divider(),
-                        ThemeUsesMaterial3ConditionStatement(),
-                        ButtonStyleButtonPropertyExplanation(propertyName: 'mouseCursor', defaultM3ValueWidgets: [
-                          InsetDisplay(
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 8,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'If widget has state '),
-                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('MaterialState.disabled')),
-                                      TextSpan(text: ', use '),
-                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.basic')),
-                                    ],
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                    children: [
-                                      TextSpan(text: 'Otherwise, use '),
-                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.click')),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ]),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Otherwise, use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('mouseCursor', link: 'https://api.flutter.dev/flutter/material/IconButton/mouseCursor.html'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text('If not provided, use:'),
+                  PropertyExplanationView(
+                    'mouseCursor',
+                    shortExplanation: "The cursor for a mouse pointer when it enters or is hovering over the button.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/mouseCursor.html',
+                    children: [
+                      ThemeUsesMaterial3ConditionStatement(),
+                      ButtonStyleButtonPropertyExplanation(propertyName: 'mouseCursor', defaultM3ValueWidgets: [
                         InsetDisplay(
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,7 +485,9 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                                 text: TextSpan(
                                   style: Theme.of(context).textTheme.bodyMedium,
                                   children: [
-                                    TextSpan(text: 'If onPressed is null: '),
+                                    TextSpan(text: 'If widget has state '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('MaterialState.disabled')),
+                                    TextSpan(text: ', use '),
                                     WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.basic')),
                                   ],
                                 ),
@@ -564,7 +496,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                                 text: TextSpan(
                                   style: Theme.of(context).textTheme.bodyMedium,
                                   children: [
-                                    TextSpan(text: 'Otherwise: '),
+                                    TextSpan(text: 'Otherwise, use '),
                                     WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.click')),
                                   ],
                                 ),
@@ -572,154 +504,161 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                             ],
                           ),
                         )
-                      ],
-                    ),
+                      ]),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Otherwise, use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('mouseCursor', link: 'https://api.flutter.dev/flutter/material/IconButton/mouseCursor.html'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text('If not provided, use:'),
+                      InsetDisplay(
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          spacing: 8,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                children: [
+                                  TextSpan(text: 'If onPressed is null: '),
+                                  WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.basic')),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                children: [
+                                  TextSpan(text: 'Otherwise: '),
+                                  WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.click')),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
 
                   // Padding
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text("The padding around the button's icon. The entire padded icon will react to input gestures."),
-                        Divider(),
-                        ThemeUsesMaterial3ConditionStatement(),
-                        ButtonStyleButtonPropertyExplanation(propertyName: 'padding', defaultsM3Value: 'EdgeInsets.all(8.0)'),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Otherwise, use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('padding', link: 'https://api.flutter.dev/flutter/material/IconButton/padding.html'),
-                              ),
-                            ],
-                          ),
+                  PropertyExplanationView(
+                    'padding',
+                    shortExplanation: "The padding around the button's icon. The entire padded icon will react to input gestures.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/padding.html',
+                    children: [
+                      ThemeUsesMaterial3ConditionStatement(),
+                      ButtonStyleButtonPropertyExplanation(propertyName: 'padding', defaultsM3Value: 'EdgeInsets.all(8.0)'),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Otherwise, use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('padding', link: 'https://api.flutter.dev/flutter/material/IconButton/padding.html'),
+                            ),
+                          ],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'If not provided, use '),
-                              WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('EdgeInsets.all(8.0)')),
-                            ],
-                          ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'If not provided, use '),
+                            WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('EdgeInsets.all(8.0)')),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
 
                   // Splash radius
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        OnlyUsedWithMaterial3Warning(),
-                        Divider(),
-                        ThemeUsesMaterial3ConditionStatement(),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('splashRadius', link: 'https://api.flutter.dev/flutter/material/IconButton/splashRadius.html'),
-                              ),
-                              TextSpan(text: ';'),
-                            ],
-                          ),
+                  PropertyExplanationView(
+                    'splashRadius',
+                    onlyUsedWithMaterial3Warning: true,
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/splashRadius.html',
+                    children: [
+                      ThemeUsesMaterial3ConditionStatement(),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('splashRadius', link: 'https://api.flutter.dev/flutter/material/IconButton/splashRadius.html'),
+                            ),
+                            TextSpan(text: ';'),
+                          ],
                         ),
-                        Text('If not provided, use the bigger option between: '),
-                        InsetDisplay(
-                          icon: Icon(Symbols.keyboard_double_arrow_up),
-                          content: Row(
-                            children: [
-                              Expanded(
-                                  child: LinkChip('Material.defaultSplashRadius (${Material.defaultSplashRadius})',
-                                      link: 'https://api.flutter.dev/flutter/material/Material/defaultSplashRadius-constant.html')),
-                              Text(' or '),
-                              Expanded(child: Text('(effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7', textAlign: TextAlign.center))
-                            ],
-                          ),
+                      ),
+                      Text('If not provided, use the bigger option between: '),
+                      InsetDisplay(
+                        icon: Icon(Symbols.keyboard_double_arrow_up),
+                        content: Row(
+                          children: [
+                            Expanded(
+                                child: LinkChip('Material.defaultSplashRadius (${Material.defaultSplashRadius})',
+                                    link: 'https://api.flutter.dev/flutter/material/Material/defaultSplashRadius-constant.html')),
+                            Text(' or '),
+                            Expanded(child: Text('(effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7', textAlign: TextAlign.center))
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
 
                   // Visual density
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      spacing: 8,
-                      children: [
-                        Text("Defines how compact the icon button's layout will be."),
-                        Divider(),
-                        ThemeUsesMaterial3ConditionStatement(),
-                        ButtonStyleButtonPropertyExplanation(
-                          propertyName: 'visualDensity',
-                          defaultsM3Value: 'VisualDensity.standard',
+
+                  PropertyExplanationView(
+                    'visualDensity',
+                    shortExplanation: "Defines how compact the icon button's layout will be.",
+                    docsLink: 'https://api.flutter.dev/flutter/material/IconButton/visualDensity.html',
+                    children: [
+                      ThemeUsesMaterial3ConditionStatement(),
+                      ButtonStyleButtonPropertyExplanation(
+                        propertyName: 'visualDensity',
+                        defaultsM3Value: 'VisualDensity.standard',
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'Otherwise, use provided '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('visualDensity', link: 'https://api.flutter.dev/flutter/material/IconButton/visualDensity.html'),
+                            ),
+                          ],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'Otherwise, use provided '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('visualDensity', link: 'https://api.flutter.dev/flutter/material/IconButton/visualDensity.html'),
-                              ),
-                            ],
-                          ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          children: [
+                            TextSpan(text: 'If not provided, use '),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: LinkChip('IconTheme.of(context).visualDensity'),
+                            ),
+                          ],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: [
-                              TextSpan(text: 'If not provided, use '),
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: LinkChip('IconTheme.of(context).visualDensity'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+
                   // TODO: style property?
                 ],
               ),
             ),
           ),
-        ),
-      );
-}
-
-class OnlyUsedWithMaterial3Warning extends StatelessWidget {
-  const OnlyUsedWithMaterial3Warning({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) => RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyMedium,
-          children: [
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: Icon(Icons.warning_rounded, color: Theme.of(context).colorScheme.error),
-            ),
-            TextSpan(text: ' Is only in use if '),
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: LinkChip('theme.useMaterial3 (${Theme.of(context).useMaterial3})', link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html'),
-            ),
-            TextSpan(text: ' is false.'),
-          ],
         ),
       );
 }
