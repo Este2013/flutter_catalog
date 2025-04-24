@@ -40,12 +40,25 @@ class ActionsPresentationPage extends StatelessWidget {
                         ),
                         Chip(avatar: Icon(Symbols.frame_person, fill: 1), label: Text('selectedIcon'))
                       ]),
-                      FilterChip(
-                        avatar: Icon(Icons.chat),
-                        label: Text('Tooltip'),
-                        onSelected: (v) => submitNewOptions((currentOptions ?? {})..['tooltip'] = v ? 'Contact Edouart Charles the first' : null),
-                        selected: currentOptions?['tooltip'] != null,
-                        showCheckmark: false,
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          FilterChip(
+                            avatar: Icon(Icons.chat),
+                            label: Text('Tooltip'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['tooltip'] = v ? 'Contact Edouart Charles the first' : null),
+                            selected: currentOptions?['tooltip'] != null,
+                            showCheckmark: false,
+                          ),
+                          FilterChip(
+                            avatar: Icon(Icons.block),
+                            label: Text('Disable'),
+                            onSelected: (v) => submitNewOptions((currentOptions ?? {})..['isDisabled'] = v),
+                            selected: currentOptions?['isDisabled'] ?? false,
+                            showCheckmark: false,
+                          ),
+                        ],
                       )
                     ],
                   ),
@@ -54,7 +67,7 @@ class ActionsPresentationPage extends StatelessWidget {
                       null,
                       iconBuilder: (p0) => IconButton(onPressed: () {}, icon: Icon(Icons.person)),
                       widgetBuilder: (p0, opt) => IconButton(
-                        onPressed: () {},
+                        onPressed: opt?['isDisabled'] ?? false ? null : () {},
                         icon: Icon(Icons.person),
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
@@ -66,7 +79,7 @@ class ActionsPresentationPage extends StatelessWidget {
                       'Filled',
                       iconBuilder: (p0) => IconButton.filled(onPressed: () {}, icon: Icon(Icons.person)),
                       widgetBuilder: (p0, opt) => IconButton.filled(
-                        onPressed: () {},
+                        onPressed: opt?['isDisabled'] ?? false ? null : () {},
                         icon: Icon(Icons.person),
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
@@ -78,7 +91,7 @@ class ActionsPresentationPage extends StatelessWidget {
                       'Filled tonal',
                       iconBuilder: (p0) => IconButton.filledTonal(onPressed: () {}, icon: Icon(Icons.person)),
                       widgetBuilder: (p0, opt) => IconButton.filledTonal(
-                        onPressed: () {},
+                        onPressed: opt?['isDisabled'] ?? false ? null : () {},
                         icon: Icon(Icons.person),
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
@@ -90,7 +103,7 @@ class ActionsPresentationPage extends StatelessWidget {
                       'Outlined',
                       iconBuilder: (p0) => IconButton.outlined(onPressed: () {}, icon: Icon(Icons.person)),
                       widgetBuilder: (p0, opt) => IconButton.outlined(
-                        onPressed: () {},
+                        onPressed: opt?['isDisabled'] ?? false ? null : () {},
                         icon: Icon(Icons.person),
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),

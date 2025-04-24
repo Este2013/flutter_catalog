@@ -324,9 +324,88 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
                     ),
                   ),
 
-                  // TODO the rest here
-                  //// Mouse Cursor
-                  Placeholder(),
+                  // Mouse Cursor
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 8,
+                      children: [
+                        Text("The cursor for a mouse pointer when it enters or is hovering over the button."),
+                        Divider(),
+                        ThemeUsesMaterial3ConditionStatement(),
+                        ButtonStyleButtonPropertyExplanation(propertyName: 'mouseCursor', defaultM3ValueWidgets: [
+                          InsetDisplay(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 8,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    children: [
+                                      TextSpan(text: 'If widget has state '),
+                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('MaterialState.disabled')),
+                                      TextSpan(text: ', use '),
+                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.basic')),
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    children: [
+                                      TextSpan(text: 'Otherwise, use '),
+                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.click')),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ]),
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: [
+                              TextSpan(text: 'Otherwise, use provided '),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: LinkChip('mouseCursor', link: 'https://api.flutter.dev/flutter/material/IconButton/mouseCursor.html'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text('If not provided, use:'),
+                        InsetDisplay(
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 8,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'If onPressed is null: '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.basic')),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    TextSpan(text: 'Otherwise: '),
+                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('SystemMouseCursors.click')),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
                   // Padding
                   SingleChildScrollView(
                     child: Column(
@@ -502,12 +581,14 @@ class ButtonStyleButtonPropertyExplanation extends StatelessWidget {
   const ButtonStyleButtonPropertyExplanation({
     super.key,
     required this.propertyName,
-    required this.defaultsM3Value,
+    this.defaultsM3Value,
     this.finalDefault,
-  });
+    this.defaultM3ValueWidgets,
+  }) : assert((defaultsM3Value != null) ^ (defaultM3ValueWidgets != null));
 
-  final String propertyName, defaultsM3Value;
-  final String? finalDefault;
+  final String propertyName;
+  final String? defaultsM3Value, finalDefault;
+  final List<Widget>? defaultM3ValueWidgets;
 
   @override
   Widget build(BuildContext context) {
@@ -559,14 +640,16 @@ class ButtonStyleButtonPropertyExplanation extends StatelessWidget {
                   text: TextSpan(
                     style: Theme.of(context).textTheme.bodyMedium,
                     children: [
-                      TextSpan(text: 'If not provided: use '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: LinkChip('_IconButtonDefaultsM3.$propertyName ($defaultsM3Value)'),
-                      ),
+                      TextSpan(text: 'If not provided: use${defaultsM3Value != null ? ' ' : ':'}'),
+                      if (defaultsM3Value != null)
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: LinkChip('_IconButtonDefaultsM3.$propertyName ($defaultsM3Value)"'),
+                        ),
                     ],
                   ),
                 ),
+                if (defaultM3ValueWidgets != null) ...defaultM3ValueWidgets!,
                 if (finalDefault != null) Text('Finally, in case something wrong happens, use $finalDefault.'),
               ],
             ),
