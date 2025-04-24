@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -49,6 +50,24 @@ class _InsetDisplayState extends State<InsetDisplay> {
       );
 }
 
+class InsetDisplayColumn extends StatelessWidget {
+  const InsetDisplayColumn({super.key, this.icon, required this.children, this.spacing = 8});
+
+  final Widget? icon;
+  final List<Widget> children;
+  final double spacing;
+
+  @override
+  Widget build(BuildContext context) => InsetDisplay(
+        icon: icon,
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: spacing,
+          children: children,
+        ),
+      );
+}
+
 class ColorDisplayChip extends StatelessWidget {
   const ColorDisplayChip(
     this.color, {
@@ -83,6 +102,74 @@ class LinkChip extends StatelessWidget {
         label: Text(title),
         onPressed: link != null ? () => launchUrl(Uri.parse(link!)) : null,
       );
+}
+
+class PropertyExplanationView extends StatefulWidget {
+  const PropertyExplanationView(this.propertyName, {super.key, this.child, this.children, this.shortExplanation, this.docsLink}) : assert((child != null) ^ (children != null));
+
+  final String propertyName;
+  final String? shortExplanation, docsLink;
+  final List<Widget>? children;
+  final Widget? child;
+
+  @override
+  State<PropertyExplanationView> createState() => PropertyExplanationStateView();
+}
+
+class PropertyExplanationStateView extends State<PropertyExplanationView> {
+  bool showDocsPage = false;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget header = Row(
+      children: [
+        Expanded(child: Text(widget.shortExplanation ?? 'missing preview')),
+        SegmentedButton(
+          segments: [
+            ButtonSegment(value: false, icon: Icon(Symbols.conversion_path), tooltip: 'Property evaluation'),
+            ButtonSegment(value: true, icon: Icon(Symbols.book_2), tooltip: 'Property documentation'),
+          ],
+          selected: {showDocsPage},
+          showSelectedIcon: false,
+          onSelectionChanged: (p0) => setState(() => showDocsPage = p0.first),
+        )
+      ],
+    );
+    if (showDocsPage) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 8,
+        children: [
+          header,
+          Divider(),
+          Expanded(child: DocsDisplayer(widget.docsLink!, pageName: widget.propertyName)),
+        ],
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: 8,
+      children: [
+        if (widget.shortExplanation != null || widget.docsLink != null) header,
+        Divider(),
+        Expanded(
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text('${widget.propertyName} Evaluation'),
+              automaticallyImplyLeading: false,
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 8,
+                children: [...?widget.children, if (widget.child != null) widget.child!],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 extension HexColor on Color {

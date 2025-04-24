@@ -209,9 +209,10 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
 }
 
 class DocsDisplayer extends StatelessWidget {
-  const DocsDisplayer(this.url, {super.key});
+  const DocsDisplayer(this.url, {super.key, this.pageName});
 
   final String url;
+  final String? pageName;
 
   Future<String> _fetchApiPage(String url) async {
     final resp = await http.get(Uri.parse(url));
@@ -239,7 +240,7 @@ class DocsDisplayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Documentation'),
+          title: Text('${pageName != null ? "$pageName " : ""}Documentation'),
           automaticallyImplyLeading: false,
         ),
         body: FutureBuilder(
