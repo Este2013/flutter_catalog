@@ -40,6 +40,19 @@ class ActionsPresentationPage extends StatelessWidget {
                         ),
                         Chip(avatar: Icon(Symbols.frame_person, fill: 1), label: Text('selectedIcon'))
                       ]),
+                      Row(spacing: 8, children: [
+                        Text('visualDensity:'),
+                        SegmentedButton(
+                          segments: [
+                            ButtonSegment(value: VisualDensity.minimumDensity, icon: Icon(Icons.density_large), tooltip: 'minimum'),
+                            ButtonSegment(value: VisualDensity.standard, icon: Icon(Icons.density_medium), tooltip: 'standard'),
+                            ButtonSegment(value: VisualDensity.maximumDensity, icon: Icon(Icons.density_small), tooltip: 'maximum'),
+                          ],
+                          selected: {currentOptions?['visualDensity'] ?? VisualDensity.standard},
+                          showSelectedIcon: false,
+                          onSelectionChanged: (p0) => submitNewOptions((currentOptions ?? {})..['visualDensity'] = p0.first),
+                        ),
+                      ]),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
@@ -72,6 +85,7 @@ class ActionsPresentationPage extends StatelessWidget {
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
+                        visualDensity: opt?['visualDensity'] is VisualDensity ? opt!['visualDensity'] : VisualDensity(horizontal: opt?['visualDensity'] ?? 0, vertical: opt?['visualDensity'] ?? 0),
                       ),
                       themeExplanation: IconButtonThemeExplanation(),
                     ),
@@ -84,6 +98,7 @@ class ActionsPresentationPage extends StatelessWidget {
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
+                        visualDensity: opt?['visualDensity'] is VisualDensity ? opt!['visualDensity'] : VisualDensity(horizontal: opt?['visualDensity'] ?? 0, vertical: opt?['visualDensity'] ?? 0),
                       ),
                       docsLink: "https://api.flutter.dev/flutter/material/IconButton/IconButton.filled.html",
                     ),
@@ -96,6 +111,7 @@ class ActionsPresentationPage extends StatelessWidget {
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
+                        visualDensity: opt?['visualDensity'] is VisualDensity ? opt!['visualDensity'] : VisualDensity(horizontal: opt?['visualDensity'] ?? 0, vertical: opt?['visualDensity'] ?? 0),
                       ),
                       docsLink: "https://api.flutter.dev/flutter/material/IconButton/IconButton.filledTonal.html",
                     ),
@@ -108,6 +124,7 @@ class ActionsPresentationPage extends StatelessWidget {
                         isSelected: opt?['isSelected'],
                         selectedIcon: Icon(Symbols.frame_person, fill: 1),
                         tooltip: opt?['tooltip'],
+                        visualDensity: opt?['visualDensity'] is VisualDensity ? opt!['visualDensity'] : VisualDensity(horizontal: opt?['visualDensity'] ?? 0, vertical: opt?['visualDensity'] ?? 0),
                       ),
                       docsLink: "https://api.flutter.dev/flutter/material/IconButton/IconButton.outlined.html",
                     ),
