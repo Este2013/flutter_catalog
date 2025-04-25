@@ -217,7 +217,7 @@ class DocsDisplayer extends StatelessWidget {
   Future<String> _fetchApiPage(String url) async {
     final resp = await http.get(Uri.parse(url));
     if (resp.statusCode != 200) {
-      throw Exception('Failed to load documentation');
+      throw Exception('Failed to load documentation ($url)');
     }
     return resp.body;
   }

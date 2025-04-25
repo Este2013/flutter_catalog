@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/material_actions/material_actions_ui/icon_button_theme_data.dart';
+import 'package:flutter_catalog/utils/adaptive_tab_bar.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -105,21 +105,174 @@ class LinkChip extends StatelessWidget {
       );
 }
 
+class ClassThemingExplanationView extends StatefulWidget {
+  const ClassThemingExplanationView({super.key, this.className, required this.propertiesData, this.baseDocsUrl});
+
+  final String? className;
+
+  /// Where keys property or group names, and values are PropertyData or Map<String, PropertyData>
+  final PropertyGroupData propertiesData;
+
+  /// Ex: for properties:
+  ///  -> https://api.flutter.dev/flutter/material/IconButton/$propName.html,
+  /// base url would be:
+  ///  -> https://api.flutter.dev/flutter/material/IconButton
+  /// without a slash at the end.
+  final String? baseDocsUrl;
+
+  @override
+  State<ClassThemingExplanationView> createState() => _ClassThemingExplanationViewState();
+}
+
+class _ClassThemingExplanationViewState extends State<ClassThemingExplanationView> with TickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: widget.propertiesData.content.length, vsync: this);
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: widget.className != null ? Text('${widget.className} Theming') : Text('Theming'),
+          bottom: AdaptiveTabBar(
+            controller: tabController,
+            tabs: [
+              for (var tabData in widget.propertiesData.content.entries)
+                if (tabData.value is PropertyData)
+                  Tab(icon: (tabData.value as PropertyData).icon, text: (tabData.value as PropertyData).tabName)
+                else if (tabData.value is PropertyGroupData)
+                  Tab(icon: (tabData.value as PropertyGroupData).icon, text: tabData.key)
+            ],
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              for (var tabData in widget.propertiesData.content.entries)
+                if (tabData.value is PropertyData)
+                  PropertyExplanationView.fromPropertyData(tabData.value, baseLink: widget.baseDocsUrl)
+                else if (tabData.value is PropertyGroupData)
+                  _SubGroupThemingExplanationView(propertiesData: tabData.value, baseDocsUrl: (tabData.value as PropertyGroupData).baseDocsUrl ?? widget.baseDocsUrl),
+            ],
+          ),
+        ),
+      );
+}
+
+class _SubGroupThemingExplanationView extends StatelessWidget {
+  const _SubGroupThemingExplanationView({required this.propertiesData, this.baseDocsUrl});
+
+  /// Where keys property or group names, and values are PropertyData or Map<String, PropertyData>
+  final PropertyGroupData propertiesData;
+
+  /// Ex: for properties:
+  ///  -> https://api.flutter.dev/flutter/material/IconButton/$propName.html,
+  /// base url would be:
+  ///  -> https://api.flutter.dev/flutter/material/IconButton
+  /// without a slash at the end.
+  final String? baseDocsUrl;
+
+  @override
+  Widget build(BuildContext context) => DefaultTabController(
+        length: propertiesData.content.length,
+        child: Scaffold(
+          appBar: AdaptiveTabBar.secondary(
+            tabs: [
+              for (var tabData in propertiesData.content.entries)
+                if (tabData.value is PropertyData)
+                  Tab(icon: (tabData.value as PropertyData).icon, text: (tabData.value as PropertyData).tabName)
+                else if (tabData.value is PropertyGroupData)
+                  Tab(icon: (tabData.value as PropertyGroupData).icon, text: tabData.key)
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TabBarView(children: [
+              for (var tabData in propertiesData.content.entries)
+                if (tabData.value is PropertyData)
+                  PropertyExplanationView.fromPropertyData(tabData.value, baseLink: baseDocsUrl)
+                else if (tabData.value is PropertyGroupData)
+                  _SubGroupThemingExplanationView(propertiesData: tabData.value, baseDocsUrl: (tabData.value as PropertyGroupData).baseDocsUrl ?? baseDocsUrl),
+            ]),
+          ),
+        ),
+      );
+}
+
+class PropertyGroupData {
+  final String groupName;
+  final String? baseDocsUrl;
+  final Widget? icon;
+
+  /// Where values can only be [PropertyGroupData] or [PropertyData].
+  final Map<String, dynamic> content;
+
+  PropertyGroupData({this.groupName = '', this.icon, required this.content, this.baseDocsUrl});
+}
+
+class PropertyData {
+  final String propertyName;
+  final Widget icon;
+  final String? shortExplanation, docsLink;
+  final List<Widget>? children;
+  final Widget? child;
+  final bool? onlyUsedWithMaterial3Warning;
+
+  PropertyData(this.propertyName, {required this.icon, this.shortExplanation, this.docsLink, this.children, this.child, this.onlyUsedWithMaterial3Warning});
+
+  String get tabName => _toSentenceCase(propertyName);
+
+  /// Inserts spaces before upper-case letters and lower-cases them,
+  /// then capitalises the very first character.
+  ///
+  /// Examples:
+  ///   'camelCase'.toSentenceCase()        → 'Camel case'
+  ///   'enableFeedback'.toSentenceCase()   → 'Enable feedback'
+  ///   'iconURLLoader'.toSentenceCase()    → 'Icon url loader'
+  String _toSentenceCase(String camelCase) {
+    if (camelCase.isEmpty) return camelCase;
+
+    final spaced = camelCase.replaceAllMapped(
+      RegExp(r'([a-z])([A-Z])'),
+      (m) => '${m[1]} ${m[2]!.toLowerCase()}',
+    );
+
+    // Capitalise the first letter only.
+    return spaced[0].toUpperCase() + spaced.substring(1);
+  }
+}
+
 class PropertyExplanationView extends StatefulWidget {
-  const PropertyExplanationView(this.propertyName, {super.key, this.child, this.children, this.shortExplanation, this.docsLink, this.onlyUsedWithMaterial3Warning = false})
+  const PropertyExplanationView(this.propertyName, {super.key, this.child, this.children, this.shortExplanation, this.docsLink, this.onlyUsedWithMaterial3Warning})
       : assert((child != null) ^ (children != null));
+
+  factory PropertyExplanationView.fromPropertyData(PropertyData data, {String? baseLink}) => PropertyExplanationView(
+        data.propertyName,
+        docsLink: data.docsLink ?? (baseLink != null ? '${[baseLink, data.propertyName].join('/')}.html' : null),
+        shortExplanation: data.shortExplanation,
+        onlyUsedWithMaterial3Warning: data.onlyUsedWithMaterial3Warning,
+        child: data.child,
+        children: data.children,
+      );
 
   final String propertyName;
   final String? shortExplanation, docsLink;
   final List<Widget>? children;
   final Widget? child;
-  final bool onlyUsedWithMaterial3Warning;
+  final bool? onlyUsedWithMaterial3Warning;
 
   @override
-  State<PropertyExplanationView> createState() => PropertyExplanationStateView();
+  State<PropertyExplanationView> createState() => PropertyExplanationViewState();
 }
 
-class PropertyExplanationStateView extends State<PropertyExplanationView> {
+class PropertyExplanationViewState extends State<PropertyExplanationView> {
   bool showDocsPage = false;
 
   @override
@@ -133,7 +286,7 @@ class PropertyExplanationStateView extends State<PropertyExplanationView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (widget.shortExplanation != null) Text(widget.shortExplanation!),
-            if (widget.onlyUsedWithMaterial3Warning) OnlyUsedWithMaterial3Warning(),
+            if (widget.onlyUsedWithMaterial3Warning != null) OnlyUsedWithMaterial3Warning(useMaterial3RequiredState: widget.onlyUsedWithMaterial3Warning!),
           ],
         )),
         SegmentedButton(
@@ -206,7 +359,9 @@ extension HexColor on Color {
 class OnlyUsedWithMaterial3Warning extends StatelessWidget {
   const OnlyUsedWithMaterial3Warning({
     super.key,
+    required this.useMaterial3RequiredState,
   });
+  final bool useMaterial3RequiredState;
 
   @override
   Widget build(BuildContext context) => RichText(
@@ -222,7 +377,7 @@ class OnlyUsedWithMaterial3Warning extends StatelessWidget {
               alignment: PlaceholderAlignment.middle,
               child: LinkChip('theme.useMaterial3 (${Theme.of(context).useMaterial3})', link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html'),
             ),
-            TextSpan(text: ' is false.'),
+            TextSpan(text: ' is $useMaterial3RequiredState.'),
           ],
         ),
       );
