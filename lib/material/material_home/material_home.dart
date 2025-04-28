@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/material/color_scheme_page.dart';
+import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -309,7 +310,8 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
                                                 ],
                                               ),
                                             ),
-                                        themeExplanation: IconThemeExplanation()),
+                                        themeExplanation: IconThemeExplanation(),
+                                        widgetTreeExplanation: IconNodeData(null)),
                                   ],
                                   link: 'https://api.flutter.dev/flutter/widgets/Icon-class.html',
                                 ),

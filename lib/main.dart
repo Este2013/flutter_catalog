@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/material_home/material_home.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
+import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
@@ -460,7 +461,10 @@ class WidgetVariantData {
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? optionsBuilder;
 
   final Widget? themeExplanation;
+  final WidgetTreeNodeData? widgetTreeExplanation;
+
   final String? docsLink;
 
-  WidgetVariantData(this.name, {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder, this.variantExplanation, this.themeExplanation, this.docsLink});
+  WidgetVariantData(this.name,
+      {required this.iconBuilder, required this.widgetBuilder, this.optionsBuilder, this.variantExplanation, this.themeExplanation, this.docsLink, this.widgetTreeExplanation});
 }

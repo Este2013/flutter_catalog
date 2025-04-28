@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -6,6 +9,8 @@ import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 import 'main.dart';
 import 'package:flutter_html/flutter_html.dart';
+
+import 'widget_tree_resolver/data.dart';
 
 class WidgetPresentationDialog extends StatefulWidget {
   const WidgetPresentationDialog(this.mainVariantName, {super.key, required this.variantsData, this.link, this.defaultIconBuilder, this.defaultOptionsBuilder});
@@ -169,6 +174,8 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                     ButtonSegment(value: null, icon: Icon(Symbols.code_blocks, fill: 1), tooltip: 'Demo'),
                     if (data.themeExplanation != null) ButtonSegment(value: 'theme', icon: Icon(Icons.color_lens), tooltip: 'Theme'),
                     if (data.docsLink != null || widget.docsLink != null) ButtonSegment(value: 'docs', icon: Icon(Symbols.book_2, fill: 1), tooltip: 'Documentation'),
+                    if (data.widgetTreeExplanation != null)
+                      ButtonSegment(value: 'tree', icon: Transform.rotate(angle: pi, child: Icon(Symbols.view_object_track, fill: 1)), tooltip: 'Widget building tree')
                   ],
                   selected: {showedMode},
                   onSelectionChanged: (v) => setState(() => showedMode = v.first),
@@ -191,7 +198,9 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                         ? data.themeExplanation
                         : showedMode == 'docs'
                             ? DocsDisplayer(data.docsLink ?? widget.docsLink!)
-                            : Placeholder(),
+                            : showedMode == 'tree'
+                                ? WidgetBuildTreeDisplayer(IconNodeData(null))
+                                : Placeholder(),
               ),
             ),
           ),
@@ -273,24 +282,27 @@ class DocsDisplayer extends StatelessWidget {
           },
         ),
       );
+}
 
-  // @override
-  // Widget build(BuildContext context) => Scaffold(
-  //       appBar: AppBar(
-  //         title: Text('Documentation'),
-  //         automaticallyImplyLeading: false,
-  //       ),
-  //       body: FutureBuilder(
-  //         future: _fetchAndParseDoc(url),
-  //         builder: (context, snapshot) {
-  //           if (snapshot.hasError) return ErrorWidget(snapshot.error!);
-  //           if (snapshot.hasData)
-  //             return Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-  //               child: SingleChildScrollView(child: Text(snapshot.data!)),
-  //             );
-  //           return Center(child: CircularProgressIndicator());
-  //         },
-  //       ),
-  //     );
+class WidgetBuildTreeDisplayer extends StatelessWidget {
+  const WidgetBuildTreeDisplayer(this.data, {super.key});
+
+  final WidgetTreeNodeData data;
+
+  @override
+  Widget build(BuildContext context) {
+    var buildResolution = data.build();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(data.widgetName),
+        if (buildResolution != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: WidgetBuildTreeDisplayer(buildResolution),
+          ),
+      ],
+    );
+  }
 }

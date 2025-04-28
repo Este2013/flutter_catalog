@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_highlight: ^0.7.0
   flutter_html: ^3.0.0
   flutter_svg: ^2.0.17
   html: ^0.15.5+1
