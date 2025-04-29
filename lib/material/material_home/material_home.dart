@@ -311,7 +311,7 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
                                               ),
                                             ),
                                         themeExplanation: IconThemeExplanation(),
-                                        widgetTreeExplanation: IconNodeData(null)),
+                                        widgetTreeExplanation: IconNodeData()),
                                   ],
                                   link: 'https://api.flutter.dev/flutter/widgets/Icon-class.html',
                                 ),

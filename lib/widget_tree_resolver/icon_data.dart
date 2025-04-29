@@ -4,11 +4,21 @@ import 'package:flutter_catalog/widget_tree_resolver/semantics_data.dart';
 import 'data.dart';
 
 class IconNodeData extends WidgetTreeNodeData {
-  IconNodeData(WidgetParametersData? params) : super('Icon', child: null, parameters: params);
+  IconNodeData()
+      : super(
+          'Icon',
+          child: null,
+          parameters: [
+            WidgetPropertyData(
+              'semanticLabel',
+              typeName: 'String?',
+              dataLink: WidgetPropertyDataDirectLink(nameOfDestinationChildWidget: 'Semantics', nameOfDestinationChildProperty: 'semanticLabel'),
+            ),
+          ],
+        );
 
   @override
   WidgetTreeNodeData? build() => SemanticsData(
-        child: ExcludeSemanticsData(child: RichTextData(null)),
-        parameters: parameters,
+        child: ExcludeSemanticsData(child: RichTextData()),
       );
 }

@@ -1,11 +1,11 @@
 import 'data.dart';
 
 class RichTextData extends WidgetTreeNodeData {
-  RichTextData(WidgetParametersData? contextData)
+  RichTextData()
       : super(
           'RichText',
           child: null,
-          parameters: contextData,
+          parameters: null,
         );
 
   @override

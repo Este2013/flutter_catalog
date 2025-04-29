@@ -199,7 +199,7 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                         : showedMode == 'docs'
                             ? DocsDisplayer(data.docsLink ?? widget.docsLink!)
                             : showedMode == 'tree'
-                                ? WidgetBuildTreeDisplayer(IconNodeData(null))
+                                ? WidgetBuildTreeDisplayer(IconNodeData())
                                 : Placeholder(),
               ),
             ),
@@ -284,23 +284,137 @@ class DocsDisplayer extends StatelessWidget {
       );
 }
 
-class WidgetBuildTreeDisplayer extends StatelessWidget {
+class WidgetBuildTreeDisplayer extends StatefulWidget {
   const WidgetBuildTreeDisplayer(this.data, {super.key});
 
   final WidgetTreeNodeData data;
 
   @override
-  Widget build(BuildContext context) {
-    var buildResolution = data.build();
+  State<WidgetBuildTreeDisplayer> createState() => _WidgetBuildTreeDisplayerState();
+}
+
+class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
+  WidgetPropertyData? observedProperties;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Building Tree View'),
+          actions: [
+            DropdownMenu(
+              dropdownMenuEntries: [
+                for (var e in widget.data.parameters ?? <WidgetPropertyData>[])
+                  DropdownMenuEntry(
+                    value: e,
+                    label: e.propertyName,
+                  )
+              ],
+              initialSelection: observedProperties?.propertyName,
+              onSelected: (value) => setState(() => observedProperties = value as WidgetPropertyData),
+            )
+          ],
+          automaticallyImplyLeading: false,
+        ),
+        body: SingleChildScrollView(
+            child: recursiveLayerBuilder(
+          observedProperties: observedProperties != null
+              ? [
+                  (
+                    observedProperties!.dataLink?.order,
+                    observedProperties,
+                  )
+                ].where((p) => p.$1 != null).toList().cast()
+              : [],
+        )),
+      ));
+
+  Widget recursiveLayerBuilder({WidgetTreeNodeData? givendata, int depth = 1, List<(int orderLeft, WidgetPropertyData)>? observedProperties}) {
+    var widgetData = givendata ?? widget.data;
+    var buildResolution = widgetData.build();
+
+    List<WidgetPropertyData> observedLevelProperties = [];
+    List<(int orderLeft, WidgetPropertyData)> toPassDown = [];
+
+    for (var p in observedProperties ?? []) {
+      if (p.$2.dataLink!.nameOfDestinationChildWidget == widgetData.widgetName) {
+        if (p.$1 == 1) {
+          observedLevelProperties.add(p.$2);
+        } else {
+          toPassDown.add((p.$1 - 1, p.$2));
+        }
+      } else {
+        toPassDown.add(p);
+      }
+    }
 
     return Column(
+      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(data.widgetName),
+        IntrinsicHeight(
+          child: Row(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: depth * 8.0),
+                    child: Chip(label: Text(widgetData.widgetName)),
+                  ),
+                ),
+              ),
+              if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(indent: 0, endIndent: 0),
+              // Top level widget establishes definition
+              if (depth == 1 && (observedProperties?.isNotEmpty ?? false))
+                Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: RichText(
+                      text: TextSpan(
+                        children: [TextSpan(text: 'Defines '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  ),
+                ),
+              if (observedLevelProperties.isNotEmpty)
+                Expanded(
+                    flex: 2,
+                    child: Row(
+                      children: [
+                        for (var p in observedLevelProperties)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Builder(
+                              builder: (context) {
+                                if (p.dataLink is WidgetPropertyDataDirectLink) {
+                                  return RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(text: 'Use as '),
+                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(p.dataLink!.nameOfDestinationChildProperty))),
+                                      ],
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                    ),
+                                  );
+                                }
+                                return Placeholder();
+                              },
+                            ),
+                          ),
+                      ],
+                    )),
+            ],
+          ),
+        ),
         if (buildResolution != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: WidgetBuildTreeDisplayer(buildResolution),
+          recursiveLayerBuilder(
+            givendata: buildResolution,
+            depth: depth + 1,
+            observedProperties: toPassDown,
           ),
       ],
     );
