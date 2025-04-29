@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/material/theme_explanations_utils.dart';
 import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -350,64 +351,86 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
     }
 
     return Column(
-      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IntrinsicHeight(
-          child: Row(
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: depth * 8.0),
-                    child: Chip(label: Text(widgetData.widgetName)),
-                  ),
-                ),
-              ),
-              if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(indent: 0, endIndent: 0),
-              // Top level widget establishes definition
-              if (depth == 1 && (observedProperties?.isNotEmpty ?? false))
-                Expanded(
-                  flex: 2,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        children: [TextSpan(text: 'Defines '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
-                        style: Theme.of(context).textTheme.bodyMedium,
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: depth * 8.0),
+                        child: Chip(label: Text(widgetData.widgetName)),
                       ),
                     ),
                   ),
-                ),
-              if (observedLevelProperties.isNotEmpty)
-                Expanded(
-                    flex: 2,
-                    child: Row(
-                      children: [
-                        for (var p in observedLevelProperties)
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Builder(
-                              builder: (context) {
-                                if (p.dataLink is WidgetPropertyDataDirectLink) {
-                                  return RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(text: 'Use as '),
-                                        WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(p.dataLink!.nameOfDestinationChildProperty))),
-                                      ],
-                                      style: Theme.of(context).textTheme.bodyMedium,
-                                    ),
-                                  );
-                                }
-                                return Placeholder();
-                              },
+                  if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(),
+                  // Top level widget establishes definition
+                  if (depth == 1 && (observedProperties?.isNotEmpty ?? false))
+                    Expanded(
+                      flex: 2,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          spacing: 8,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [TextSpan(text: 'Defines '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             ),
-                          ),
-                      ],
-                    )),
-            ],
+                            if (observedProperties.first.$2.dataLink?.beforePassingToChildren?.isNotEmpty ?? false)
+                              for (var todo in observedProperties.first.$2.dataLink!.beforePassingToChildren!) todo.render(context)
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  if (observedLevelProperties.isNotEmpty)
+                    Expanded(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            for (var p in observedLevelProperties)
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    children: [
+                                      Builder(
+                                        builder: (context) {
+                                          if (p.dataLink is WidgetPropertyDataDirectLink) {
+                                            return RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(text: 'Use as '),
+                                                  for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
+                                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
+                                                    TextSpan(text: ', '),
+                                                  ],
+                                                ]..removeLast(),
+                                                style: Theme.of(context).textTheme.bodyMedium,
+                                              ),
+                                            );
+                                          }
+                                          return Placeholder();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )),
+                ],
+              ),
+            ),
           ),
         ),
         if (buildResolution != null)
