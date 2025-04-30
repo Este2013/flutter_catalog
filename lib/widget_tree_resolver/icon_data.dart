@@ -11,6 +11,9 @@ import 'data.dart';
 //           'Icon',
 //           child: null,
 //           parameters: [
+//             // ──────────────────────────────────────────────────────
+//             //   ACCESSIBILITY
+//             // ──────────────────────────────────────────────────────
 //             WidgetPropertyData(
 //               'semanticLabel',
 //               typeName: 'String?',
@@ -19,6 +22,9 @@ import 'data.dart';
 //                 nameOfDestinationChildProperties: ['semanticLabel'],
 //               ),
 //             ),
+//             // ──────────────────────────────────────────────────────
+//             //   GEOMETRY
+//             // ──────────────────────────────────────────────────────
 //             WidgetPropertyData(
 //               'size',
 //               typeName: 'double?',
@@ -26,15 +32,68 @@ import 'data.dart';
 //                 nameOfDestinationChildWidget: 'SizedBox',
 //                 nameOfDestinationChildProperties: ['height', 'width'],
 //                 beforePassingToChildren: [
-//                   WidgetPropertyDataFallback(fallbacks: [('IconTheme.of(context).size', 'https://api.flutter.dev/flutter/widgets/IconThemeData/size.html'), ('kDefaultFontSize', 'https://api.flutter.dev/flutter/painting/kDefaultFontSize-constant.html')]),
+//                   WidgetPropertyDataFallback(fallbacks: [
+//                     ('IconTheme.of(context).size', 'https://api.flutter.dev/flutter/widgets/IconThemeData/size.html'),
+//                     ('kDefaultFontSize', 'https://api.flutter.dev/flutter/painting/kDefaultFontSize-constant.html')
+//                   ]),
+//                   WidgetPropertyDataConditionalModification(
+//                     renderConditionSpans: (_) => [
+//                       WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('applyTextScaling', link: null)),
+//                       TextSpan(text: ' is true'),
+//                     ],
+//                     ifTrue: WidgetPropertyDataModification(
+//                       (context) => [
+//                         TextSpan(text: 'Replace with '),
+//                         WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('MediaQuery.textScalerOf(context).scale(size)', link: null)),
+//                       ],
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             // ──────────────────────────────────────────────────────
+//             //   COLOR & PAINT
+//             // ──────────────────────────────────────────────────────
+//             WidgetPropertyData(
+//               'color',
+//               typeName: 'Color?',
+//               dataLink: WidgetPropertyDataLinkWithRenaming(
+//                 'fontStyle',
+//                 nameOfDestinationChildWidget: 'RichText',
+//                 nameOfDestinationChildProperties: ['style'],
+//                 beforePassingToChildren: [
+//                   WidgetPropertyDataFallback(fallbacks: [
+//                     ('IconTheme.of(context).color', 'https://api.flutter.dev/flutter/widgets/IconThemeData/color.html'),
+//                   ]),
 //                   WidgetPropertyDataModification(
 //                     (context) => [
-//                       TextSpan(text: 'If '),
-//                       WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('applyTextScaling', link: null)),
-//                       TextSpan(text: ' is true, use: '),
-//                       WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('MediaQuery.textScalerOf(context).scale(size)', link: null)),
+//                       TextSpan(text: 'Multiply by '),
+//                       WidgetSpan(
+//                         alignment: PlaceholderAlignment.middle,
+//                         child: LinkChip('iconTheme.opacity'),
+//                       ),
 //                     ],
-//                   )
+//                   ),
+//                   WidgetPropertyDataPackaging(
+//                     packageType: 'TextStyle',
+//                     packageName: 'fontStyle',
+//                     packageDocsLink: null,
+//                     modifications: WidgetPropertyDataConditionalModification(
+//                       renderConditionSpans: (context) => [
+//                         WidgetSpan(
+//                           alignment: PlaceholderAlignment.middle,
+//                           child: LinkChip('blendmode', link: 'https://api.flutter.dev/flutter/widgets/Icon/blendMode.html'),
+//                         ),
+//                         TextSpan(text: ' is not null'),
+//                       ],
+//                       ifTrue: WidgetPropertyDataModification((context) => [
+//                             TextSpan(text: 'foreground is set to Paint()\n\t..blendMode = blendMode!\n\t..color = iconColor;'),
+//                           ]),
+//                       ifFalse: WidgetPropertyDataModification(
+//                         (context) => [TextSpan(text: 'color is set to '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('color'))],
+//                       ),
+//                     ),
+//                   ),
 //                 ],
 //               ),
 //             ),
@@ -47,6 +106,16 @@ import 'data.dart';
 //       );
 // }
 
+// // TODO: This is gpt-completed, need to double-check
+/// An explicit, fully‑annotated representation of the widget tree that a
+/// Material [Icon] builds at runtime, together with a mapping between the
+/// public properties of [Icon] and the *exact* properties/fields that are fed
+/// into its descendants.
+///
+/// Every entry in [parameters] describes **where** the value eventually lands,
+/// and contains a *mini transformation pipeline* (`beforePassingToChildren`) so
+/// you can quickly see how Flutter massages the developer‑supplied value before
+/// it reaches the descendent render objects.
 class IconNodeData extends WidgetTreeNodeData {
   IconNodeData()
       : super(
@@ -76,32 +145,43 @@ class IconNodeData extends WidgetTreeNodeData {
                 nameOfDestinationChildProperties: ['height', 'width'],
                 beforePassingToChildren: [
                   WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).size', 'https://api.flutter.dev/flutter/widgets/IconThemeData/size.html'),
-                    ('kDefaultFontSize', 'https://api.flutter.dev/flutter/painting/kDefaultFontSize-constant.html'),
+                    (
+                      'IconTheme.of(context).size',
+                      'https://api.flutter.dev/flutter/widgets/IconThemeData/size.html',
+                    ),
+                    (
+                      'kDefaultFontSize',
+                      'https://api.flutter.dev/flutter/painting/kDefaultFontSize-constant.html',
+                    ),
                   ]),
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'If '),
+                  WidgetPropertyDataConditionalModification(
+                    renderConditionSpans: (_) => [
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: LinkChip('applyTextScaling'),
                       ),
-                      TextSpan(text: ' is true, use: '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: LinkChip(
-                          'MediaQuery.textScalerOf(context).scale(size)',
-                        ),
-                      ),
+                      TextSpan(text: ' is true'),
                     ],
+                    ifTrue: WidgetPropertyDataModification(
+                      (context) => [
+                        TextSpan(text: 'Replace with '),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: LinkChip(
+                            'MediaQuery.textScalerOf(context).scale(size)',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
 
             // ──────────────────────────────────────────────────────
-            //   REQUIRED DATA
+            //   REQUIRED DATA (ICON GLYPH)
             // ──────────────────────────────────────────────────────
+            // TODO Modify to show distribution to textstyle
             WidgetPropertyData(
               'icon',
               typeName: 'IconData?',
@@ -121,7 +201,7 @@ class IconNodeData extends WidgetTreeNodeData {
                         alignment: PlaceholderAlignment.middle,
                         child: LinkChip('String.fromCharCode(icon.codePoint)'),
                       ),
-                      TextSpan(text: ' and distributed to TextStyle.'),
+                      TextSpan(text: ' and distributed into TextStyle.'),
                     ],
                   ),
                 ],
@@ -131,16 +211,25 @@ class IconNodeData extends WidgetTreeNodeData {
             // ──────────────────────────────────────────────────────
             //   COLOR & PAINT
             // ──────────────────────────────────────────────────────
+
+            // COLOR
             WidgetPropertyData(
               'color',
               typeName: 'Color?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['color'],
+              dataLink: WidgetPropertyDataLinkWithRenaming(
+                'fontStyle',
+                nameOfDestinationChildWidget: 'RichText',
+                nameOfDestinationChildProperties: ['style'],
                 beforePassingToChildren: [
+                  // default/fallback value
                   WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).color', 'https://api.flutter.dev/flutter/widgets/IconThemeData/color.html'),
+                    (
+                      'IconTheme.of(context).color',
+                      'https://api.flutter.dev/flutter/widgets/IconThemeData/color.html',
+                    ),
                   ]),
+
+                  // multiply by theme opacity
                   WidgetPropertyDataModification(
                     (context) => [
                       TextSpan(text: 'Multiplied by '),
@@ -148,139 +237,78 @@ class IconNodeData extends WidgetTreeNodeData {
                         alignment: PlaceholderAlignment.middle,
                         child: LinkChip('iconTheme.opacity'),
                       ),
-                      TextSpan(text: ' then cleared if '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: LinkChip('blendMode'),
-                      ),
-                      TextSpan(text: ' is supplied (moved to Paint.foreground).'),
                     ],
+                  ),
+
+                  // pack into TextStyle / foreground if blendMode supplied
+                  WidgetPropertyDataPackaging(
+                    packageType: 'TextStyle',
+                    packageName: 'fontStyle',
+                    packageDocsLink: null,
+                    modifications: WidgetPropertyDataConditionalModification(
+                      renderConditionSpans: (context) => [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: LinkChip(
+                            'blendMode',
+                            link: 'https://api.flutter.dev/flutter/widgets/Icon/blendMode.html',
+                          ),
+                        ),
+                        TextSpan(text: ' is not null'),
+                      ],
+                      ifTrue: WidgetPropertyDataModification(
+                        (context) => [
+                          TextSpan(text: 'foreground = Paint()'),
+                          TextSpan(text: '\n  ..blendMode = blendMode!'),
+                          TextSpan(text: '\n  ..color = iconColor;'),
+                        ],
+                      ),
+                      ifFalse: WidgetPropertyDataModification(
+                        (context) => [
+                          TextSpan(text: 'color = iconColor'),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+
+            // BLEND‑MODE (affects paint pipeline)
             WidgetPropertyData(
               'blendMode',
               typeName: 'BlendMode?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['foreground'],
-                beforePassingToChildren: [
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'Creates a '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: LinkChip('Paint'),
+              dataLink: WidgetPropertyDataLinkWithRenaming('fontStyle', nameOfDestinationChildWidget: 'RichText', nameOfDestinationChildProperties: [
+                'style'
+              ], beforePassingToChildren: [
+                WidgetPropertyDataPackaging(
+                    packageType: 'TextStyle',
+                    packageName: 'fontStyle',
+                    packageDocsLink: null,
+                    modifications: WidgetPropertyDataConditionalModification(
+                      renderConditionSpans: (_) => [TextSpan(text: 'blendMode is not null')],
+                      ifTrue: WidgetPropertyDataModification(
+                        (context) => [
+                          TextSpan(text: 'foreground = Paint()'),
+                          TextSpan(text: '\n  ..blendMode = blendMode'),
+                          TextSpan(text: '\n  ..color = iconColor'),
+                        ],
                       ),
-                      TextSpan(text: ' using this mode and the current '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: LinkChip('color'),
-                      ),
-                      TextSpan(text: '.'),
-                    ],
-                  ),
-                ],
-              ),
+                    ))
+              ]),
             ),
 
-            // ──────────────────────────────────────────────────────
-            //   VARIABLE-FONT AXES
-            // ──────────────────────────────────────────────────────
-            WidgetPropertyData(
-              'fill',
-              typeName: 'double?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['fontVariations'],
-                beforePassingToChildren: [
-                  WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).fill', 'https://api.flutter.dev/flutter/widgets/IconThemeData/fill.html'),
-                  ]),
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'Adds FontVariation(\'FILL\', value).'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            WidgetPropertyData(
-              'weight',
-              typeName: 'double?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['fontVariations'],
-                beforePassingToChildren: [
-                  WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).weight', 'https://api.flutter.dev/flutter/widgets/IconThemeData/weight.html'),
-                  ]),
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'Adds FontVariation(\'wght\', value).'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            WidgetPropertyData(
-              'grade',
-              typeName: 'double?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['fontVariations'],
-                beforePassingToChildren: [
-                  WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).grade', 'https://api.flutter.dev/flutter/widgets/IconThemeData/grade.html'),
-                  ]),
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'Adds FontVariation(\'GRAD\', value).'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            WidgetPropertyData(
-              'opticalSize',
-              typeName: 'double?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['fontVariations'],
-                beforePassingToChildren: [
-                  WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).opticalSize', 'https://api.flutter.dev/flutter/widgets/IconThemeData/opticalSize.html'),
-                  ]),
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'Adds FontVariation(\'opsz\', value).'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            // TODO Change all to reflect addition to style
+            // VARIABLE‑FONT AXES (FILL / WEIGHT / GRADE / OPTICAL‑SIZE)
+            _fontVariations('fill', 'FILL'),
+            _fontVariations('weight', 'wght'),
+            _fontVariations('grade', 'GRAD'),
+            _fontVariations('opticalSize', 'opsz'),
 
-            // ──────────────────────────────────────────────────────
-            //   EFFECTS
-            // ──────────────────────────────────────────────────────
-            WidgetPropertyData(
-              'shadows',
-              typeName: 'List<Shadow>?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextStyle',
-                nameOfDestinationChildProperties: ['shadows'],
-                beforePassingToChildren: [
-                  WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).shadows', 'https://api.flutter.dev/flutter/widgets/IconThemeData/shadows.html'),
-                  ]),
-                ],
-              ),
-            ),
+            // EFFECTS
+            _themeFallbackAndStyle('shadows', 'List<Shadow>?', 'shadows'),
 
-            // ──────────────────────────────────────────────────────
-            //   LAYOUT / DIRECTIONALITY
-            // ──────────────────────────────────────────────────────
+            // LAYOUT / DIRECTIONALITY
             WidgetPropertyData(
               'textDirection',
               typeName: 'TextDirection?',
@@ -289,15 +317,16 @@ class IconNodeData extends WidgetTreeNodeData {
                 nameOfDestinationChildProperties: ['textDirection'],
                 beforePassingToChildren: [
                   WidgetPropertyDataFallback(fallbacks: [
-                    ('Directionality.of(context)', 'https://api.flutter.dev/flutter/widgets/Directionality/of.html'),
+                    (
+                      'Directionality.of(context)',
+                      'https://api.flutter.dev/flutter/widgets/Directionality/of.html',
+                    ),
                   ]),
                 ],
               ),
             ),
 
-            // ──────────────────────────────────────────────────────
-            //   MEDIA-QUERY-AWARE
-            // ──────────────────────────────────────────────────────
+            // MEDIA‑QUERY‑AWARE
             WidgetPropertyData(
               'applyTextScaling',
               typeName: 'bool?',
@@ -306,12 +335,15 @@ class IconNodeData extends WidgetTreeNodeData {
                 nameOfDestinationChildProperties: ['height', 'width'],
                 beforePassingToChildren: [
                   WidgetPropertyDataFallback(fallbacks: [
-                    ('IconTheme.of(context).applyTextScaling', 'https://api.flutter.dev/flutter/widgets/IconThemeData/applyTextScaling.html'),
+                    (
+                      'IconTheme.of(context).applyTextScaling',
+                      'https://api.flutter.dev/flutter/widgets/IconThemeData/applyTextScaling.html',
+                    ),
                     ('false', null),
                   ]),
                   WidgetPropertyDataModification(
                     (context) => [
-                      TextSpan(text: 'When true, the final size is scaled by '),
+                      TextSpan(text: 'When true, final size is scaled by '),
                       WidgetSpan(
                         alignment: PlaceholderAlignment.middle,
                         child: LinkChip(
@@ -319,7 +351,6 @@ class IconNodeData extends WidgetTreeNodeData {
                           link: 'https://api.flutter.dev/flutter/widgets/MediaQuery/textScalerOf.html',
                         ),
                       ),
-                      TextSpan(text: '.'),
                     ],
                   ),
                 ],
@@ -328,6 +359,9 @@ class IconNodeData extends WidgetTreeNodeData {
           ],
         );
 
+  // -------------------------------------------------------------------------
+  //   BUILD:  produce the *widget tree* that an <Icon> ultimately expands to.
+  // -------------------------------------------------------------------------
   @override
   WidgetTreeNodeData? build() => SemanticsData(
         child: ExcludeSemanticsData(
@@ -339,3 +373,78 @@ class IconNodeData extends WidgetTreeNodeData {
         ),
       );
 }
+
+WidgetPropertyData _fontVariations(String propertyName, String addedValue) => WidgetPropertyData(
+      propertyName,
+      typeName: 'double?',
+      dataLink: WidgetPropertyDataLinkWithRenaming(
+        'fontStyle',
+        nameOfDestinationChildWidget: 'RichText',
+        nameOfDestinationChildProperties: ['style'],
+        beforePassingToChildren: [
+          WidgetPropertyDataFallback(fallbacks: [
+            (
+              'IconTheme.of(context).$propertyName',
+              'https://api.flutter.dev/flutter/widgets/IconThemeData/$propertyName.html',
+            ),
+          ]),
+          _addIntoTextStylesFontVariations(propertyName, addedValue),
+        ],
+      ),
+    );
+
+/// For FILL, wght, GRAD, and opsz
+WidgetPropertyDataPackaging _addIntoTextStylesFontVariations(String propertyName, String addedValue) => WidgetPropertyDataPackaging(
+      packageType: 'TextStyle',
+      packageName: 'fontStyle',
+      packageDocsLink: null,
+      modifications: WidgetPropertyDataConditionalModification(
+        renderConditionSpans: (context) => [
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: LinkChip(
+              propertyName,
+              link: 'https://api.flutter.dev/flutter/widgets/Icon/$propertyName.html',
+            ),
+          ),
+          TextSpan(text: ' is not null'),
+        ],
+        ifTrue: WidgetPropertyDataModification((context) => [TextSpan(text: "Add FontVariation('$addedValue', $propertyName) to fontVariations")]),
+      ),
+    );
+
+WidgetPropertyData _themeFallbackAndStyle(String propertyName, String propertyType, String target) => WidgetPropertyData(
+      propertyName,
+      typeName: propertyType,
+      dataLink: WidgetPropertyDataLinkWithRenaming(
+        'fontStyle',
+        nameOfDestinationChildWidget: 'RichText',
+        nameOfDestinationChildProperties: ['style'],
+        beforePassingToChildren: [
+          WidgetPropertyDataFallback(fallbacks: [
+            (
+              'IconTheme.of(context).$propertyName',
+              'https://api.flutter.dev/flutter/widgets/IconThemeData/$propertyName.html',
+            ),
+          ]),
+          _addIntoTextStyle(propertyName, target),
+        ],
+      ),
+    );
+
+WidgetPropertyDataPackaging _addIntoTextStyle(String propertyName, String target) => WidgetPropertyDataPackaging(
+      packageType: 'TextStyle',
+      packageName: 'fontStyle',
+      packageDocsLink: null,
+      modifications: WidgetPropertyDataModification(
+        (context) => [
+          TextSpan(text: '$target = '),
+          WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: LinkChip(
+                propertyName,
+                link: 'https://api.flutter.dev/flutter/widgets/Icon/$propertyName.html',
+              ))
+        ],
+      ),
+    );

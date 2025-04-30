@@ -18,7 +18,7 @@ class WidgetPropertyData<T> {
   final String? docsLink;
   final List<WidgetPropertyData>? subProperties;
 
-  final WidgetPropertyDataDirectLink? dataLink;
+  final WidgetPropertyDataLink? dataLink;
 }
 
 abstract class WidgetPropertyDataLink {
@@ -41,6 +41,12 @@ abstract class WidgetPropertyDataLink {
 
 class WidgetPropertyDataDirectLink extends WidgetPropertyDataLink {
   WidgetPropertyDataDirectLink({required super.nameOfDestinationChildWidget, required super.nameOfDestinationChildProperties, super.beforePassingToChildren});
+}
+
+class WidgetPropertyDataLinkWithRenaming extends WidgetPropertyDataLink {
+  WidgetPropertyDataLinkWithRenaming(this.newName, {required super.nameOfDestinationChildWidget, required super.nameOfDestinationChildProperties, super.beforePassingToChildren});
+
+  final String newName;
 }
 
 abstract class WidgetPropertyModifications {
@@ -68,6 +74,37 @@ class WidgetPropertyDataFallback extends WidgetPropertyModifications {
       );
 }
 
+class WidgetPropertyDataConditionalModification extends WidgetPropertyModifications {
+  WidgetPropertyDataConditionalModification({
+    required this.renderConditionSpans,
+    required this.ifTrue,
+    this.ifFalse,
+  });
+
+  // exemple "[variable](link) is null"
+  final List<InlineSpan> Function(BuildContext context) renderConditionSpans;
+  final WidgetPropertyModifications ifTrue;
+  final WidgetPropertyModifications? ifFalse;
+
+  @override
+  Widget render(BuildContext context) => RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: 'If '),
+            ...renderConditionSpans(context),
+            TextSpan(text: ':\n'),
+            WidgetSpan(child: InsetDisplay(content: ifTrue.render(context))),
+            if (ifFalse != null) ...[
+              TextSpan(text: '\n'),
+              TextSpan(text: 'Otherwise:'),
+              WidgetSpan(child: InsetDisplay(content: ifFalse!.render(context))),
+            ],
+          ],
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      );
+}
+
 class WidgetPropertyDataModification extends WidgetPropertyModifications {
   WidgetPropertyDataModification(this.renderSpans);
 
@@ -77,6 +114,34 @@ class WidgetPropertyDataModification extends WidgetPropertyModifications {
   Widget render(BuildContext context) => RichText(
         text: TextSpan(
           children: [...renderSpans(context)],
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      );
+}
+
+class WidgetPropertyDataPackaging extends WidgetPropertyModifications {
+  final String packageType, packageName;
+  final String? packageDocsLink;
+
+  final WidgetPropertyModifications? modifications;
+
+  WidgetPropertyDataPackaging({required this.packageType, required this.packageName, this.packageDocsLink, required this.modifications});
+
+  @override
+  Widget render(BuildContext context) => RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(text: 'Define '),
+            WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('$packageType $packageName', link: packageDocsLink)),
+            TextSpan(text: ' where: \n'),
+            WidgetSpan(
+              child: InsetDisplay(
+                content: Column(
+                  children: [if (modifications != null) modifications!.render(context)],
+                ),
+              ),
+            ),
+          ],
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       );

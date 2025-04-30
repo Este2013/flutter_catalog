@@ -419,6 +419,22 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                                               ),
                                             );
                                           }
+                                          if (p.dataLink is WidgetPropertyDataLinkWithRenaming) {
+                                            return RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(text: 'Use '),
+                                                  WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text((p.dataLink as WidgetPropertyDataLinkWithRenaming).newName))),
+                                                  TextSpan(text: ' as '),
+                                                  for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
+                                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
+                                                    TextSpan(text: ', '),
+                                                  ],
+                                                ]..removeLast(),
+                                                style: Theme.of(context).textTheme.bodyMedium,
+                                              ),
+                                            );
+                                          }
                                           return Placeholder();
                                         },
                                       ),
