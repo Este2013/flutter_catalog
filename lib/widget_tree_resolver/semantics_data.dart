@@ -10,12 +10,12 @@ class SemanticsData extends WidgetTreeNodeData {
         );
 
   @override
-  WidgetTreeNodeData? build() => child;
+  TreeNodeData? build() => child;
 }
 
 class ExcludeSemanticsData extends WidgetTreeNodeData {
   ExcludeSemanticsData({super.child, super.parameters}) : super('ExcludeSemantics');
 
   @override
-  WidgetTreeNodeData? build() => child;
+  TreeNodeData? build() => child;
 }

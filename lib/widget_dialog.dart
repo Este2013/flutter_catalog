@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/theme_explanations_utils.dart';
 import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -331,131 +330,176 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
         )),
       ));
 
-  Widget recursiveLayerBuilder({WidgetTreeNodeData? givendata, int depth = 1, List<(int orderLeft, WidgetPropertyData)>? observedProperties}) {
+  Widget recursiveLayerBuilder({TreeNodeData? givendata, int depth = 1, List<(int orderLeft, WidgetPropertyData)>? observedProperties}) {
     var widgetData = givendata ?? widget.data;
-    var buildResolution = widgetData.build();
 
-    List<WidgetPropertyData> observedLevelProperties = [];
-    List<(int orderLeft, WidgetPropertyData)> toPassDown = [];
-
-    for (var p in observedProperties ?? []) {
-      if (p.$2.dataLink!.nameOfDestinationChildWidget == widgetData.widgetName) {
-        if (p.$1 == 1) {
-          observedLevelProperties.add(p.$2);
-        } else {
-          toPassDown.add((p.$1 - 1, p.$2));
-        }
-      } else {
-        toPassDown.add(p);
-      }
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IntrinsicHeight(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: depth * 8.0),
-                        child: Chip(label: Text(widgetData.widgetName)),
+    if (widgetData is ConditionalWidgetTreeNodeData) {
+      return AnimatedBuilder(
+        animation: widgetData.conditionFulfilment,
+        builder: (context, child) {
+          var buildResolution = widgetData.build();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: depth * 8.0),
+                      child: Row(
+                        children: [
+                          Switch(value: widgetData.conditionFulfilment.value, onChanged: (v) => widgetData.conditionFulfilment.value = v),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: RichText(
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                children: widgetData.condition,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(),
-                  // Top level widget establishes definition
-                  if (depth == 1 && (observedProperties?.isNotEmpty ?? false))
+                ),
+              ),
+              if (buildResolution != null)
+                recursiveLayerBuilder(
+                  givendata: buildResolution,
+                  depth: depth + 1,
+                  observedProperties: observedProperties,
+                ),
+            ],
+          );
+        },
+      );
+    } else if (widgetData is WidgetTreeNodeData) {
+      var buildResolution = widgetData.build();
+      List<WidgetPropertyData> observedLevelProperties = [];
+      List<(int orderLeft, WidgetPropertyData)> toPassDown = [];
+
+      for (var p in observedProperties ?? []) {
+        if (p.$2.dataLink!.nameOfDestinationChildWidget == widgetData.widgetName) {
+          if (p.$1 == 1) {
+            observedLevelProperties.add(p.$2);
+          } else {
+            toPassDown.add((p.$1 - 1, p.$2));
+          }
+        } else {
+          toPassDown.add(p);
+        }
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IntrinsicHeight(
+                child: Row(
+                  children: [
                     Expanded(
-                      flex: 2,
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Column(
-                          spacing: 8,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [TextSpan(text: 'Defines '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ),
-                            if (observedProperties.first.$2.dataLink?.beforePassingToChildren?.isNotEmpty ?? false)
-                              for (var todo in observedProperties.first.$2.dataLink!.beforePassingToChildren!) todo.render(context)
-                          ],
+                        child: Padding(
+                          padding: EdgeInsets.only(left: depth * 8.0),
+                          child: Chip(label: Text(widgetData.widgetName)),
                         ),
                       ),
                     ),
-
-                  if (observedLevelProperties.isNotEmpty)
-                    Expanded(
+                    if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(),
+                    // Top level widget establishes definition
+                    if (depth == 1 && (observedProperties?.isNotEmpty ?? false))
+                      Expanded(
                         flex: 2,
-                        child: Row(
-                          children: [
-                            for (var p in observedLevelProperties)
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Column(
-                                    children: [
-                                      Builder(
-                                        builder: (context) {
-                                          if (p.dataLink is WidgetPropertyDataDirectLink) {
-                                            return RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(text: 'Use as '),
-                                                  for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
-                                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
-                                                    TextSpan(text: ', '),
-                                                  ],
-                                                ]..removeLast(),
-                                                style: Theme.of(context).textTheme.bodyMedium,
-                                              ),
-                                            );
-                                          }
-                                          if (p.dataLink is WidgetPropertyDataLinkWithRenaming) {
-                                            return RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(text: 'Use '),
-                                                  WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text((p.dataLink as WidgetPropertyDataLinkWithRenaming).newName))),
-                                                  TextSpan(text: ' as '),
-                                                  for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
-                                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
-                                                    TextSpan(text: ', '),
-                                                  ],
-                                                ]..removeLast(),
-                                                style: Theme.of(context).textTheme.bodyMedium,
-                                              ),
-                                            );
-                                          }
-                                          return Placeholder();
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            spacing: 8,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  children: [TextSpan(text: 'Defines '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
-                          ],
-                        )),
-                ],
+                              if (observedProperties.first.$2.dataLink?.beforePassingToChildren?.isNotEmpty ?? false)
+                                for (var todo in observedProperties.first.$2.dataLink!.beforePassingToChildren!) todo.render(context)
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    if (observedLevelProperties.isNotEmpty)
+                      Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+                              for (var p in observedLevelProperties)
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Column(
+                                      children: [
+                                        Builder(
+                                          builder: (context) {
+                                            if (p.dataLink is WidgetPropertyDataDirectLink) {
+                                              return RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(text: 'Use as '),
+                                                    for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
+                                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
+                                                      TextSpan(text: ', '),
+                                                    ],
+                                                  ]..removeLast(),
+                                                  style: Theme.of(context).textTheme.bodyMedium,
+                                                ),
+                                              );
+                                            }
+                                            if (p.dataLink is WidgetPropertyDataLinkWithRenaming) {
+                                              return RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(text: 'Use '),
+                                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text((p.dataLink as WidgetPropertyDataLinkWithRenaming).newName))),
+                                                    TextSpan(text: ' as '),
+                                                    for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
+                                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
+                                                      TextSpan(text: ', '),
+                                                    ],
+                                                  ]..removeLast(),
+                                                  style: Theme.of(context).textTheme.bodyMedium,
+                                                ),
+                                              );
+                                            }
+                                            return Placeholder();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          )),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        if (buildResolution != null)
-          recursiveLayerBuilder(
-            givendata: buildResolution,
-            depth: depth + 1,
-            observedProperties: toPassDown,
-          ),
-      ],
-    );
+          if (buildResolution != null)
+            recursiveLayerBuilder(
+              givendata: buildResolution,
+              depth: depth + 1,
+              observedProperties: toPassDown,
+            ),
+        ],
+      );
+    }
+    return Placeholder();
   }
 }

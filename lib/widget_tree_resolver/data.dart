@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/theme_explanations_utils.dart';
 
-abstract class WidgetTreeNodeData {
-  WidgetTreeNodeData(this.widgetName, {this.child, this.parameters});
+abstract class TreeNodeData {
+  TreeNodeData({this.child});
 
-  WidgetTreeNodeData? build();
+  TreeNodeData? child;
+  TreeNodeData? build();
+}
+
+abstract class WidgetTreeNodeData extends TreeNodeData {
+  WidgetTreeNodeData(this.widgetName, {super.child, this.parameters});
 
   String widgetName;
-  WidgetTreeNodeData? child;
   List<WidgetPropertyData>? parameters;
+}
+
+class ConditionalWidgetTreeNodeData extends TreeNodeData {
+  ConditionalWidgetTreeNodeData({
+    required this.condition,
+    super.child,
+    this.ifFalse,
+    bool defaultCondition = true,
+  }) {
+    conditionFulfilment = ValueNotifier(defaultCondition);
+  }
+
+  late ValueNotifier<bool> conditionFulfilment;
+  List<InlineSpan> condition;
+  TreeNodeData? ifFalse;
+
+  @override
+  TreeNodeData? build() {
+    if (conditionFulfilment.value) return child;
+    return ifFalse;
+  }
 }
 
 // properties

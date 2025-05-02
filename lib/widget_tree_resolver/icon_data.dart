@@ -266,8 +266,20 @@ class IconNodeData extends WidgetTreeNodeData {
         child: ExcludeSemanticsData(
           child: SizedBoxData(
             child: CenterData(
-              child: RichTextData(),
-            ),
+                child: ConditionalWidgetTreeNodeData(
+              condition: [
+                WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: LinkChip(
+                      'Icon.matchTextDirection',
+                      link: 'https://api.flutter.dev/flutter/widgets/IconData/matchTextDirection.html',
+                    )),
+                TextSpan(text: ' is true')
+              ],
+              defaultCondition: false,
+              child: TransformData(child: RichTextData()),
+              ifFalse: RichTextData(),
+            )),
           ),
         ),
       );

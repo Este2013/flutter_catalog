@@ -4,7 +4,7 @@ class CenterData extends WidgetTreeNodeData {
   CenterData({super.child}) : super('Center', parameters: null);
 
   @override
-  WidgetTreeNodeData? build() => child;
+  TreeNodeData? build() => child;
 }
 
 class SizedBoxData extends WidgetTreeNodeData {
@@ -15,7 +15,7 @@ class SizedBoxData extends WidgetTreeNodeData {
         );
 
   @override
-  WidgetTreeNodeData? build() => child;
+  TreeNodeData? build() => child;
 }
 
 class RichTextData extends WidgetTreeNodeData {
@@ -27,5 +27,16 @@ class RichTextData extends WidgetTreeNodeData {
         );
 
   @override
-  WidgetTreeNodeData? build() {/*TODO*/}
+  TreeNodeData? build() {/*TODO*/}
+}
+
+class TransformData extends WidgetTreeNodeData {
+  TransformData({super.child})
+      : super(
+          'Transform',
+          parameters: null,
+        );
+
+  @override
+  TreeNodeData? build() => child;
 }
