@@ -11,6 +11,8 @@ abstract class WidgetTreeNodeData {
   List<WidgetPropertyData>? parameters;
 }
 
+// properties
+
 class WidgetPropertyData<T> {
   const WidgetPropertyData(this.propertyName, {required this.typeName, this.docsLink, this.subProperties, this.dataLink});
 
@@ -20,6 +22,8 @@ class WidgetPropertyData<T> {
 
   final WidgetPropertyDataLink? dataLink;
 }
+
+//// data links
 
 abstract class WidgetPropertyDataLink {
   const WidgetPropertyDataLink({
@@ -48,6 +52,8 @@ class WidgetPropertyDataLinkWithRenaming extends WidgetPropertyDataLink {
 
   final String newName;
 }
+
+//// modifying data before passing it down
 
 abstract class WidgetPropertyModifications {
   Widget render(BuildContext context);
