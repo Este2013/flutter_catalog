@@ -285,6 +285,10 @@ class DocsDisplayer extends StatelessWidget {
       );
 }
 
+//////------------------ Widget tree stuff
+
+typedef ObservedRoute = (int orderLeft, WidgetPropertyData prop, WidgetPropertyDataLink link);
+
 class WidgetBuildTreeDisplayer extends StatefulWidget {
   const WidgetBuildTreeDisplayer(this.data, {super.key});
 
@@ -319,19 +323,13 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
-            child: recursiveLayerBuilder(
-          observedProperties: observedProperties != null
-              ? [
-                  (
-                    observedProperties!.dataLink?.order,
-                    observedProperties,
-                  )
-                ].where((p) => p.$1 != null).toList().cast()
-              : [],
-        )),
+          child: recursiveLayerBuilder(
+            observedProperties: (observedProperties == null) ? const <ObservedRoute>[] : [for (final link in observedProperties!.dataLinks ?? const []) (link.order, observedProperties!, link)],
+          ),
+        ),
       ));
 
-  Widget recursiveLayerBuilder({TreeNodeData? givendata, int depth = 1, List<(int orderLeft, WidgetPropertyData)>? observedProperties}) {
+  Widget recursiveLayerBuilder({TreeNodeData? givendata, int depth = 1, List<ObservedRoute>? observedProperties}) {
     var widgetData = givendata ?? widget.data;
 
     if (widgetData is ConditionalWidgetTreeNodeData) {
@@ -374,18 +372,23 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
       );
     } else if (widgetData is WidgetTreeNodeData) {
       var buildResolution = widgetData.build();
-      List<WidgetPropertyData> observedLevelProperties = [];
-      List<(int orderLeft, WidgetPropertyData)> toPassDown = [];
 
-      for (var p in observedProperties ?? []) {
-        if (p.$2.dataLink!.nameOfDestinationChildWidget == widgetData.widgetName) {
-          if (p.$1 == 1) {
-            observedLevelProperties.add(p.$2);
+      List<(WidgetPropertyData, WidgetPropertyDataLink)> hitsHere = [];
+      List<ObservedRoute> toPassDown = [];
+
+      for (final route in observedProperties ?? const []) {
+        final orderLeft = route.$1;
+        final prop = route.$2;
+        final link = route.$3;
+
+        if (link.nameOfDestinationChildWidget == widgetData.widgetName) {
+          if (orderLeft == 1) {
+            hitsHere.add((prop, link)); // <-- show on THIS widget
           } else {
-            toPassDown.add((p.$1 - 1, p.$2));
+            toPassDown.add((orderLeft - 1, prop, link)); // <-- strip one level, continue
           }
         } else {
-          toPassDown.add(p);
+          toPassDown.add(route); // unrelated → keep as‑is
         }
       }
 
@@ -406,82 +409,53 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                         child: Chip(label: Text(widgetData.widgetName)),
                       ),
                     ),
-                    if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(),
-                    // Top level widget establishes definition
+                    // Show a divider when there is *something* to render on this row
+                    if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || hitsHere.isNotEmpty) const VerticalDivider(),
+
+                    // ── Top‑level widget establishes the property definition ────────────────────
                     if (depth == 1 && (observedProperties?.isNotEmpty ?? false))
                       Expanded(
                         flex: 2,
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Column(
-                            spacing: 8,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // “Defines <property>”
                               RichText(
                                 text: TextSpan(
-                                  children: [TextSpan(text: 'Defines '), CWidgetSpan(child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
                                   style: Theme.of(context).textTheme.bodyMedium,
+                                  children: [
+                                    const TextSpan(text: 'Defines '),
+                                    WidgetSpan(
+                                      child: Chip(label: Text(observedProperties!.first.$2.propertyName)),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              if (observedProperties.first.$2.dataLink?.beforePassingToChildren?.isNotEmpty ?? false)
-                                for (var todo in observedProperties.first.$2.dataLink!.beforePassingToChildren!) todo.render(context)
+
+                              // Any “beforePassingToChildren” modifiers coming from *any* link
+                              for (final route in observedProperties!)
+                                if (route.$3.beforePassingToChildren?.isNotEmpty ?? false) ...route.$3.beforePassingToChildren!.map((m) => m.render(context)),
                             ],
                           ),
                         ),
                       ),
-
-                    if (observedLevelProperties.isNotEmpty)
+                    if (hitsHere.isNotEmpty)
                       Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              for (var p in observedLevelProperties)
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Column(
-                                      children: [
-                                        Builder(
-                                          builder: (context) {
-                                            if (p.dataLink is WidgetPropertyDataDirectLink) {
-                                              return RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(text: 'Use as '),
-                                                    for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
-                                                      CWidgetSpan(child: Chip(label: Text(dprop))),
-                                                      TextSpan(text: ', '),
-                                                    ],
-                                                  ]..removeLast(),
-                                                  style: Theme.of(context).textTheme.bodyMedium,
-                                                ),
-                                              );
-                                            }
-                                            if (p.dataLink is WidgetPropertyDataLinkWithRenaming) {
-                                              return RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(text: 'Use '),
-                                                    CWidgetSpan(child: Chip(label: Text((p.dataLink as WidgetPropertyDataLinkWithRenaming).newName))),
-                                                    TextSpan(text: ' as '),
-                                                    for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
-                                                      CWidgetSpan(child: Chip(label: Text(dprop))),
-                                                      TextSpan(text: ', '),
-                                                    ],
-                                                  ]..removeLast(),
-                                                  style: Theme.of(context).textTheme.bodyMedium,
-                                                ),
-                                              );
-                                            }
-                                            return Placeholder();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            for (final hit in hitsHere)
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: _renderLink(context, hit.$1, hit.$2),
                                 ),
-                            ],
-                          )),
+                              ),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -497,5 +471,35 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
       );
     }
     return Placeholder();
+  }
+
+  Widget _renderLink(BuildContext context, WidgetPropertyData prop, WidgetPropertyDataLink link) {
+    if (link is WidgetPropertyDataDirectLink) {
+      return CRichText(
+        context,
+        children: [
+          const TextSpan(text: 'Use as '),
+          for (final dest in link.nameOfDestinationChildProperties) ...[
+            CWidgetSpan(child: Chip(label: Text(dest))),
+            const TextSpan(text: ', '),
+          ],
+        ]..removeLast(),
+      );
+    }
+    if (link is WidgetPropertyDataLinkWithRenaming) {
+      return CRichText(
+        context,
+        children: [
+          const TextSpan(text: 'Use '),
+          WidgetSpan(child: Chip(label: Text(link.newName))),
+          const TextSpan(text: ' as '),
+          for (final dest in link.nameOfDestinationChildProperties) ...[
+            CWidgetSpan(child: Chip(label: Text(dest))),
+            const TextSpan(text: ', '),
+          ]
+        ]..removeLast(),
+      );
+    }
+    return const Placeholder();
   }
 }

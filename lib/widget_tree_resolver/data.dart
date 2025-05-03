@@ -40,15 +40,24 @@ class ConditionalWidgetTreeNodeData extends TreeNodeData {
 // properties
 
 class WidgetPropertyData<T> {
-  const WidgetPropertyData(this.propertyName, {required this.typeName, this.docsLink, this.subProperties, this.dataLink});
+  WidgetPropertyData(
+    this.propertyName, {
+    required this.typeName,
+    this.docsLink,
+    this.subProperties,
+    WidgetPropertyDataLink? dataLink,
+    List<WidgetPropertyDataLink>? dataLinks,
+  }) : dataLinks = dataLinks ?? (dataLink == null ? null : [dataLink]);
 
   final String propertyName, typeName;
   final String? docsLink;
   final List<WidgetPropertyData>? subProperties;
 
-  final WidgetPropertyDataLink? dataLink;
-}
+  final List<WidgetPropertyDataLink>? dataLinks;
 
+  /// Helper for legacy code that still expects “the” link.
+  WidgetPropertyDataLink? get dataLink => (dataLinks == null || dataLinks!.isEmpty) ? null : dataLinks!.first;
+}
 //// data links
 
 abstract class WidgetPropertyDataLink {

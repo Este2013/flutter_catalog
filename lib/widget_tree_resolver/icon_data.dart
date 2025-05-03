@@ -81,26 +81,41 @@ class IconNodeData extends WidgetTreeNodeData {
             WidgetPropertyData(
               'icon',
               typeName: 'IconData?',
-              dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'RichText',
-                nameOfDestinationChildProperties: [
-                  'text',
-                  'style.fontFamily',
-                  'style.fontPackage',
-                  'style.fontFamilyFallback',
-                ],
-                beforePassingToChildren: [
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'Converted with '),
-                      CWidgetSpan(
-                        child: LinkChip('String.fromCharCode(icon.codePoint)'),
-                      ),
-                      TextSpan(text: ' and distributed into TextStyle.'),
-                    ],
-                  ),
-                ],
-              ),
+              dataLinks: [
+                // TODO Actual datalinks
+                WidgetPropertyDataDirectLink(
+                  nameOfDestinationChildWidget: 'RichText',
+                  nameOfDestinationChildProperties: [
+                    'text',
+                  ],
+                  beforePassingToChildren: [
+                    WidgetPropertyDataModification(
+                      (context) => [
+                        TextSpan(text: 'Converted with '),
+                        CWidgetSpan(
+                          child: LinkChip('String.fromCharCode(icon.codePoint)'),
+                        ),
+                        TextSpan(text: ' and distributed into TextStyle.'),
+                      ],
+                    ),
+                  ],
+                ),
+                WidgetPropertyDataDirectLink(
+                  nameOfDestinationChildWidget: 'RichText',
+                  nameOfDestinationChildProperties: [
+                    'style.fontFamily',
+                    'style.fontPackage',
+                    'style.fontFamilyFallback',
+                  ],
+                  beforePassingToChildren: [
+                    WidgetPropertyDataModification(
+                      (context) => [
+                        TextSpan(text: 'Some fuckery '),
+                      ],
+                    ),
+                  ],
+                )
+              ],
             ),
 
             // ──────────────────────────────────────────────────────
