@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/adaptive_tab_bar.dart';
+import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -95,6 +96,17 @@ class ColorDisplayChip extends StatelessWidget {
 class LinkChip extends StatelessWidget {
   const LinkChip(this.title, {super.key, this.link});
 
+  /// 'https://api.flutter.dev/flutter/widgets/$widgetName-class.html'
+  factory LinkChip.ofWidget(String widgetName) => LinkChip(widgetName, link: 'https://api.flutter.dev/flutter/widgets/$widgetName-class.html');
+
+  /// 'https://api.flutter.dev/flutter/widgets/$widgetName/$propertyName.html'
+  factory LinkChip.ofWidgetProperty(String widgetName, String propertyName, {String? customDisplay}) =>
+      LinkChip(customDisplay ?? propertyName, link: 'https://api.flutter.dev/flutter/widgets/$widgetName/$propertyName.html');
+
+  /// 'https://api.flutter.dev/flutter/material/IconButton/autofocus.html'
+  factory LinkChip.ofMaterialProperty(String widgetName, String propertyName, {String? customDisplay}) =>
+      LinkChip(customDisplay ?? propertyName, link: 'https://api.flutter.dev/flutter/material/$widgetName/$propertyName.html');
+
   final String title;
   final String? link;
 
@@ -103,6 +115,8 @@ class LinkChip extends StatelessWidget {
         label: Text(title),
         onPressed: link != null ? () => launchUrl(Uri.parse(link!)) : null,
       );
+
+  CWidgetSpan asSpan() => CWidgetSpan(child: this);
 }
 
 class ClassThemingExplanationView extends StatefulWidget {
@@ -364,21 +378,16 @@ class OnlyUsedWithMaterial3Warning extends StatelessWidget {
   final bool useMaterial3RequiredState;
 
   @override
-  Widget build(BuildContext context) => RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyMedium,
-          children: [
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: Icon(Icons.warning_rounded, color: Theme.of(context).colorScheme.error),
-            ),
-            TextSpan(text: ' Is only in use if '),
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: LinkChip('theme.useMaterial3 (${Theme.of(context).useMaterial3})', link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html'),
-            ),
-            TextSpan(text: ' is $useMaterial3RequiredState.'),
-          ],
-        ),
+  Widget build(BuildContext context) => CRichText(
+        context,
+        children: [
+          CWidgetSpan(child: Icon(Icons.warning_rounded, color: Theme.of(context).colorScheme.error)),
+          TextSpan(text: ' Is only in use if '),
+          LinkChip(
+            'theme.useMaterial3 (${Theme.of(context).useMaterial3})',
+            link: 'https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html',
+          ).asSpan(),
+          TextSpan(text: ' is $useMaterial3RequiredState.'),
+        ],
       );
 }

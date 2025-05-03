@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -266,7 +267,7 @@ class DocsDisplayer extends StatelessWidget {
                   // you can customize link tap behavior, styling, etc.
                   onLinkTap: (href, _, __) {
                     if (href == null) return;
-                    if (!href.startsWith('https://api.flutter.dev/flutter/')) href = 'https://api.flutter.dev/flutter/' + href;
+                    if (!href.startsWith('https://api.flutter.dev/flutter/')) href = 'https://api.flutter.dev/flutter/$href';
                     launchUrl(Uri.parse(href));
                   },
                   style: {
@@ -342,25 +343,21 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
+                color: Theme.of(context).colorScheme.secondaryContainer,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: IntrinsicHeight(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: depth * 8.0),
-                      child: Row(
-                        children: [
-                          Switch(value: widgetData.conditionFulfilment.value, onChanged: (v) => widgetData.conditionFulfilment.value = v),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: RichText(
-                              text: TextSpan(
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                children: widgetData.condition,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: RichText(
+                      text: TextSpan(style: Theme.of(context).textTheme.bodyMedium, children: [
+                        CWidgetSpan(child: Tooltip(message: 'Condition', child: Icon(Symbols.help))),
+                        CWidgetSpan(child: SizedBox(width: 16)),
+                        CWidgetSpan(
+                            child: Switch(
+                          value: widgetData.conditionFulfilment.value,
+                          onChanged: (v) => widgetData.conditionFulfilment.value = v,
+                        )),
+                        ...widgetData.condition,
+                      ]),
                     ),
                   ),
                 ),
@@ -401,13 +398,12 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
               child: IntrinsicHeight(
                 child: Row(
                   children: [
+                    Tooltip(message: 'Widget', child: Icon(Symbols.widgets)),
+                    SizedBox(width: 16),
                     Expanded(
                       child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.only(left: depth * 8.0),
-                          child: Chip(label: Text(widgetData.widgetName)),
-                        ),
+                        child: Chip(label: Text(widgetData.widgetName)),
                       ),
                     ),
                     if ((depth == 1 && (observedProperties?.isNotEmpty ?? false)) || observedLevelProperties.isNotEmpty) VerticalDivider(),
@@ -423,7 +419,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                             children: [
                               RichText(
                                 text: TextSpan(
-                                  children: [TextSpan(text: 'Defines '), WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
+                                  children: [TextSpan(text: 'Defines '), CWidgetSpan(child: Chip(label: Text(observedProperties!.first.$2.propertyName)))],
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
@@ -453,7 +449,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                                                   children: [
                                                     TextSpan(text: 'Use as '),
                                                     for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
-                                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
+                                                      CWidgetSpan(child: Chip(label: Text(dprop))),
                                                       TextSpan(text: ', '),
                                                     ],
                                                   ]..removeLast(),
@@ -466,10 +462,10 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                                                 text: TextSpan(
                                                   children: [
                                                     TextSpan(text: 'Use '),
-                                                    WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text((p.dataLink as WidgetPropertyDataLinkWithRenaming).newName))),
+                                                    CWidgetSpan(child: Chip(label: Text((p.dataLink as WidgetPropertyDataLinkWithRenaming).newName))),
                                                     TextSpan(text: ' as '),
                                                     for (var dprop in p.dataLink!.nameOfDestinationChildProperties) ...[
-                                                      WidgetSpan(alignment: PlaceholderAlignment.middle, child: Chip(label: Text(dprop))),
+                                                      CWidgetSpan(child: Chip(label: Text(dprop))),
                                                       TextSpan(text: ', '),
                                                     ],
                                                   ]..removeLast(),

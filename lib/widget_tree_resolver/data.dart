@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/theme_explanations_utils.dart';
+import 'package:flutter_catalog/utils/better_widget_span.dart';
 
 abstract class TreeNodeData {
   TreeNodeData({this.child});
@@ -96,7 +97,7 @@ class WidgetPropertyDataFallback extends WidgetPropertyModifications {
           children: [
             TextSpan(text: 'If null, fallback on: '),
             for (var fallback in fallbacks) ...[
-              WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip(fallback.$1, link: fallback.$2)),
+              CWidgetSpan(child: LinkChip(fallback.$1, link: fallback.$2)),
               TextSpan(text: ', then '),
             ],
           ]..removeLast(),
@@ -163,7 +164,7 @@ class WidgetPropertyDataPackaging extends WidgetPropertyModifications {
         text: TextSpan(
           children: [
             TextSpan(text: 'Define '),
-            WidgetSpan(alignment: PlaceholderAlignment.middle, child: LinkChip('$packageType $packageName', link: packageDocsLink)),
+            CWidgetSpan(child: LinkChip('$packageType $packageName', link: packageDocsLink)),
             TextSpan(text: ' where: \n'),
             WidgetSpan(
               child: InsetDisplay(

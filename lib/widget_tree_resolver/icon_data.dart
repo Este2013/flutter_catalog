@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/material/theme_explanations_utils.dart';
+import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:flutter_catalog/widget_tree_resolver/basic_widgets_data.dart';
 import 'package:flutter_catalog/widget_tree_resolver/semantics_data.dart';
 
@@ -55,17 +56,13 @@ class IconNodeData extends WidgetTreeNodeData {
                   ]),
                   WidgetPropertyDataConditionalModification(
                     renderConditionSpans: (_) => [
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: LinkChip('applyTextScaling'),
-                      ),
+                      CWidgetSpan(child: LinkChip('applyTextScaling')),
                       TextSpan(text: ' is true'),
                     ],
                     ifTrue: WidgetPropertyDataModification(
                       (context) => [
                         TextSpan(text: 'Replace with '),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
+                        CWidgetSpan(
                           child: LinkChip(
                             'MediaQuery.textScalerOf(context).scale(size)',
                           ),
@@ -85,7 +82,7 @@ class IconNodeData extends WidgetTreeNodeData {
               'icon',
               typeName: 'IconData?',
               dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'TextSpan',
+                nameOfDestinationChildWidget: 'RichText',
                 nameOfDestinationChildProperties: [
                   'text',
                   'style.fontFamily',
@@ -96,8 +93,7 @@ class IconNodeData extends WidgetTreeNodeData {
                   WidgetPropertyDataModification(
                     (context) => [
                       TextSpan(text: 'Converted with '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
+                      CWidgetSpan(
                         child: LinkChip('String.fromCharCode(icon.codePoint)'),
                       ),
                       TextSpan(text: ' and distributed into TextStyle.'),
@@ -132,8 +128,7 @@ class IconNodeData extends WidgetTreeNodeData {
                   WidgetPropertyDataModification(
                     (context) => [
                       TextSpan(text: 'Multiplied by '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
+                      CWidgetSpan(
                         child: LinkChip('iconTheme.opacity'),
                       ),
                     ],
@@ -146,8 +141,7 @@ class IconNodeData extends WidgetTreeNodeData {
                     packageDocsLink: null,
                     modifications: WidgetPropertyDataConditionalModification(
                       renderConditionSpans: (context) => [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
+                        CWidgetSpan(
                           child: LinkChip(
                             'blendMode',
                             link: 'https://api.flutter.dev/flutter/widgets/Icon/blendMode.html',
@@ -243,8 +237,7 @@ class IconNodeData extends WidgetTreeNodeData {
                   WidgetPropertyDataModification(
                     (context) => [
                       TextSpan(text: 'When true, final size is scaled by '),
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
+                      CWidgetSpan(
                         child: LinkChip(
                           'MediaQuery.textScalerOf(context)',
                           link: 'https://api.flutter.dev/flutter/widgets/MediaQuery/textScalerOf.html',
@@ -268,13 +261,13 @@ class IconNodeData extends WidgetTreeNodeData {
             child: CenterData(
                 child: ConditionalWidgetTreeNodeData(
               condition: [
-                WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: LinkChip(
-                      'Icon.matchTextDirection',
-                      link: 'https://api.flutter.dev/flutter/widgets/IconData/matchTextDirection.html',
-                    )),
-                TextSpan(text: ' is true')
+                CWidgetSpan(child: LinkChip.ofWidgetProperty('IconData', 'matchTextDirection', customDisplay: 'icon.matchTextDirection')),
+                TextSpan(text: ' and '),
+                CWidgetSpan(child: LinkChip.ofWidgetProperty('Icon', 'textDirection')),
+                TextSpan(text: ' ?? '),
+                CWidgetSpan(child: LinkChip('Directionality.of(context)')),
+                TextSpan(text: ' equals '),
+                CWidgetSpan(child: LinkChip('TextDirection.rtl')),
               ],
               defaultCondition: false,
               child: TransformData(child: RichTextData()),
@@ -311,8 +304,7 @@ WidgetPropertyDataPackaging _addIntoTextStylesFontVariations(String propertyName
       packageDocsLink: null,
       modifications: WidgetPropertyDataConditionalModification(
         renderConditionSpans: (context) => [
-          WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
+          CWidgetSpan(
             child: LinkChip(
               propertyName,
               link: 'https://api.flutter.dev/flutter/widgets/Icon/$propertyName.html',
@@ -350,12 +342,9 @@ WidgetPropertyDataPackaging _addIntoTextStyle(String propertyName, String target
       modifications: WidgetPropertyDataModification(
         (context) => [
           TextSpan(text: '$target = '),
-          WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: LinkChip(
-                propertyName,
-                link: 'https://api.flutter.dev/flutter/widgets/Icon/$propertyName.html',
-              ))
+          CWidgetSpan(
+            child: LinkChip.ofWidgetProperty('Icon', propertyName),
+          )
         ],
       ),
     );
