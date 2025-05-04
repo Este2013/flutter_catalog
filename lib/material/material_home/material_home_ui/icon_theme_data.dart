@@ -27,44 +27,46 @@ class _IconThemeExplanationState extends State<IconThemeExplanation> with Ticker
   @override
   Widget build(BuildContext context) => Navigator(
         onGenerateRoute: (settings) => MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: Text('Theming'),
-              bottom: TabBar(controller: tabController, tabs: [
-                Tab(icon: Icon(Icons.colorize), child: Text('Color')),
-                Tab(icon: Icon(Icons.gradient), child: Text('Fill')),
-                Tab(icon: Icon(Icons.height), child: Text('Size')),
-                Tab(icon: Icon(Icons.remove_red_eye), child: Text('Optical Size')),
-                Tab(icon: Icon(Icons.balance), child: Text('Weight')),
-                Tab(icon: Icon(Icons.grade), child: Text('Grade')),
-                Tab(icon: Icon(Icons.opacity), child: Text('Opacity')),
-              ]),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TabBarView(
-                controller: tabController,
-                children: [
-                  // color
-                  IconColorExplanation(),
-                  // fill
-                  IconFillExplanation(),
-                  // Size
-                  IconSizeExplanation(),
-                  // OpticalSize
-                  IconOpticalSizeExplanation(),
-                  // Grade
-                  IconWeightExplanation(),
-                  // Grade
-                  IconGradeExplanation(),
-                  // Opacity
-                  IconOpacityExplanation(),
-                ],
-              ),
-            ),
-          ),
-        ),
+            builder: (context) => ClassThemingExplanationView(
+                className: 'Icon',
+                baseDocsUrl: 'https://api.flutter.dev/flutter/widgets/Icon',
+                propertiesData: PropertyGroupData(content: {
+                  'Color': PropertyData(
+                    'color',
+                    icon: Icon(Icons.colorize),
+                    child: IconColorExplanation(),
+                  ),
+                  'Fill': PropertyData(
+                    'fill',
+                    icon: Icon(Icons.gradient),
+                    child: IconFillExplanation(),
+                  ),
+                  'Size': PropertyData(
+                    'size',
+                    icon: Icon(Icons.height),
+                    child: IconSizeExplanation(),
+                  ),
+                  'Optical Size': PropertyData(
+                    'opticalSize',
+                    icon: Icon(Icons.remove_red_eye),
+                    child: IconOpticalSizeExplanation(),
+                  ),
+                  'Weight': PropertyData(
+                    'weight',
+                    icon: Icon(Icons.balance),
+                    child: IconWeightExplanation(),
+                  ),
+                  'Grade': PropertyData(
+                    'grade',
+                    icon: Icon(Icons.grade),
+                    child: IconGradeExplanation(),
+                  ),
+                  'Opacity': PropertyData(
+                    'opacity',
+                    icon: Icon(Icons.opacity),
+                    child: IconOpacityExplanation(),
+                  ),
+                }))),
       );
 }
 

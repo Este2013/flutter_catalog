@@ -585,32 +585,29 @@ class StateActionsPresentationPage extends StatelessWidget {
                     WidgetVariantData(
                       null,
                       iconBuilder: (p0) => Icon(Icons.av_timer),
-                      widgetBuilder: (p0, options) {
-                        print((0, options));
-                        return Navigator(
-                          key: Key('${options?['initialEntryMode']?.toString() ?? 'null'}${options?['orientation']}'),
-                          clipBehavior: Clip.hardEdge,
-                          onGenerateRoute: (settings) => MaterialPageRoute(
-                            builder: (context) => Material(
-                              color: Colors.transparent,
-                              child: Center(
-                                child: FloatingActionButton(
-                                  onPressed: () {
-                                    showTimePicker(
-                                      context: context,
-                                      initialTime: TimeOfDay.now(),
-                                      useRootNavigator: false,
-                                      initialEntryMode: options?['initialEntryMode'] ?? TimePickerEntryMode.dial,
-                                      orientation: options?['orientation'],
-                                    );
-                                  },
-                                  child: Icon(Symbols.access_time),
-                                ),
+                      widgetBuilder: (p0, options) => Navigator(
+                        key: Key('${options?['initialEntryMode']?.toString() ?? 'null'}${options?['orientation']}'),
+                        clipBehavior: Clip.hardEdge,
+                        onGenerateRoute: (settings) => MaterialPageRoute(
+                          builder: (context) => Material(
+                            color: Colors.transparent,
+                            child: Center(
+                              child: FloatingActionButton(
+                                onPressed: () {
+                                  showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                    useRootNavigator: false,
+                                    initialEntryMode: options?['initialEntryMode'] ?? TimePickerEntryMode.dial,
+                                    orientation: options?['orientation'],
+                                  );
+                                },
+                                child: Icon(Symbols.access_time),
                               ),
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   ],
                   link: 'https://api.flutter.dev/flutter/material/showTimePicker.html?_gl=1*1sb07l5*_ga*MjcwMTE3ODUwLjE3MjY1ODY0NjI.*_ga_04YGWK0175*MTc0MTEwNTgwNC42Ny4xLjE3NDExMDU4MzUuMC4wLjA.',

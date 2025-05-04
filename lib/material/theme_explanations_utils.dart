@@ -124,7 +124,7 @@ class ClassThemingExplanationView extends StatefulWidget {
 
   final String? className;
 
-  /// Where keys property or group names, and values are PropertyData or Map<String, PropertyData>
+  /// Where keys property or group names, and values are PropertyData or Map`<String, PropertyData>`
   final PropertyGroupData propertiesData;
 
   /// Ex: for properties:
@@ -183,7 +183,7 @@ class _ClassThemingExplanationViewState extends State<ClassThemingExplanationVie
 class _SubGroupThemingExplanationView extends StatelessWidget {
   const _SubGroupThemingExplanationView({required this.propertiesData, this.baseDocsUrl});
 
-  /// Where keys property or group names, and values are PropertyData or Map<String, PropertyData>
+  /// Where keys property or group names, and values are PropertyData or Map`<String, PropertyData>`
   final PropertyGroupData propertiesData;
 
   /// Ex: for properties:
@@ -307,6 +307,7 @@ class PropertyExplanationViewState extends State<PropertyExplanationView> {
           segments: [
             ButtonSegment(value: false, icon: Icon(Symbols.conversion_path), tooltip: 'Property evaluation'),
             ButtonSegment(value: true, icon: Icon(Symbols.book_2), tooltip: 'Property documentation'),
+            // TODO: Add tree view here per property instead of up in the beeg dialog
           ],
           selected: {showDocsPage},
           showSelectedIcon: false,

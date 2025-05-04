@@ -419,23 +419,20 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Column(
+                            spacing: 8,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // “Defines <property>”
-                              RichText(
-                                text: TextSpan(
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  children: [
-                                    const TextSpan(text: 'Defines '),
-                                    WidgetSpan(
-                                      child: Chip(label: Text(observedProperties!.first.$2.propertyName)),
-                                    ),
-                                  ],
-                                ),
+                              CRichText(
+                                context,
+                                children: [
+                                  const TextSpan(text: 'Defines '),
+                                  CWidgetSpan(child: Chip(label: Text(observedProperties!.first.$2.propertyName))),
+                                ],
                               ),
 
                               // Any “beforePassingToChildren” modifiers coming from *any* link
-                              for (final route in observedProperties!)
+                              for (final route in observedProperties)
                                 if (route.$3.beforePassingToChildren?.isNotEmpty ?? false) ...route.$3.beforePassingToChildren!.map((m) => m.render(context)),
                             ],
                           ),
@@ -444,7 +441,8 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                     if (hitsHere.isNotEmpty)
                       Expanded(
                         flex: 2,
-                        child: Row(
+                        child: Column(
+                          spacing: 8,
                           children: [
                             for (final hit in hitsHere)
                               Expanded(
@@ -491,7 +489,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
         context,
         children: [
           const TextSpan(text: 'Use '),
-          WidgetSpan(child: Chip(label: Text(link.newName))),
+          CWidgetSpan(child: Chip(label: Text(link.newName))),
           const TextSpan(text: ' as '),
           for (final dest in link.nameOfDestinationChildProperties) ...[
             CWidgetSpan(child: Chip(label: Text(dest))),

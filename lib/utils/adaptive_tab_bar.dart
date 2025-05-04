@@ -89,7 +89,6 @@ class AdaptiveTabBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize {
     double maxHeight = _kTabHeight;
     for (final Widget item in tabs) {

@@ -6,7 +6,6 @@ import 'package:flutter_catalog/widget_tree_resolver/semantics_data.dart';
 
 import 'data.dart';
 
-// // TODO: This is gpt-completed, need to double-check
 /// An explicit, fully‑annotated representation of the widget tree that a
 /// Material [Icon] builds at runtime, together with a mapping between the
 /// public properties of [Icon] and the *exact* properties/fields that are fed
@@ -77,43 +76,29 @@ class IconNodeData extends WidgetTreeNodeData {
             // ──────────────────────────────────────────────────────
             //   REQUIRED DATA (ICON GLYPH)
             // ──────────────────────────────────────────────────────
-            // TODO Modify to show distribution to textstyle
             WidgetPropertyData(
               'icon',
               typeName: 'IconData?',
               dataLinks: [
-                // TODO Actual datalinks
-                WidgetPropertyDataDirectLink(
+                WidgetPropertyDataLinkWithRenaming(
+                  'String.fromCharCode(icon.codePoint)',
                   nameOfDestinationChildWidget: 'RichText',
-                  nameOfDestinationChildProperties: [
-                    'text',
-                  ],
-                  beforePassingToChildren: [
-                    WidgetPropertyDataModification(
-                      (context) => [
-                        TextSpan(text: 'Converted with '),
-                        CWidgetSpan(
-                          child: LinkChip('String.fromCharCode(icon.codePoint)'),
-                        ),
-                        TextSpan(text: ' and distributed into TextStyle.'),
-                      ],
-                    ),
-                  ],
+                  nameOfDestinationChildProperties: ['text'],
                 ),
-                WidgetPropertyDataDirectLink(
+                WidgetPropertyDataLinkWithRenaming(
+                  'icon.fontFamily',
                   nameOfDestinationChildWidget: 'RichText',
-                  nameOfDestinationChildProperties: [
-                    'style.fontFamily',
-                    'style.fontPackage',
-                    'style.fontFamilyFallback',
-                  ],
-                  beforePassingToChildren: [
-                    WidgetPropertyDataModification(
-                      (context) => [
-                        TextSpan(text: 'Some fuckery '),
-                      ],
-                    ),
-                  ],
+                  nameOfDestinationChildProperties: ['style.fontFamily'],
+                ),
+                WidgetPropertyDataLinkWithRenaming(
+                  'icon.fontPackage',
+                  nameOfDestinationChildWidget: 'RichText',
+                  nameOfDestinationChildProperties: ['style.fontPackage'],
+                ),
+                WidgetPropertyDataLinkWithRenaming(
+                  'icon.fontFamilyFallback',
+                  nameOfDestinationChildWidget: 'RichText',
+                  nameOfDestinationChildProperties: ['style.fontFamilyFallback'],
                 )
               ],
             ),
@@ -206,8 +191,6 @@ class IconNodeData extends WidgetTreeNodeData {
               ]),
             ),
 
-            // TODO Change all to reflect addition to style
-            // VARIABLE‑FONT AXES (FILL / WEIGHT / GRADE / OPTICAL‑SIZE)
             _fontVariations('fill', 'FILL'),
             _fontVariations('weight', 'wght'),
             _fontVariations('grade', 'GRAD'),
@@ -239,8 +222,8 @@ class IconNodeData extends WidgetTreeNodeData {
               'applyTextScaling',
               typeName: 'bool?',
               dataLink: WidgetPropertyDataDirectLink(
-                nameOfDestinationChildWidget: 'SizedBox',
-                nameOfDestinationChildProperties: ['height', 'width'],
+                nameOfDestinationChildWidget: '',
+                nameOfDestinationChildProperties: [],
                 beforePassingToChildren: [
                   WidgetPropertyDataFallback(fallbacks: [
                     (
@@ -249,17 +232,6 @@ class IconNodeData extends WidgetTreeNodeData {
                     ),
                     ('false', null),
                   ]),
-                  WidgetPropertyDataModification(
-                    (context) => [
-                      TextSpan(text: 'When true, final size is scaled by '),
-                      CWidgetSpan(
-                        child: LinkChip(
-                          'MediaQuery.textScalerOf(context)',
-                          link: 'https://api.flutter.dev/flutter/widgets/MediaQuery/textScalerOf.html',
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
