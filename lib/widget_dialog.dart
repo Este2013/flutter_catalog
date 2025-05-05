@@ -290,9 +290,11 @@ class DocsDisplayer extends StatelessWidget {
 typedef ObservedRoute = (int orderLeft, WidgetPropertyData prop, WidgetPropertyDataLink link);
 
 class WidgetBuildTreeDisplayer extends StatefulWidget {
-  const WidgetBuildTreeDisplayer(this.data, {super.key});
+  const WidgetBuildTreeDisplayer(this.data, {super.key, this.defaultProperty, this.showPropertySelection = true});
 
   final WidgetTreeNodeData data;
+  final String? defaultProperty;
+  final bool showPropertySelection;
 
   @override
   State<WidgetBuildTreeDisplayer> createState() => _WidgetBuildTreeDisplayerState();
@@ -302,23 +304,34 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
   WidgetPropertyData? observedProperties;
 
   @override
+  void initState() {
+    if (widget.defaultProperty != null) {
+      observedProperties = widget.data.parameters?.firstWhere(
+        (p) => p.propertyName == widget.defaultProperty,
+      );
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.all(8.0),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Building Tree View'),
           actions: [
-            DropdownMenu(
-              dropdownMenuEntries: [
-                for (var e in widget.data.parameters ?? <WidgetPropertyData>[])
-                  DropdownMenuEntry(
-                    value: e,
-                    label: e.propertyName,
-                  )
-              ],
-              initialSelection: observedProperties?.propertyName,
-              onSelected: (value) => setState(() => observedProperties = value as WidgetPropertyData),
-            )
+            if (widget.showPropertySelection)
+              DropdownMenu(
+                dropdownMenuEntries: [
+                  for (var e in widget.data.parameters ?? <WidgetPropertyData>[])
+                    DropdownMenuEntry(
+                      value: e,
+                      label: e.propertyName,
+                    )
+                ],
+                initialSelection: observedProperties?.propertyName,
+                onSelected: (value) => setState(() => observedProperties = value as WidgetPropertyData),
+              )
           ],
           automaticallyImplyLeading: false,
         ),

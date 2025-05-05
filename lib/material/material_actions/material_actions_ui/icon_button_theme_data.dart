@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
+import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../theme_explanations_utils.dart';
@@ -7,7 +8,9 @@ import '../../theme_explanations_utils.dart';
 class IconButtonThemeExplanation extends StatefulWidget {
   const IconButtonThemeExplanation({
     super.key,
+    this.treeNodeData,
   });
+  final WidgetTreeNodeData? treeNodeData;
 
   @override
   State<IconButtonThemeExplanation> createState() => _IconButtonThemeExplanationState();
@@ -28,6 +31,7 @@ class _IconButtonThemeExplanationState extends State<IconButtonThemeExplanation>
             builder: (context) => ClassThemingExplanationView(
                 className: 'IconButton',
                 baseDocsUrl: 'https://api.flutter.dev/flutter/material/IconButton',
+                treeNodeData: widget.treeNodeData,
                 propertiesData: PropertyGroupData(
                   content: {
                     'Alignment': PropertyData(

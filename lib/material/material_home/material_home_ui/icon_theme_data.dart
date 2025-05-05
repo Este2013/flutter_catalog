@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
+import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../theme_explanations_utils.dart';
@@ -9,7 +10,9 @@ import '../../theme_explanations_utils.dart';
 class IconThemeExplanation extends StatefulWidget {
   const IconThemeExplanation({
     super.key,
+    required this.treeNodeData,
   });
+  final WidgetTreeNodeData? treeNodeData;
 
   @override
   State<IconThemeExplanation> createState() => _IconThemeExplanationState();
@@ -27,46 +30,49 @@ class _IconThemeExplanationState extends State<IconThemeExplanation> with Ticker
   @override
   Widget build(BuildContext context) => Navigator(
         onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => ClassThemingExplanationView(
-                className: 'Icon',
-                baseDocsUrl: 'https://api.flutter.dev/flutter/widgets/Icon',
-                propertiesData: PropertyGroupData(content: {
-                  'Color': PropertyData(
-                    'color',
-                    icon: Icon(Icons.colorize),
-                    child: IconColorExplanation(),
-                  ),
-                  'Fill': PropertyData(
-                    'fill',
-                    icon: Icon(Icons.gradient),
-                    child: IconFillExplanation(),
-                  ),
-                  'Size': PropertyData(
-                    'size',
-                    icon: Icon(Icons.height),
-                    child: IconSizeExplanation(),
-                  ),
-                  'Optical Size': PropertyData(
-                    'opticalSize',
-                    icon: Icon(Icons.remove_red_eye),
-                    child: IconOpticalSizeExplanation(),
-                  ),
-                  'Weight': PropertyData(
-                    'weight',
-                    icon: Icon(Icons.balance),
-                    child: IconWeightExplanation(),
-                  ),
-                  'Grade': PropertyData(
-                    'grade',
-                    icon: Icon(Icons.grade),
-                    child: IconGradeExplanation(),
-                  ),
-                  'Opacity': PropertyData(
-                    'opacity',
-                    icon: Icon(Icons.opacity),
-                    child: IconOpacityExplanation(),
-                  ),
-                }))),
+          builder: (context) => ClassThemingExplanationView(
+            className: 'Icon',
+            baseDocsUrl: 'https://api.flutter.dev/flutter/widgets/Icon',
+            propertiesData: PropertyGroupData(content: {
+              'Color': PropertyData(
+                'color',
+                icon: Icon(Icons.colorize),
+                child: IconColorExplanation(),
+              ),
+              'Fill': PropertyData(
+                'fill',
+                icon: Icon(Icons.gradient),
+                child: IconFillExplanation(),
+              ),
+              'Size': PropertyData(
+                'size',
+                icon: Icon(Icons.height),
+                child: IconSizeExplanation(),
+              ),
+              'Optical Size': PropertyData(
+                'opticalSize',
+                icon: Icon(Icons.remove_red_eye),
+                child: IconOpticalSizeExplanation(),
+              ),
+              'Weight': PropertyData(
+                'weight',
+                icon: Icon(Icons.balance),
+                child: IconWeightExplanation(),
+              ),
+              'Grade': PropertyData(
+                'grade',
+                icon: Icon(Icons.grade),
+                child: IconGradeExplanation(),
+              ),
+              'Opacity': PropertyData(
+                'opacity',
+                icon: Icon(Icons.opacity),
+                child: IconOpacityExplanation(),
+              ),
+            }),
+            treeNodeData: widget.treeNodeData,
+          ),
+        ),
       );
 }
 

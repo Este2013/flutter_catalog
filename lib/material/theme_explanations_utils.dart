@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/adaptive_tab_bar.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
+import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -120,12 +121,13 @@ class LinkChip extends StatelessWidget {
 }
 
 class ClassThemingExplanationView extends StatefulWidget {
-  const ClassThemingExplanationView({super.key, this.className, required this.propertiesData, this.baseDocsUrl});
+  const ClassThemingExplanationView({super.key, this.className, required this.propertiesData, this.baseDocsUrl, this.treeNodeData});
 
   final String? className;
 
   /// Where keys property or group names, and values are PropertyData or Map`<String, PropertyData>`
   final PropertyGroupData propertiesData;
+  final WidgetTreeNodeData? treeNodeData;
 
   /// Ex: for properties:
   ///  -> https://api.flutter.dev/flutter/material/IconButton/$propName.html,
@@ -171,9 +173,17 @@ class _ClassThemingExplanationViewState extends State<ClassThemingExplanationVie
             children: [
               for (var tabData in widget.propertiesData.content.entries)
                 if (tabData.value is PropertyData)
-                  PropertyExplanationView.fromPropertyData(tabData.value, baseLink: widget.baseDocsUrl)
+                  PropertyExplanationView.fromPropertyData(
+                    tabData.value,
+                    baseLink: widget.baseDocsUrl,
+                    treeNodeData: widget.treeNodeData,
+                  )
                 else if (tabData.value is PropertyGroupData)
-                  _SubGroupThemingExplanationView(propertiesData: tabData.value, baseDocsUrl: (tabData.value as PropertyGroupData).baseDocsUrl ?? widget.baseDocsUrl),
+                  _SubGroupThemingExplanationView(
+                    propertiesData: tabData.value,
+                    baseDocsUrl: (tabData.value as PropertyGroupData).baseDocsUrl ?? widget.baseDocsUrl,
+                    treeNodeData: widget.treeNodeData,
+                  ),
             ],
           ),
         ),
@@ -181,7 +191,7 @@ class _ClassThemingExplanationViewState extends State<ClassThemingExplanationVie
 }
 
 class _SubGroupThemingExplanationView extends StatelessWidget {
-  const _SubGroupThemingExplanationView({required this.propertiesData, this.baseDocsUrl});
+  const _SubGroupThemingExplanationView({required this.propertiesData, this.baseDocsUrl, required this.treeNodeData});
 
   /// Where keys property or group names, and values are PropertyData or Map`<String, PropertyData>`
   final PropertyGroupData propertiesData;
@@ -192,6 +202,7 @@ class _SubGroupThemingExplanationView extends StatelessWidget {
   ///  -> https://api.flutter.dev/flutter/material/IconButton
   /// without a slash at the end.
   final String? baseDocsUrl;
+  final WidgetTreeNodeData? treeNodeData;
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
@@ -211,9 +222,17 @@ class _SubGroupThemingExplanationView extends StatelessWidget {
             child: TabBarView(children: [
               for (var tabData in propertiesData.content.entries)
                 if (tabData.value is PropertyData)
-                  PropertyExplanationView.fromPropertyData(tabData.value, baseLink: baseDocsUrl)
+                  PropertyExplanationView.fromPropertyData(
+                    tabData.value,
+                    baseLink: baseDocsUrl,
+                    treeNodeData: treeNodeData,
+                  )
                 else if (tabData.value is PropertyGroupData)
-                  _SubGroupThemingExplanationView(propertiesData: tabData.value, baseDocsUrl: (tabData.value as PropertyGroupData).baseDocsUrl ?? baseDocsUrl),
+                  _SubGroupThemingExplanationView(
+                    propertiesData: tabData.value,
+                    baseDocsUrl: (tabData.value as PropertyGroupData).baseDocsUrl ?? baseDocsUrl,
+                    treeNodeData: treeNodeData,
+                  ),
             ]),
           ),
         ),
@@ -264,16 +283,25 @@ class PropertyData {
 }
 
 class PropertyExplanationView extends StatefulWidget {
-  const PropertyExplanationView(this.propertyName, {super.key, this.child, this.children, this.shortExplanation, this.docsLink, this.onlyUsedWithMaterial3Warning})
-      : assert((child != null) ^ (children != null));
+  const PropertyExplanationView(
+    this.propertyName, {
+    super.key,
+    this.child,
+    this.children,
+    this.shortExplanation,
+    this.docsLink,
+    this.onlyUsedWithMaterial3Warning,
+    this.treeNodeData,
+  }) : assert((child != null) ^ (children != null));
 
-  factory PropertyExplanationView.fromPropertyData(PropertyData data, {String? baseLink}) => PropertyExplanationView(
+  factory PropertyExplanationView.fromPropertyData(PropertyData data, {String? baseLink, WidgetTreeNodeData? treeNodeData}) => PropertyExplanationView(
         data.propertyName,
         docsLink: data.docsLink ?? (baseLink != null ? '${[baseLink, data.propertyName].join('/')}.html' : null),
         shortExplanation: data.shortExplanation,
         onlyUsedWithMaterial3Warning: data.onlyUsedWithMaterial3Warning,
         child: data.child,
         children: data.children,
+        treeNodeData: treeNodeData,
       );
 
   final String propertyName;
@@ -281,13 +309,14 @@ class PropertyExplanationView extends StatefulWidget {
   final List<Widget>? children;
   final Widget? child;
   final bool? onlyUsedWithMaterial3Warning;
+  final WidgetTreeNodeData? treeNodeData;
 
   @override
   State<PropertyExplanationView> createState() => PropertyExplanationViewState();
 }
 
 class PropertyExplanationViewState extends State<PropertyExplanationView> {
-  bool showDocsPage = false;
+  String shownPage = 'eval';
 
   @override
   Widget build(BuildContext context) {
@@ -305,17 +334,18 @@ class PropertyExplanationViewState extends State<PropertyExplanationView> {
         )),
         SegmentedButton(
           segments: [
-            ButtonSegment(value: false, icon: Icon(Symbols.conversion_path), tooltip: 'Property evaluation'),
-            ButtonSegment(value: true, icon: Icon(Symbols.book_2), tooltip: 'Property documentation'),
-            // TODO: Add tree view here per property instead of up in the beeg dialog
+            ButtonSegment(value: 'eval', icon: Icon(Symbols.conversion_path), tooltip: 'Property evaluation'),
+            ButtonSegment(value: 'docs', icon: Icon(Symbols.book_2), tooltip: 'Property documentation'),
+            if (widget.treeNodeData != null && (widget.treeNodeData!.parameters?.any((p) => p.propertyName == widget.propertyName) ?? false))
+              ButtonSegment(value: 'tree', icon: Icon(Symbols.view_object_track), tooltip: 'Property tree view'),
           ],
-          selected: {showDocsPage},
+          selected: {shownPage},
           showSelectedIcon: false,
-          onSelectionChanged: (p0) => setState(() => showDocsPage = p0.first),
+          onSelectionChanged: (p0) => setState(() => shownPage = p0.first),
         )
       ],
     );
-    if (showDocsPage) {
+    if (shownPage == 'eval') {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -324,32 +354,49 @@ class PropertyExplanationViewState extends State<PropertyExplanationView> {
           Expanded(child: DocsDisplayer(widget.docsLink!, pageName: widget.propertyName)),
         ],
       );
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (widget.shortExplanation != null || widget.docsLink != null) header,
-        Divider(),
-        Expanded(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text('${widget.propertyName} Evaluation'),
-              automaticallyImplyLeading: false,
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  spacing: 8,
-                  children: [...?widget.children, if (widget.child != null) widget.child!],
+    } else if (shownPage == 'docs') {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.shortExplanation != null || widget.docsLink != null) header,
+          Divider(),
+          Expanded(
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text('${widget.propertyName} Evaluation'),
+                automaticallyImplyLeading: false,
+              ),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: 8,
+                    children: [...?widget.children, if (widget.child != null) widget.child!],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else if (shownPage == 'tree') {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.shortExplanation != null || widget.docsLink != null) header,
+          Divider(),
+          Expanded(
+            child: WidgetBuildTreeDisplayer(
+              widget.treeNodeData!,
+              showPropertySelection: false,
+              defaultProperty: widget.propertyName,
+            ),
+          ),
+        ],
+      );
+    }
+    return Placeholder();
   }
 }
 
