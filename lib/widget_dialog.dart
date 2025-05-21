@@ -200,7 +200,15 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
                         : showedMode == 'docs'
                             ? DocsDisplayer(data.docsLink ?? widget.docsLink!)
                             : showedMode == 'tree'
-                                ? WidgetBuildTreeDisplayer(IconNodeData())
+                                ? Builder(builder: (context) {
+                                    var selected = widget.selected == widget.mainVariantName ? widget.variantsData.first : widget.variantsData.firstWhere((v) => v.name == widget.selected);
+                                    bool hasWidgetTreeData = selected.widgetTreeExplanation != null;
+                                    if (hasWidgetTreeData) {
+                                      return WidgetBuildTreeDisplayer(selected.widgetTreeExplanation!);
+                                    } else {
+                                      return Placeholder();
+                                    }
+                                  })
                                 : Placeholder(),
               ),
             ),

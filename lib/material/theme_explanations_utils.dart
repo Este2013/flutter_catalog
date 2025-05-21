@@ -349,15 +349,6 @@ class PropertyExplanationViewState extends State<PropertyExplanationView> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          header,
-          Divider(),
-          Expanded(child: DocsDisplayer(widget.docsLink!, pageName: widget.propertyName)),
-        ],
-      );
-    } else if (shownPage == 'docs') {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
           if (widget.shortExplanation != null || widget.docsLink != null) header,
           Divider(),
           Expanded(
@@ -378,6 +369,15 @@ class PropertyExplanationViewState extends State<PropertyExplanationView> {
               ),
             ),
           ),
+        ],
+      );
+    } else if (shownPage == 'docs') {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          header,
+          Divider(),
+          Expanded(child: DocsDisplayer(widget.docsLink!, pageName: widget.propertyName)),
         ],
       );
     } else if (shownPage == 'tree') {

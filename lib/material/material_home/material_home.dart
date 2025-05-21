@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/material/color_scheme_page.dart';
+import 'package:flutter_catalog/widget_tree_resolver/container_data.dart';
+import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -294,22 +296,24 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
                                 WidgetPresentation(
                                   title: 'Icon',
                                   variantsData: [
-                                    WidgetVariantData(null,
-                                        variantExplanation: 'A graphical icon widget drawn with a glyph from a font described in an IconData.',
-                                        iconBuilder: (p0) => Icon(Symbols.emoji_symbols),
-                                        widgetBuilder: (p0, options) => Padding(
-                                              padding: EdgeInsets.all(16),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Icon(Icons.star, color: Colors.amber.shade700),
-                                                  Icon(Icons.music_note),
-                                                  Icon(Icons.favorite, color: Colors.red),
-                                                ],
-                                              ),
-                                            ),
-                                        themeExplanation: IconThemeExplanation(treeNodeData: IconNodeData()),
-                                        widgetTreeExplanation: IconNodeData()),
+                                    WidgetVariantData(
+                                      null,
+                                      variantExplanation: 'A graphical icon widget drawn with a glyph from a font described in an IconData.',
+                                      iconBuilder: (p0) => Icon(Symbols.emoji_symbols),
+                                      widgetBuilder: (p0, options) => Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Icon(Icons.star, color: Colors.amber.shade700),
+                                            Icon(Icons.music_note),
+                                            Icon(Icons.favorite, color: Colors.red),
+                                          ],
+                                        ),
+                                      ),
+                                      themeExplanation: IconThemeExplanation(treeNodeData: IconNodeData()),
+                                      widgetTreeExplanation: IconNodeData(),
+                                    ),
                                   ],
                                   link: 'https://api.flutter.dev/flutter/widgets/Icon-class.html',
                                 ),
@@ -336,9 +340,8 @@ class _MaterialApplicationBodyState extends State<MaterialApplicationBody> {
                                     WidgetVariantData(
                                       null,
                                       iconBuilder: (p0) => Icon(Icons.check_box_outline_blank_sharp),
-                                      widgetBuilder: (p0, options) => Container(
-                                        color: Colors.amber,
-                                      ),
+                                      widgetBuilder: (p0, options) => Container(color: Colors.amber),
+                                      widgetTreeExplanation: ContainerNodeData(),
                                     ),
                                     WidgetVariantData(
                                       'Padding',
