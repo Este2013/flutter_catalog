@@ -1,7 +1,7 @@
 import 'data.dart';
 
 class NamedTreeNodeData extends WidgetTreeNodeData {
-  NamedTreeNodeData(super.widgetName, {super.child}) : super(parameters: null);
+  NamedTreeNodeData(super.widgetName, {super.child, super.key}) : super(parameters: null);
 
   @override
   TreeNodeData? build() => child;
@@ -17,14 +17,14 @@ class ChildTreeNodeData extends WidgetTreeNodeData {
 //////////////////
 
 class CenterData extends WidgetTreeNodeData {
-  CenterData({super.child}) : super('Center', parameters: null);
+  CenterData({super.child, super.key}) : super('Center', parameters: null);
 
   @override
   TreeNodeData? build() => child;
 }
 
 class SizedBoxData extends WidgetTreeNodeData {
-  SizedBoxData({super.child})
+  SizedBoxData({super.child, super.key})
       : super(
           'SizedBox',
           parameters: null,
@@ -35,7 +35,7 @@ class SizedBoxData extends WidgetTreeNodeData {
 }
 
 class RichTextData extends WidgetTreeNodeData {
-  RichTextData()
+  RichTextData({super.key})
       : super(
           'RichText',
           child: null,
@@ -47,7 +47,7 @@ class RichTextData extends WidgetTreeNodeData {
 }
 
 class TransformData extends WidgetTreeNodeData {
-  TransformData({super.child})
+  TransformData({super.child, super.key})
       : super(
           'Transform',
           parameters: null,
@@ -58,7 +58,7 @@ class TransformData extends WidgetTreeNodeData {
 }
 
 class LimitedBoxData extends WidgetTreeNodeData {
-  LimitedBoxData({super.child})
+  LimitedBoxData({super.child, super.key})
       : super(
           'LimitedBox',
           parameters: null,

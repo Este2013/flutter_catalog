@@ -3,14 +3,16 @@ import 'package:flutter_catalog/material/theme_explanations_utils.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
 
 abstract class TreeNodeData {
-  TreeNodeData({this.child});
+  TreeNodeData({this.child, this.key});
 
+  // optional value to determine which widget should recieve a property link
+  String? key;
   TreeNodeData? child;
   TreeNodeData? build();
 }
 
 abstract class WidgetTreeNodeData extends TreeNodeData {
-  WidgetTreeNodeData(this.widgetName, {super.child, this.parameters});
+  WidgetTreeNodeData(this.widgetName, {super.child, this.parameters, super.key});
 
   String widgetName;
   List<WidgetPropertyData>? parameters;
@@ -34,6 +36,32 @@ class ConditionalTreeNodeData extends TreeNodeData {
   TreeNodeData? build() {
     if (conditionFulfilment.value) return child;
     return ifFalse;
+  }
+}
+
+class ConditionalWrappingTreeNodeData extends TreeNodeData {
+  ConditionalWrappingTreeNodeData({
+    required this.condition,
+    super.child,
+    this.wrappingIfTrue,
+    this.wrappingIfFalse,
+    bool defaultCondition = true,
+  }) {
+    conditionFulfilment = ValueNotifier(defaultCondition);
+  }
+
+  late ValueNotifier<bool> conditionFulfilment;
+  List<InlineSpan> condition;
+  TreeNodeData Function(TreeNodeData? child)? wrappingIfTrue, wrappingIfFalse;
+
+  @override
+  TreeNodeData? build() {
+    if (conditionFulfilment.value) {
+      if (wrappingIfTrue != null) return wrappingIfTrue!(child);
+      return child;
+    }
+    if (wrappingIfFalse != null) return wrappingIfFalse!(child);
+    return child;
   }
 }
 
@@ -65,10 +93,12 @@ abstract class WidgetPropertyDataLink {
     required this.nameOfDestinationChildWidget,
     required this.nameOfDestinationChildProperties,
     this.order = 1,
+    this.destinationKey,
     required this.beforePassingToChildren,
   });
 
   final String nameOfDestinationChildWidget;
+  final String? destinationKey;
 
   /// 1: first child widget of corresponding name
   /// 2: 2nd child widget of...
@@ -79,11 +109,11 @@ abstract class WidgetPropertyDataLink {
 }
 
 class WidgetPropertyDataDirectLink extends WidgetPropertyDataLink {
-  WidgetPropertyDataDirectLink({required super.nameOfDestinationChildWidget, required super.nameOfDestinationChildProperties, super.beforePassingToChildren});
+  WidgetPropertyDataDirectLink({required super.nameOfDestinationChildWidget, required super.nameOfDestinationChildProperties, super.beforePassingToChildren, super.destinationKey});
 }
 
 class WidgetPropertyDataLinkWithRenaming extends WidgetPropertyDataLink {
-  WidgetPropertyDataLinkWithRenaming(this.newName, {required super.nameOfDestinationChildWidget, required super.nameOfDestinationChildProperties, super.beforePassingToChildren});
+  WidgetPropertyDataLinkWithRenaming(this.newName, {required super.nameOfDestinationChildWidget, required super.nameOfDestinationChildProperties, super.beforePassingToChildren, super.destinationKey});
 
   final String newName;
 }

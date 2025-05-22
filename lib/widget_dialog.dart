@@ -371,10 +371,11 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                         CWidgetSpan(child: Tooltip(message: 'Condition', child: Icon(Symbols.help))),
                         CWidgetSpan(child: SizedBox(width: 16)),
                         CWidgetSpan(
-                            child: Switch(
-                          value: widgetData.conditionFulfilment.value,
-                          onChanged: (v) => widgetData.conditionFulfilment.value = v,
-                        )),
+                          child: Checkbox(
+                            value: widgetData.conditionFulfilment.value,
+                            onChanged: (v) => widgetData.conditionFulfilment.value = v!,
+                          ),
+                        ),
                         ...widgetData.condition,
                       ]),
                     ),
@@ -402,7 +403,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
         final prop = route.$2;
         final link = route.$3;
 
-        if (link.nameOfDestinationChildWidget == widgetData.widgetName) {
+        if (link.nameOfDestinationChildWidget == widgetData.widgetName && (link.destinationKey == null || link.destinationKey == widgetData.key)) {
           if (orderLeft == 1) {
             hitsHere.add((prop, link)); // <-- show on THIS widget
           } else {
@@ -487,6 +488,45 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
               observedProperties: toPassDown,
             ),
         ],
+      );
+    } else if (widgetData is ConditionalWrappingTreeNodeData) {
+      return AnimatedBuilder(
+        animation: widgetData.conditionFulfilment,
+        builder: (context, child) {
+          var buildResolution = widgetData.build();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IntrinsicHeight(
+                    child: RichText(
+                      text: TextSpan(style: Theme.of(context).textTheme.bodyMedium, children: [
+                        CWidgetSpan(child: Tooltip(message: 'Condition', child: Icon(Symbols.help))),
+                        CWidgetSpan(child: SizedBox(width: 16)),
+                        CWidgetSpan(
+                          child: Checkbox(
+                            value: widgetData.conditionFulfilment.value,
+                            onChanged: (v) => widgetData.conditionFulfilment.value = v!,
+                          ),
+                        ),
+                        ...widgetData.condition,
+                      ]),
+                    ),
+                  ),
+                ),
+              ),
+              if (buildResolution != null)
+                recursiveLayerBuilder(
+                  givendata: buildResolution,
+                  depth: depth + 1,
+                  observedProperties: observedProperties,
+                ),
+            ],
+          );
+        },
       );
     }
     return Placeholder();
