@@ -1,5 +1,21 @@
 import 'data.dart';
 
+class NamedTreeNodeData extends WidgetTreeNodeData {
+  NamedTreeNodeData(super.widgetName, {super.child}) : super(parameters: null);
+
+  @override
+  TreeNodeData? build() => child;
+}
+
+class ChildTreeNodeData extends WidgetTreeNodeData {
+  ChildTreeNodeData({super.child}) : super('child', parameters: null);
+
+  @override
+  TreeNodeData? build() => child;
+}
+
+//////////////////
+
 class CenterData extends WidgetTreeNodeData {
   CenterData({super.child}) : super('Center', parameters: null);
 
@@ -34,6 +50,17 @@ class TransformData extends WidgetTreeNodeData {
   TransformData({super.child})
       : super(
           'Transform',
+          parameters: null,
+        );
+
+  @override
+  TreeNodeData? build() => child;
+}
+
+class LimitedBoxData extends WidgetTreeNodeData {
+  LimitedBoxData({super.child})
+      : super(
+          'LimitedBox',
           parameters: null,
         );
 

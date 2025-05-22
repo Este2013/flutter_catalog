@@ -16,8 +16,8 @@ abstract class WidgetTreeNodeData extends TreeNodeData {
   List<WidgetPropertyData>? parameters;
 }
 
-class ConditionalWidgetTreeNodeData extends TreeNodeData {
-  ConditionalWidgetTreeNodeData({
+class ConditionalTreeNodeData extends TreeNodeData {
+  ConditionalTreeNodeData({
     required this.condition,
     super.child,
     this.ifFalse,

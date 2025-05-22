@@ -246,7 +246,7 @@ class IconNodeData extends WidgetTreeNodeData {
         child: ExcludeSemanticsData(
           child: SizedBoxData(
             child: CenterData(
-                child: ConditionalWidgetTreeNodeData(
+                child: ConditionalTreeNodeData(
               condition: [
                 CWidgetSpan(child: LinkChip.ofWidgetProperty('IconData', 'matchTextDirection', customDisplay: 'icon.matchTextDirection')),
                 TextSpan(text: ' and '),

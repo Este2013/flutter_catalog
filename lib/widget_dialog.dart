@@ -353,7 +353,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
   Widget recursiveLayerBuilder({TreeNodeData? givendata, int depth = 1, List<ObservedRoute>? observedProperties}) {
     var widgetData = givendata ?? widget.data;
 
-    if (widgetData is ConditionalWidgetTreeNodeData) {
+    if (widgetData is ConditionalTreeNodeData) {
       return AnimatedBuilder(
         animation: widgetData.conditionFulfilment,
         builder: (context, child) {

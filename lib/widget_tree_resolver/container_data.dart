@@ -27,5 +27,15 @@ class ContainerNodeData extends WidgetTreeNodeData {
   //   BUILD:  produce the *widget tree* that an <Icon> ultimately expands to.
   // -------------------------------------------------------------------------
   @override
-  WidgetTreeNodeData? build() => SemanticsData();
+  TreeNodeData? build() => ConditionalTreeNodeData(
+        condition: [
+          CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'child')),
+          TextSpan(text: ' is null, and either: '),
+          CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'constraints')),
+          TextSpan(text: ' is null, or not '),
+          CWidgetSpan(child: LinkChip('constraints.isTight', link: 'https://api.flutter.dev/flutter/rendering/BoxConstraints/isTight.html')),
+        ],
+        child: NamedTreeNodeData('LimitedBox', child: NamedTreeNodeData('ConstrainedBox')),
+        ifFalse: NamedTreeNodeData('Align', child: ChildTreeNodeData()),
+      );
 }
