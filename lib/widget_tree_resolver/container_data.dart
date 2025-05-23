@@ -12,23 +12,83 @@ class ContainerNodeData extends WidgetTreeNodeData {
           'Container',
           child: null,
           parameters: [
+            // alignment
             WidgetPropertyData(
-              'Alignment',
+              'alignment',
               typeName: 'AlignmentGeometry?',
               dataLink: WidgetPropertyDataDirectLink(
                 nameOfDestinationChildWidget: 'Align',
                 nameOfDestinationChildProperties: ['alignment'],
               ),
             ),
+            // clipBehavior
             WidgetPropertyData(
-              'Decoration',
-              typeName: 'Decoration?',
+              'clipBehavior',
+              typeName: 'Clip',
+              dataLinks: [
+                WidgetPropertyDataLinkWithRenaming('clipper', nameOfDestinationChildWidget: 'ClipPath', nameOfDestinationChildProperties: [
+                  'clipper'
+                ], beforePassingToChildren: [
+                  WidgetPropertyDataPackaging(
+                    packageType: '_DecorationClipper',
+                    packageName: 'clipper',
+                    modifications: WidgetPropertyDataModification(
+                      (context) => [
+                        TextSpan(text: 'textDirection = Directionality.maybeOf(context)'),
+                        TextSpan(text: '\ndecoration = decoration'),
+                        TextSpan(text: '\nclipBehavior = clipBehavior'),
+                      ],
+                    ),
+                  ),
+                ]),
+              ],
+            ),
+            // color
+            WidgetPropertyData(
+              'color',
+              typeName: 'Color?',
               dataLink: WidgetPropertyDataDirectLink(
-                destinationKey: 'decoration',
-                nameOfDestinationChildWidget: 'DecoratedBox',
-                nameOfDestinationChildProperties: ['decoration'],
+                nameOfDestinationChildWidget: 'ColoredBox',
+                nameOfDestinationChildProperties: ['color'],
               ),
             ),
+            // decoration
+            WidgetPropertyData(
+              'decoration',
+              typeName: 'Decoration?',
+              dataLinks: [
+                // missing link into padding (effective padding)
+                WidgetPropertyDataDirectLink(
+                  destinationKey: 'decoration',
+                  nameOfDestinationChildWidget: 'DecoratedBox',
+                  nameOfDestinationChildProperties: ['decoration'],
+                ),
+                WidgetPropertyDataLinkWithRenaming('clipper', nameOfDestinationChildWidget: 'ClipPath', nameOfDestinationChildProperties: [
+                  'clipper'
+                ], beforePassingToChildren: [
+                  WidgetPropertyDataPackaging(
+                    packageType: '_DecorationClipper',
+                    packageName: 'clipper',
+                    modifications: WidgetPropertyDataModification(
+                      (context) => [
+                        TextSpan(text: 'textDirection = Directionality.maybeOf(context)'),
+                        TextSpan(text: '\ndecoration = decoration'),
+                        TextSpan(text: '\nclipBehavior = clipBehavior'),
+                      ],
+                    ),
+                  ),
+                ]),
+                WidgetPropertyDataLinkWithRenaming('effectivePadding', nameOfDestinationChildWidget: 'Padding', nameOfDestinationChildProperties: [
+                  'padding'
+                ], beforePassingToChildren: [
+                  WidgetPropertyDataPackaging(
+                      packageName: 'effectivePadding',
+                      packageType: 'EdgeInsetsGeometry?',
+                      modifications: WidgetPropertyDataModification((context) => [TextSpan(text: 'effectivePadding is either padding or decoration.padding, or their sum (if both are provided)')]))
+                ]),
+              ],
+            ),
+            // foregroundDecoration
             WidgetPropertyData(
               'ForegroudDecoration',
               typeName: 'Decoration?',
@@ -38,7 +98,47 @@ class ContainerNodeData extends WidgetTreeNodeData {
                 nameOfDestinationChildProperties: ['decoration'],
               ),
             ),
-            // TODO ALL PROPERTIES
+            // margin
+            WidgetPropertyData(
+              'margin',
+              typeName: 'EdgeInsetsGeometry?',
+              dataLink: WidgetPropertyDataDirectLink(
+                destinationKey: 'margin',
+                nameOfDestinationChildWidget: 'Padding',
+                nameOfDestinationChildProperties: ['padding'],
+              ),
+            ),
+            // padding
+            WidgetPropertyData(
+              'padding',
+              typeName: 'EdgeInsetsGeometry?',
+              dataLink: WidgetPropertyDataLinkWithRenaming('effectivePadding', nameOfDestinationChildWidget: 'Padding', nameOfDestinationChildProperties: [
+                'padding'
+              ], beforePassingToChildren: [
+                WidgetPropertyDataPackaging(
+                    packageName: 'effectivePadding',
+                    packageType: 'EdgeInsetsGeometry?',
+                    modifications: WidgetPropertyDataModification((context) => [TextSpan(text: 'effectivePadding is either padding or decoration.padding, or their sum (if both are provided)')]))
+              ]),
+            ),
+            // transform
+            WidgetPropertyData(
+              'transform',
+              typeName: 'Matrix4?',
+              dataLink: WidgetPropertyDataDirectLink(
+                nameOfDestinationChildWidget: 'Transform',
+                nameOfDestinationChildProperties: ['transform'],
+              ),
+            ),
+            // transformAlignment
+            WidgetPropertyData(
+              'transformAlignment',
+              typeName: 'AlignmentGeometry?',
+              dataLink: WidgetPropertyDataDirectLink(
+                nameOfDestinationChildWidget: 'Transform',
+                nameOfDestinationChildProperties: ['transformAlignment'],
+              ),
+            ),
           ],
         );
 
@@ -57,7 +157,7 @@ class ContainerNodeData extends WidgetTreeNodeData {
                 CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'margin')),
                 TextSpan(text: ' is null'),
               ],
-              wrappingIfFalse: (child) => NamedTreeNodeData('Padding', child: child),
+              wrappingIfFalse: (child) => NamedTreeNodeData('Padding', child: child, key: 'margin'),
               child: ConditionalWrappingTreeNodeData(
                   condition: [
                     CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'constraints')),
@@ -97,7 +197,7 @@ class ContainerNodeData extends WidgetTreeNodeData {
                                         CWidgetSpan(child: LinkChip('decoration?.padding')),
                                         TextSpan(text: ' are null'),
                                       ],
-                                      wrappingIfFalse: (child) => NamedTreeNodeData('Padding', child: child),
+                                      wrappingIfFalse: (child) => NamedTreeNodeData('Padding', child: child, key: 'padding'),
                                       child: ConditionalTreeNodeData(
                                         condition: [
                                           CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'child')),
