@@ -423,7 +423,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
               child: IntrinsicHeight(
                 child: Row(
                   children: [
-                    Tooltip(message: 'Widget', child: Icon(Symbols.widgets)),
+                    Tooltip(message: 'Widget', child: Icon(widgetData.isRenderObject ? Symbols.draw_abstract : Symbols.widgets)),
                     SizedBox(width: 16),
                     Expanded(
                       child: Align(

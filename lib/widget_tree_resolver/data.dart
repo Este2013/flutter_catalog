@@ -12,10 +12,11 @@ abstract class TreeNodeData {
 }
 
 abstract class WidgetTreeNodeData extends TreeNodeData {
-  WidgetTreeNodeData(this.widgetName, {super.child, this.parameters, super.key});
+  WidgetTreeNodeData(this.widgetName, {this.isRenderObject = false, super.child, this.parameters, super.key});
 
   String widgetName;
   List<WidgetPropertyData>? parameters;
+  bool isRenderObject;
 }
 
 class ConditionalTreeNodeData extends TreeNodeData {
