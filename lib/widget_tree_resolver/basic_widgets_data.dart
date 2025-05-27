@@ -27,7 +27,11 @@ class SizedBoxData extends WidgetTreeNodeData {
   SizedBoxData({super.child, super.key})
       : super(
           'SizedBox',
-          parameters: null,
+          isRenderObject: true,
+          parameters: [
+            WidgetPropertyData('width', typeName: 'double?', docsLink: 'https://api.flutter.dev/flutter/widgets/SizedBox/width.html'),
+            WidgetPropertyData('height', typeName: 'double?', docsLink: 'https://api.flutter.dev/flutter/widgets/SizedBox/height.html'),
+          ],
         );
 
   @override

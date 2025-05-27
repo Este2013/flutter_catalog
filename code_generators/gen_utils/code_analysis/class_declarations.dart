@@ -15,7 +15,3 @@ class ClassVisitor extends RecursiveAstVisitor<void> {
     super.visitMethodDeclaration(node);
   }
 }
-
-void main() {
-  analyseBasics();
-}

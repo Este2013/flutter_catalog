@@ -76,6 +76,7 @@ class WidgetPropertyData<T> {
     this.subProperties,
     WidgetPropertyDataLink? dataLink,
     List<WidgetPropertyDataLink>? dataLinks,
+    this.defaultValue,
   }) : dataLinks = dataLinks ?? (dataLink == null ? null : [dataLink]);
 
   final String propertyName, typeName;
@@ -83,6 +84,7 @@ class WidgetPropertyData<T> {
   final List<WidgetPropertyData>? subProperties;
 
   final List<WidgetPropertyDataLink>? dataLinks;
+  final T? defaultValue;
 
   /// Helper for legacy code that still expects “the” link.
   WidgetPropertyDataLink? get dataLink => (dataLinks == null || dataLinks!.isEmpty) ? null : dataLinks!.first;
