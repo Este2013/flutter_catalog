@@ -44,18 +44,21 @@ class BasicsWidgetDataGen extends Generator {
         print('${member.runtimeType}: \n\t$member');
         if (member is ConstructorDeclaration && member.factoryKeyword == null) {
           for (final param in member.parameters.parameters) {
-            print('hi $param (${param.runtimeType})');
+            print('\t | param: $param (${param.runtimeType})');
             // TODO params not generating
             if (param is DefaultFormalParameter) {
               final normalParam = param.parameter;
-              if (normalParam is SimpleFormalParameter && normalParam.keyword?.lexeme != null) {
-                final name = normalParam.keyword?.lexeme;
+              print("\t\t | ${param.name?.lexeme}");
+              final name = param.name?.lexeme;
+              if (normalParam is SimpleFormalParameter && param.name?.lexeme != null) {
                 final type = normalParam.type?.toSource() ?? 'dynamic';
                 if (name != null) {
                   parameters[name] = type;
                 } else {
                   print('name was null');
                 }
+              } else {
+                print('\t\t | Skipped; parameter of type ${normalParam.runtimeType}');
               }
             }
           }
