@@ -310,25 +310,23 @@ class _ColoredCirclesIcon extends StatelessWidget {
   const _ColoredCirclesIcon();
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: 50,
-      child: GridView.count(
-        mainAxisSpacing: 2,
-        crossAxisSpacing: 2,
-        crossAxisCount: 2,
-        children: [
-          for (var c in [
-            Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).colorScheme.tertiary,
-            Theme.of(context).colorScheme.inversePrimary,
-          ])
-            Container(decoration: BoxDecoration(color: c, shape: BoxShape.circle)),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => SizedBox.square(
+        dimension: 50,
+        child: GridView.count(
+          mainAxisSpacing: 2,
+          crossAxisSpacing: 2,
+          crossAxisCount: 2,
+          children: [
+            for (var c in [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.tertiary,
+              Theme.of(context).colorScheme.inversePrimary,
+            ])
+              Container(decoration: BoxDecoration(color: c, shape: BoxShape.circle)),
+          ],
+        ),
+      );
 }
 
 class CustomCardItem extends StatelessWidget {
@@ -403,7 +401,7 @@ class CustomCardItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               spacing: 16, // keeps the same spacing as your original code
               children: [
-                IconTheme(data: IconThemeData(size: 50), child: leading),
+                IconTheme.merge(data: IconThemeData(size: 50), child: leading),
                 ConstrainedBox(
                   constraints: BoxConstraints(minWidth: 100),
                   child: Center(
