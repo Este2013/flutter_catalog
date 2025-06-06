@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/theme_explanations_utils.dart';
+import 'package:flutter_catalog/flutter_widgets/basics.dart';
+import 'package:flutter_catalog/flutter_widgets/material/theme_explanations_utils.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
-import 'package:flutter_catalog/widget_tree_resolver/basic_widgets_data.dart';
-import 'package:flutter_catalog/widget_tree_resolver/semantics_data.dart';
 
 import 'data.dart';
 

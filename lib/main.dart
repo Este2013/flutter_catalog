@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/material_home/material_home.dart';
+import 'package:flutter_catalog/flutter_widgets/material/material_home/material_home.dart';
 import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 import 'package:flutter_svg/svg.dart';
@@ -127,6 +127,26 @@ class WidgetPresentation extends StatefulWidget {
   State<WidgetPresentation> createState() => _WidgetPresentationState();
 
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? defaultOptionsBuilder;
+
+  static WidgetPresentationDialog createDialogFrom({
+    required String title,
+    required List<WidgetVariantData> variantsData,
+    String? link,
+    Widget Function(Map<String, dynamic>?, void Function(Map<String, dynamic>?))? defaultOptionsBuilder,
+  }) =>
+      WidgetPresentationDialog(
+        title,
+        variantsData: variantsData,
+        link: link,
+        defaultOptionsBuilder: defaultOptionsBuilder,
+      );
+
+  WidgetPresentationDialog createDialog() => WidgetPresentation.createDialogFrom(
+        title: title,
+        variantsData: variantsData,
+        link: link,
+        defaultOptionsBuilder: defaultOptionsBuilder,
+      );
 }
 
 class _WidgetPresentationState extends State<WidgetPresentation> {
@@ -170,14 +190,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
               )
             : null,
         trailingTitle: (_currentVariantIndex > 0) ? Text('(${widget.variantsData[_currentVariantIndex].name ?? 'variant $_currentVariantIndex'})') : null,
-        onTap: () => showDialog(
-            context: context,
-            builder: (_) => WidgetPresentationDialog(
-                  widget.title,
-                  variantsData: widget.variantsData,
-                  link: widget.link,
-                  defaultOptionsBuilder: widget.defaultOptionsBuilder,
-                )),
+        onTap: () => showDialog(context: context, builder: (_) => widget.createDialog()),
         child: AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
           transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),

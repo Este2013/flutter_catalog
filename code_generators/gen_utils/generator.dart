@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -16,7 +18,7 @@ abstract class Generator {
 
   /// Creates or updates the target Dart file with generated content.
   Future<void> createOutput() async {
-    String marker = '/' * 50;
+    String marker = '// ${'/' * 48}'; // the space avoids it being read as a docstring
     String generatedImportsStart = '$marker\n// GENERATED IMPORTS - DO NOT EDIT\n$marker';
     String nonGeneratedStart = '$marker\n// NON-GENERATED SECTION\n$marker';
     String generatedStart = '$marker\n// GENERATED CODE - DO NOT EDIT\n$marker';

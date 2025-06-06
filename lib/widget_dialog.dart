@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
-import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -414,6 +413,13 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
         }
       }
 
+      Tooltip leadingIcon;
+      if (widgetData.isRenderObject) {
+        leadingIcon = Tooltip(message: 'RenderObject', child: Icon(Symbols.draw_abstract));
+      } else {
+        leadingIcon = Tooltip(message: 'Widget', child: Icon(Symbols.widgets));
+      }
+
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -423,7 +429,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
               child: IntrinsicHeight(
                 child: Row(
                   children: [
-                    Tooltip(message: 'Widget', child: Icon(widgetData.isRenderObject ? Symbols.draw_abstract : Symbols.widgets)),
+                    leadingIcon,
                     SizedBox(width: 16),
                     Expanded(
                       child: Align(

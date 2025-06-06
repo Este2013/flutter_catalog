@@ -1,4 +1,5 @@
-import 'package:analyzer/dart/analysis/utilities.dart';
+// ignore_for_file: avoid_print
+
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 

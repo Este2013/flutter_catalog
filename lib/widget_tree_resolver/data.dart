@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/theme_explanations_utils.dart';
+import 'package:flutter_catalog/flutter_widgets/material/theme_explanations_utils.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
 
 abstract class TreeNodeData {

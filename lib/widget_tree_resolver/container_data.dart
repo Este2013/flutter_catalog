@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/material/theme_explanations_utils.dart';
+import 'package:flutter_catalog/flutter_widgets/basics.dart';
+import 'package:flutter_catalog/flutter_widgets/material/theme_explanations_utils.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:flutter_catalog/widget_tree_resolver/data.dart';
 
 import 'basic_widgets_data.dart';
-import 'semantics_data.dart';
 
 class ContainerNodeData extends WidgetTreeNodeData {
   ContainerNodeData({super.key}) //TODO everything here
@@ -157,13 +157,13 @@ class ContainerNodeData extends WidgetTreeNodeData {
                 CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'margin')),
                 TextSpan(text: ' is null'),
               ],
-              wrappingIfFalse: (child) => NamedTreeNodeData('Padding', child: child, key: 'margin'),
+              wrappingIfFalse: (child) => PaddingData(child: child, key: 'margin'),
               child: ConditionalWrappingTreeNodeData(
                   condition: [
                     CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'constraints')),
                     TextSpan(text: ' is null'),
                   ],
-                  wrappingIfFalse: (child) => NamedTreeNodeData('ConstrainedBox', child: child),
+                  wrappingIfFalse: (child) => ConstrainedBoxData(child: child),
                   child: ConditionalWrappingTreeNodeData(
                       condition: [
                         CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'foregroundDecoration')),
@@ -182,13 +182,13 @@ class ContainerNodeData extends WidgetTreeNodeData {
                                 TextSpan(text: ' is '),
                                 CWidgetSpan(child: LinkChip('Clip.none', link: 'https://api.flutter.dev/flutter/dart-ui/Clip.html')),
                               ],
-                              wrappingIfFalse: (child) => NamedTreeNodeData('ClipPath', child: child),
+                              wrappingIfFalse: (child) => ClipPathData(child: child),
                               child: ConditionalWrappingTreeNodeData(
                                   condition: [
                                     CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'color')),
                                     TextSpan(text: ' is null'),
                                   ],
-                                  wrappingIfFalse: (child) => NamedTreeNodeData('ColoredBox', child: child),
+                                  wrappingIfFalse: (child) => ColoredBoxData(child: child),
                                   child: ConditionalWrappingTreeNodeData(
                                       condition: [
                                         TextSpan(text: 'Both '),
@@ -197,7 +197,7 @@ class ContainerNodeData extends WidgetTreeNodeData {
                                         CWidgetSpan(child: LinkChip('decoration?.padding')),
                                         TextSpan(text: ' are null'),
                                       ],
-                                      wrappingIfFalse: (child) => NamedTreeNodeData('Padding', child: child, key: 'padding'),
+                                      wrappingIfFalse: (child) => PaddingData(child: child, key: 'padding'),
                                       child: ConditionalTreeNodeData(
                                         condition: [
                                           CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'child')),
@@ -207,13 +207,13 @@ class ContainerNodeData extends WidgetTreeNodeData {
                                           CWidgetSpan(child: LinkChip('constraints.isTight', link: 'https://api.flutter.dev/flutter/rendering/BoxConstraints/isTight.html')),
                                         ],
                                         defaultCondition: false,
-                                        child: NamedTreeNodeData('LimitedBox', child: NamedTreeNodeData('ConstrainedBox')),
+                                        child: LimitedBoxData(child: ConstrainedBoxData()),
                                         ifFalse: ConditionalTreeNodeData(
                                           condition: [
                                             CWidgetSpan(child: LinkChip.ofWidgetProperty('Container', 'alignment')),
                                             TextSpan(text: ' is null'),
                                           ],
-                                          ifFalse: NamedTreeNodeData('Align', child: ChildTreeNodeData()),
+                                          ifFalse: AlignData(child: ChildTreeNodeData()),
                                           child: ChildTreeNodeData(),
                                         ),
                                       )))))))));
