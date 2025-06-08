@@ -127,12 +127,13 @@ class BasicsWidgetPresentationGen extends Generator {
   BasicsWidgetPresentationGen()
       : super(
           'BasicsWidgetPresentation',
-          '1.0.0',
+          '1.0.1',
           relativeTargetFilePath: 'lib/flutter_widgets/material/material_home/material_basic_widgets.dart',
           generatedImports: [
             'package:flutter/material.dart',
             'package:flutter_catalog/main.dart',
             'package:flutter_catalog/flutter_widgets/basics_data.dart',
+            'package:material_symbols_icons/symbols.dart',
             'material_home.dart',
           ],
         );

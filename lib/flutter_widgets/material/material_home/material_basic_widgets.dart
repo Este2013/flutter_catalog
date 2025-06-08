@@ -5,9 +5,12 @@
 // ////////////////////////////////////////////////
 // GENERATED IMPORTS - DO NOT EDIT
 // ////////////////////////////////////////////////
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/flutter_widgets/basics_data.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'material_home.dart';
 
 // ////////////////////////////////////////////////
@@ -17,76 +20,143 @@ import 'material_home.dart';
 Widget _iconFor(String className) {
   switch (className) {
     case "Directionality":
+      return Icon(Symbols.format_textdirection_l_to_r);
     case "Opacity":
+      return Icon(Symbols.opacity);
     case "ShaderMask":
+      return Icon(Symbols.masked_transitions);
     case "BackdropGroup":
+      return Icon(Symbols.background_grid_small);
     case "BackdropFilter":
+      return Icon(Symbols.background_dot_small);
     case "CustomPaint":
+      return Icon(Symbols.format_paint);
     case "ClipRect":
+      return Icon(Symbols.crop);
     case "ClipRRect":
+      return Icon(Symbols.crop_rounded);
     case "ClipRSuperellipse":
+      return Icon(Symbols.crop_rounded);
     case "ClipOval":
+      return Icon(Symbols.crop_rounded);
     case "ClipPath":
+      return Icon(Symbols.crop_rounded);
     case "PhysicalModel":
+      return Icon(Symbols.ar_stickers);
     case "PhysicalShape":
+      return Icon(Symbols.view_in_ar);
     case "Transform":
+      return Icon(Symbols.screen_rotation);
     case "CompositedTransformTarget":
+      return Icon(Symbols.screen_rotation);
     case "CompositedTransformFollower":
+      return Icon(Symbols.screen_rotation);
     case "FittedBox":
+      return Icon(Symbols.fit_screen);
     case "FractionalTranslation":
+      return Icon(Symbols.magnification_large);
     case "RotatedBox":
+      return Icon(Symbols.rotate_90_degrees_ccw);
     case "Padding":
+      return Icon(Symbols.padding);
     case "Align":
+      return Icon(Symbols.align_horizontal_right);
     case "Center":
+      return Icon(Symbols.recenter);
     case "CustomSingleChildLayout":
+      return Icon(Symbols.view_array);
     case "LayoutId":
+      return Icon(Symbols.category_search);
     case "CustomMultiChildLayout":
+      return Icon(Symbols.view_carousel);
     case "SizedBox":
+      return Icon(Symbols.resize);
     case "ConstrainedBox":
+      return Icon(Symbols.arrows_input);
     case "ConstraintsTransformBox":
+      return Icon(Symbols.crop_rotate);
     case "UnconstrainedBox":
+      return Icon(Symbols.arrows_output);
     case "FractionallySizedBox":
+      return Icon(Symbols.magnification_large);
     case "LimitedBox":
+      return Icon(Symbols.fit_page_width);
     case "OverflowBox":
+      return Icon(Symbols.zoom_out_map);
     case "SizedOverflowBox":
+      return Icon(Symbols.zoom_out_map);
     case "Offstage":
+      return Icon(Symbols.hide_image);
     case "AspectRatio":
+      return Icon(Symbols.aspect_ratio);
     case "IntrinsicWidth":
+      return Icon(Symbols.width);
     case "IntrinsicHeight":
+      return Icon(Symbols.height);
     case "Baseline":
+      return Icon(Symbols.picture_in_picture_center);
     case "IgnoreBaseline":
+      return Icon(Symbols.picture_in_picture_off);
     case "SliverToBoxAdapter":
+      return Transform.rotate(angle: pi / 2, child: Icon(Symbols.view_carousel));
     case "SliverPadding":
+      return Icon(Symbols.format_line_spacing);
     case "ListBody":
+      return Icon(Symbols.format_list_bulleted);
     case "Stack":
+      return Icon(Symbols.filter_none);
     case "IndexedStack":
+      return Icon(Symbols.filter_2);
     case "Positioned":
+      return Icon(Symbols.location_on);
     case "PositionedDirectional":
+      return Icon(Symbols.location_on);
     case "Flex":
+      return Icon(Symbols.table_rows);
     case "Row":
+      return Transform.rotate(angle: pi / 2, child: Icon(Symbols.table_rows));
     case "Column":
+      return Icon(Symbols.table_rows);
     case "Flexible":
+      return Icon(Symbols.expand);
     case "Expanded":
+      return Icon(Symbols.expand);
     case "Wrap":
+      return Icon(Symbols.format_text_wrap);
     case "Flow":
-    case "RichText":
+      return Icon(Symbols.animation);
+    // case "RichText":
     case "RawImage":
+      return Icon(Symbols.image);
     case "DefaultAssetBundle":
+      return Icon(Symbols.folder_zip);
     case "WidgetToRenderBoxAdapter":
+      return Icon(Symbols.display_external_input);
     case "Listener":
+      return Icon(Symbols.highlight_mouse_cursor);
     case "MouseRegion":
+      return Icon(Symbols.touchpad_mouse);
     case "RepaintBoundary":
+      return Icon(Symbols.wall_art);
     case "IgnorePointer":
+      return Icon(Symbols.touchpad_mouse_off);
     case "AbsorbPointer":
+      return Icon(Symbols.touchpad_mouse_off);
     case "MetaData":
+      return Icon(Symbols.search_insights);
     case "Semantics":
-    case "MergeSemantics":
-    case "BlockSemantics":
-    case "ExcludeSemantics":
-    case "IndexedSemantics":
+      return Icon(Symbols.menu_book);
+    // TODO: Should move into semantics dialog
+    // case "MergeSemantics":
+    // case "BlockSemantics":
+    // case "ExcludeSemantics":
+    // case "IndexedSemantics":
     case "KeyedSubtree":
+      return Icon(Symbols.account_tree);
     case "Builder":
+      return Icon(Symbols.precision_manufacturing);
     case "ColoredBox":
+      return Icon(Symbols.colors);
     default:
       return Icon(Icons.close, color: Colors.red);
   }
@@ -1097,7 +1167,7 @@ _dialogFor(String className) {
 // GENERATED CODE - DO NOT EDIT
 // ////////////////////////////////////////////////
 
-List<Widget> get basicWidgetsList => [
+List<CustomCardItem> get basicWidgetsList => [
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Directionality"),
         title: 'Directionality',

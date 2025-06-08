@@ -135,12 +135,12 @@ class MaterialHomePresentationPage extends StatelessWidget {
               children: [
                 CustomCardItem.explore(
                   leading: Icon(Icons.emoji_symbols, size: 50),
-                  route: MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
+                  createRoute: () => MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
                   title: 'Material icons',
                 ),
                 CustomCardItem.explore(
                   leading: _ColoredCirclesIcon(),
-                  route: MaterialPageRoute(builder: (context) => ColorSchemePage(appCtrl: appCtrl)),
+                  createRoute: () => MaterialPageRoute(builder: (context) => ColorSchemePage(appCtrl: appCtrl)),
                   title: 'Color scheme',
                 ),
               ],
@@ -293,14 +293,14 @@ class MaterialHomePresentationPage extends StatelessWidget {
                   link: 'https://api.flutter.dev/flutter/widgets/Container-class.html',
                 )),
             _TitleRow('Base widgets'),
-            Wrap(children: basicWidgetsList),
+            Wrap(children: basicWidgetsList..removeWhere((e) => e.title == 'RichText')),
           ],
         ),
       );
 }
 
 class _TitleRow extends StatelessWidget {
-  const _TitleRow(this.title, {super.key});
+  const _TitleRow(this.title);
 
   final String title;
 
@@ -368,12 +368,12 @@ class CustomCardItem extends StatelessWidget {
   factory CustomCardItem.explore({
     Key? key,
     required Widget leading,
-    required Route route,
+    required Route Function() createRoute,
     required String title,
   }) =>
       CustomCardItem(
         key: key,
-        onTap: (context) => Navigator.of(context).push(route),
+        onTap: (context) => Navigator.of(context).push(createRoute()),
         leading: leading,
         title: title,
         trailing: Icon(Icons.explore),
