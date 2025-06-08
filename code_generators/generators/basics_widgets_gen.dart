@@ -14,13 +14,13 @@ class BasicsWidgetDataGen extends Generator {
       : super(
           'BasicsWidgetData',
           '1.0.0',
-          relativeTargetFilePath: 'lib/flutter_widgets/basics.dart',
+          relativeTargetFilePath: 'lib/flutter_widgets/basics_data.dart',
           generatedImports: ['package:flutter_catalog/widget_tree_resolver/data.dart'],
         );
 
   @override
   String generate() {
-    var sourceDartFile = '${getFlutterSDKPath()}\\src\\widgets\\basic.dart';
+    String sourceDartFile = '${getFlutterSDKPath()}\\src\\widgets\\basic.dart';
     print(sourceDartFile);
     final sourceContent = File(sourceDartFile).readAsStringSync();
 
@@ -95,30 +95,142 @@ class BasicsWidgetDataGen extends Generator {
 
     return result;
   }
+
+  String _generateDataClass(String className, Map<String, String> params) {
+    final buffer = StringBuffer();
+
+    buffer.writeln('class ${className}Data extends WidgetTreeNodeData {');
+    buffer.writeln('  ${className}Data({super.child, super.key})');
+    buffer.writeln('      : super(');
+    buffer.writeln("          '$className',");
+    buffer.writeln("          isRenderObject: true,");
+    buffer.writeln('          parameters: [');
+
+    for (final entry in params.entries) {
+      final name = entry.key;
+      final type = entry.value;
+      final docUrl = 'https://api.flutter.dev/flutter/widgets/$className/$name.html';
+      buffer.writeln("            WidgetPropertyData('$name', typeName: '$type', docsLink: '$docUrl'),");
+    }
+
+    buffer.writeln('          ],');
+    buffer.writeln('        );\n');
+    buffer.writeln('  @override');
+    buffer.writeln('  TreeNodeData? build() => child;');
+    buffer.writeln('}');
+
+    return buffer.toString();
+  }
 }
 
-String _generateDataClass(String className, Map<String, String> params) {
-  final buffer = StringBuffer();
+class BasicsWidgetPresentationGen extends Generator {
+  BasicsWidgetPresentationGen()
+      : super(
+          'BasicsWidgetPresentation',
+          '1.0.0',
+          relativeTargetFilePath: 'lib/flutter_widgets/material/material_home/material_basic_widgets.dart',
+          generatedImports: [
+            'package:flutter/material.dart',
+            'package:flutter_catalog/main.dart',
+            'package:flutter_catalog/flutter_widgets/basics_data.dart',
+            'material_home.dart',
+          ],
+        );
 
-  buffer.writeln('class ${className}Data extends WidgetTreeNodeData {');
-  buffer.writeln('  ${className}Data({super.child, super.key})');
-  buffer.writeln('      : super(');
-  buffer.writeln("          '$className',");
-  buffer.writeln("          isRenderObject: true,");
-  buffer.writeln('          parameters: [');
+  @override
+  String generateCustomSection(String alreadyPresentText) {
+    // Do not override what's there! (if anything's there)
+    if (alreadyPresentText.trim().isNotEmpty) return alreadyPresentText;
 
-  for (final entry in params.entries) {
-    final name = entry.key;
-    final type = entry.value;
-    final docUrl = 'https://api.flutter.dev/flutter/widgets/$className/$name.html';
-    buffer.writeln("            WidgetPropertyData('$name', typeName: '$type', docsLink: '$docUrl'),");
+    var collector = obtainCollector;
+
+    var result = 'Widget _iconFor(String className) {';
+    result += '  switch(className) {';
+
+    for (final classNode in collector.widgets) {
+      final className = classNode.name.lexeme;
+      if (className.startsWith('_')) continue;
+      result += '\n     case "$className": ';
+    }
+
+    result += '\n    default: return Icon(Icons.close, color: Colors.red);';
+    result += '\n  }\n}';
+
+    result += '\n\n_dialogFor(String className) {';
+    result += '\n  switch(className) {';
+
+    for (final classNode in collector.widgets) {
+      final className = classNode.name.lexeme;
+      if (className.startsWith('_')) continue;
+      result += '\n     case "$className": ';
+      result += '''return WidgetPresentation.createDialogFrom(
+                      title: '$className',
+                      variantsData: [
+                        WidgetVariantData(
+                          null,
+                          variantExplanation: '',
+                          iconBuilder: null,
+                          widgetBuilder: null,
+                          widgetTreeExplanation: ${className}Data(),
+                        ),
+                      ],
+                      link: 'https://api.flutter.dev/flutter/widgets/$className-class.html',
+                    );''';
+    }
+
+    result += '\n    default: return null;';
+    result += '\n  }\n}';
+
+    return result;
   }
 
-  buffer.writeln('          ],');
-  buffer.writeln('        );\n');
-  buffer.writeln('  @override');
-  buffer.writeln('  TreeNodeData? build() => child;');
-  buffer.writeln('}');
+  @override
+  String generate() {
+    var collector = obtainCollector;
 
-  return buffer.toString();
+    var result = 'List<Widget> get basicWidgetsList => [';
+    for (final classNode in collector.widgets) {
+      final className = classNode.name.lexeme;
+      if (className.startsWith('_')) continue;
+
+      result += '${_generateClassPresentation(className)}\n\n';
+    }
+
+    return '$result\n];';
+  }
+
+  String _generateClassPresentation(String className) {
+    final iconMethod = '_iconFor("$className")';
+    final dialogMethod = '_dialogFor("$className")';
+
+    return '''
+  CustomCardItem.widgetPresentation(
+    leading: $iconMethod,
+    title: '$className',
+    dialog: $dialogMethod,
+  ),''';
+  }
+
+  RecursiveExtendedWidgetCollector get obtainCollector {
+    String sourceDartFile = '${getFlutterSDKPath()}\\src\\widgets\\basic.dart';
+    print(sourceDartFile);
+    final sourceContent = File(sourceDartFile).readAsStringSync();
+
+    final parseResult = parseString(content: sourceContent, path: sourceDartFile);
+    final unit = parseResult.unit;
+    final collector = RecursiveExtendedWidgetCollector(
+      extendedClasses: [
+        'SingleChildRenderObjectWidget',
+        'InheritedWidget',
+        'ParentDataWidget',
+        'MultiChildRenderObjectWidget',
+        'LeafRenderObjectWidget',
+        'StatelessWidget',
+      ],
+    );
+    unit.visitChildren(collector);
+    collector.finalize();
+
+    return collector;
+  }
 }

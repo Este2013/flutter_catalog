@@ -16,6 +16,11 @@ abstract class Generator {
   /// Developers must implement this to return the content to generate.
   String generate();
 
+  /// Override this method to edit the already present custom section of text.
+  ///
+  /// Useful to pre-load the section if empty, for manual later completion, for exemple.
+  String generateCustomSection(String alreadyPresentText) => alreadyPresentText;
+
   /// Creates or updates the target Dart file with generated content.
   Future<void> createOutput() async {
     String marker = '// ${'/' * 48}'; // the space avoids it being read as a docstring
@@ -47,6 +52,8 @@ abstract class Generator {
     if (userCode.contains(nonGeneratedStart)) {
       userCode = userCode.split(nonGeneratedStart)[1].trim();
     }
+
+    userCode = generateCustomSection(userCode);
 
     if (_compareVersions(generatorVersion, oldGeneratedVersion) <= 0) {
       print('Existing generated code is up to date (version $oldGeneratedVersion).');
