@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/flutter_widgets/basics_data.dart';
+import 'package:flutter_catalog/widget_dialog.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'material_home.dart';
 
@@ -33,14 +34,7 @@ Widget _iconFor(String className) {
       return Icon(Symbols.format_paint);
     case "ClipRect":
       return Icon(Symbols.crop);
-    case "ClipRRect":
-      return Icon(Symbols.crop_rounded);
-    case "ClipRSuperellipse":
-      return Icon(Symbols.crop_rounded);
-    case "ClipOval":
-      return Icon(Symbols.crop_rounded);
-    case "ClipPath":
-      return Icon(Symbols.crop_rounded);
+
     case "PhysicalModel":
       return Icon(Symbols.ar_stickers);
     case "PhysicalShape":
@@ -73,10 +67,7 @@ Widget _iconFor(String className) {
       return Icon(Symbols.resize);
     case "ConstrainedBox":
       return Icon(Symbols.arrows_input);
-    case "ConstraintsTransformBox":
-      return Icon(Symbols.crop_rotate);
-    case "UnconstrainedBox":
-      return Icon(Symbols.arrows_output);
+
     case "FractionallySizedBox":
       return Icon(Symbols.magnification_large);
     case "LimitedBox":
@@ -146,11 +137,7 @@ Widget _iconFor(String className) {
       return Icon(Symbols.search_insights);
     case "Semantics":
       return Icon(Symbols.menu_book);
-    // TODO: Should move into semantics dialog
-    // case "MergeSemantics":
-    // case "BlockSemantics":
-    // case "ExcludeSemantics":
-    // case "IndexedSemantics":
+
     case "KeyedSubtree":
       return Icon(Symbols.account_tree);
     case "Builder":
@@ -255,69 +242,46 @@ _dialogFor(String className) {
           WidgetVariantData(
             null,
             variantExplanation: '',
-            iconBuilder: null,
+            iconBuilder: (_) => Icon(Icons.crop),
             widgetBuilder: null,
             widgetTreeExplanation: ClipRectData(),
+          ),
+          WidgetVariantData(
+            "ClipRRect",
+            variantExplanation: 'Clips along a Rounded Rectangle.',
+            iconBuilder: (p0) => Icon(Symbols.rounded_corner),
+            widgetBuilder: null,
+            widgetTreeExplanation: ClipRRectData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/ClipRRect-class.html',
+          ),
+          WidgetVariantData(
+            "ClipRSuperellipse",
+            variantExplanation: 'Clips along an Apple-style superellipse.',
+            iconBuilder: (_) => Icon(Symbols.desktop_mac),
+            widgetBuilder: null,
+            widgetTreeExplanation: ClipRSuperellipseData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/ClipRSuperellipse-class.html',
+          ),
+          WidgetVariantData(
+            'ClipOval',
+            variantExplanation: 'Clips along an oval shape.',
+            iconBuilder: (_) => Icon(Symbols.circle),
+            widgetBuilder: null,
+            widgetTreeExplanation: ClipOvalData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/ClipOval-class.html',
+          ),
+          WidgetVariantData(
+            "ClipPath",
+            variantExplanation: 'Clips along a custom path.',
+            iconBuilder: (_) => Icon(Symbols.conversion_path),
+            widgetBuilder: null,
+            widgetTreeExplanation: ClipPathData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/ClipPath-class.html',
           ),
         ],
         link: 'https://api.flutter.dev/flutter/widgets/ClipRect-class.html',
       );
-    case "ClipRRect":
-      return WidgetPresentation.createDialogFrom(
-        title: 'ClipRRect',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: ClipRRectData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/ClipRRect-class.html',
-      );
-    case "ClipRSuperellipse":
-      return WidgetPresentation.createDialogFrom(
-        title: 'ClipRSuperellipse',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: ClipRSuperellipseData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/ClipRSuperellipse-class.html',
-      );
-    case "ClipOval":
-      return WidgetPresentation.createDialogFrom(
-        title: 'ClipOval',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: ClipOvalData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/ClipOval-class.html',
-      );
-    case "ClipPath":
-      return WidgetPresentation.createDialogFrom(
-        title: 'ClipPath',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: ClipPathData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/ClipPath-class.html',
-      );
+
     case "PhysicalModel":
       return WidgetPresentation.createDialogFrom(
         title: 'PhysicalModel',
@@ -535,41 +499,30 @@ _dialogFor(String className) {
           WidgetVariantData(
             null,
             variantExplanation: '',
-            iconBuilder: null,
+            iconBuilder: (_) => Icon(Symbols.arrows_input),
             widgetBuilder: null,
             widgetTreeExplanation: ConstrainedBoxData(),
+          ),
+          WidgetVariantData(
+            'UnconstrainedBox',
+            variantExplanation: '',
+            iconBuilder: (_) => Icon(Symbols.arrows_output),
+            widgetBuilder: null,
+            widgetTreeExplanation: UnconstrainedBoxData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/UnconstrainedBox-class.html',
+          ),
+          WidgetVariantData(
+            'ConstraintsTransformBox',
+            variantExplanation: '',
+            iconBuilder: (_) => Icon(Symbols.crop_rotate),
+            widgetBuilder: null,
+            widgetTreeExplanation: UnconstrainedBoxData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/ConstraintsTransformBox-class.html',
           ),
         ],
         link: 'https://api.flutter.dev/flutter/widgets/ConstrainedBox-class.html',
       );
-    case "ConstraintsTransformBox":
-      return WidgetPresentation.createDialogFrom(
-        title: 'ConstraintsTransformBox',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: ConstraintsTransformBoxData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/ConstraintsTransformBox-class.html',
-      );
-    case "UnconstrainedBox":
-      return WidgetPresentation.createDialogFrom(
-        title: 'UnconstrainedBox',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: UnconstrainedBoxData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/UnconstrainedBox-class.html',
-      );
+
     case "FractionallySizedBox":
       return WidgetPresentation.createDialogFrom(
         title: 'FractionallySizedBox',
@@ -1053,69 +1006,46 @@ _dialogFor(String className) {
           WidgetVariantData(
             null,
             variantExplanation: '',
-            iconBuilder: null,
+            iconBuilder: (_) => Icon(Symbols.book_2),
             widgetBuilder: null,
             widgetTreeExplanation: SemanticsData(),
+          ),
+          WidgetVariantData(
+            'MergeSemantics',
+            variantExplanation: '',
+            iconBuilder: (_) => Transform.rotate(angle: pi / 2, child: Icon(Symbols.merge)),
+            widgetBuilder: null,
+            widgetTreeExplanation: MergeSemanticsData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/MergeSemantics-class.html',
+          ),
+          WidgetVariantData(
+            'BlockSemantics',
+            variantExplanation: '',
+            iconBuilder: (_) => Icon(Symbols.block),
+            widgetBuilder: null,
+            widgetTreeExplanation: BlockSemanticsData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/BlockSemantics-class.html',
+          ),
+          WidgetVariantData(
+            "ExcludeSemantics",
+            variantExplanation: '',
+            iconBuilder: (_) => Icon(Symbols.remove_circle),
+            widgetBuilder: null,
+            widgetTreeExplanation: ExcludeSemanticsData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/ExcludeSemantics-class.html',
+          ),
+          WidgetVariantData(
+            'IndexedSemantics',
+            variantExplanation: '',
+            iconBuilder: (_) => Icon(Symbols.numbers),
+            widgetBuilder: null,
+            widgetTreeExplanation: IndexedSemanticsData(),
+            docsLink: 'https://api.flutter.dev/flutter/widgets/IndexedSemantics-class.html',
           ),
         ],
         link: 'https://api.flutter.dev/flutter/widgets/Semantics-class.html',
       );
-    case "MergeSemantics":
-      return WidgetPresentation.createDialogFrom(
-        title: 'MergeSemantics',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: MergeSemanticsData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/MergeSemantics-class.html',
-      );
-    case "BlockSemantics":
-      return WidgetPresentation.createDialogFrom(
-        title: 'BlockSemantics',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: BlockSemanticsData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/BlockSemantics-class.html',
-      );
-    case "ExcludeSemantics":
-      return WidgetPresentation.createDialogFrom(
-        title: 'ExcludeSemantics',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: ExcludeSemanticsData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/ExcludeSemantics-class.html',
-      );
-    case "IndexedSemantics":
-      return WidgetPresentation.createDialogFrom(
-        title: 'IndexedSemantics',
-        variantsData: [
-          WidgetVariantData(
-            null,
-            variantExplanation: '',
-            iconBuilder: null,
-            widgetBuilder: null,
-            widgetTreeExplanation: IndexedSemanticsData(),
-          ),
-        ],
-        link: 'https://api.flutter.dev/flutter/widgets/IndexedSemantics-class.html',
-      );
+
     case "KeyedSubtree":
       return WidgetPresentation.createDialogFrom(
         title: 'KeyedSubtree',
@@ -1159,8 +1089,54 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/ColoredBox-class.html',
       );
     default:
-      return null;
+      return WidgetPresentationDialog('NULL', variantsData: []);
   }
+}
+
+Map<String?, Iterable<CustomCardItem>> get groupedBasicWidgetsList {
+  var list = filteredBasicWidgetsList.toList();
+  return {
+    'Size and alignment': _removeWhereAndReturn(
+        list,
+        (e) => [
+              'FittedBox',
+              'Align',
+              'Center',
+              'Padding',
+              'SizedBox',
+              'ConstrainedBox',
+              'LimitedBox',
+            ].contains(e.title)),
+    null: list,
+  };
+}
+
+List<CustomCardItem> get filteredBasicWidgetsList => basicWidgetsList
+    .where((e) => ![
+          'ClipRRect',
+          'ClipRSuperellipse',
+          'ClipOval',
+          'ClipPath',
+          'RichText',
+          'MergeSemantics',
+          'BlockSemantics',
+          'ExcludeSemantics',
+          'IndexedSemantics',
+          'UnconstrainedBox',
+          'ConstraintsTransformBox',
+        ].contains(e.title))
+    .toList();
+
+List<T> _removeWhereAndReturn<T>(List<T> list, bool Function(T) test) {
+  final removed = <T>[];
+  list.removeWhere((element) {
+    if (test(element)) {
+      removed.add(element);
+      return true;
+    }
+    return false;
+  });
+  return removed;
 }
 
 // ////////////////////////////////////////////////

@@ -101,202 +101,209 @@ class MaterialHomePresentationPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: Column(
-          spacing: 16,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _TitleRow('Online resources'),
-            Wrap(
-              children: [
-                CustomCardItem.link(
-                  leading: FlutterLogo(size: 50),
-                  title: 'Flutter widget catalog',
-                  link: 'https://docs.flutter.dev/ui/widgets',
+  Widget build(BuildContext context) {
+    var baseWidgets = groupedBasicWidgetsList;
+
+    return SingleChildScrollView(
+      child: Column(
+        spacing: 16,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _TitleRow('Online resources'),
+          Wrap(
+            children: [
+              CustomCardItem.link(
+                leading: FlutterLogo(size: 50),
+                title: 'Flutter widget catalog',
+                link: 'https://docs.flutter.dev/ui/widgets',
+              ),
+              CustomCardItem.link(
+                leading: FlutterLogo(size: 50),
+                title: 'Flutter material catalog',
+                link: 'https://docs.flutter.dev/ui/widgets/material',
+              ),
+              CustomCardItem.link(
+                leading: SvgPicture.asset(
+                  'assets/logos/Google_Material_Design_Logo.svg',
+                  height: 50,
+                  semanticsLabel: 'Material Icon',
                 ),
-                CustomCardItem.link(
-                  leading: FlutterLogo(size: 50),
-                  title: 'Flutter material catalog',
-                  link: 'https://docs.flutter.dev/ui/widgets/material',
-                ),
-                CustomCardItem.link(
-                  leading: SvgPicture.asset(
-                    'assets/logos/Google_Material_Design_Logo.svg',
-                    height: 50,
-                    semanticsLabel: 'Material Icon',
-                  ),
-                  title: 'Material Design 3',
-                  link: 'https://m3.material.io/',
-                ),
-              ],
-            ),
-            _TitleRow('Style'),
-            Wrap(
-              children: [
-                CustomCardItem.explore(
-                  leading: Icon(Icons.emoji_symbols, size: 50),
-                  createRoute: () => MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
-                  title: 'Material icons',
-                ),
-                CustomCardItem.explore(
-                  leading: _ColoredCirclesIcon(),
-                  createRoute: () => MaterialPageRoute(builder: (context) => ColorSchemePage(appCtrl: appCtrl)),
-                  title: 'Color scheme',
-                ),
-              ],
-            ),
-            _TitleRow('Text widgets'),
-            Wrap(
-              children: [
-                CustomCardItem.widgetPresentation(
-                    leading: Icon(Icons.text_fields),
+                title: 'Material Design 3',
+                link: 'https://m3.material.io/',
+              ),
+            ],
+          ),
+          _TitleRow('Style'),
+          Wrap(
+            children: [
+              CustomCardItem.explore(
+                leading: Icon(Icons.emoji_symbols, size: 50),
+                createRoute: () => MaterialPageRoute(builder: (context) => IconsPage(appCtrl: appCtrl)),
+                title: 'Material icons',
+              ),
+              CustomCardItem.explore(
+                leading: _ColoredCirclesIcon(),
+                createRoute: () => MaterialPageRoute(builder: (context) => ColorSchemePage(appCtrl: appCtrl)),
+                title: 'Color scheme',
+              ),
+            ],
+          ),
+          _TitleRow('Text widgets'),
+          Wrap(
+            children: [
+              CustomCardItem.widgetPresentation(
+                  leading: Icon(Icons.text_fields),
+                  title: 'Text',
+                  dialog: WidgetPresentation.createDialogFrom(
                     title: 'Text',
-                    dialog: WidgetPresentation.createDialogFrom(
-                      title: 'Text',
-                      variantsData: [
-                        WidgetVariantData(
-                          null,
-                          variantExplanation: 'A run of text with a single style.',
-                          iconBuilder: (p0) => Icon(Icons.text_fields),
-                          widgetBuilder: (p0, options) => Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Text(
-                              'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-                              style: Theme.of(context).textTheme.titleMedium,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.fade,
-                            ),
+                    variantsData: [
+                      WidgetVariantData(
+                        null,
+                        variantExplanation: 'A run of text with a single style.',
+                        iconBuilder: (p0) => Icon(Icons.text_fields),
+                        widgetBuilder: (p0, options) => Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+                            style: Theme.of(context).textTheme.titleMedium,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.fade,
                           ),
                         ),
-                      ],
-                    )),
-                CustomCardItem.widgetPresentation(
-                    leading: Icon(Icons.format_color_text),
+                      ),
+                    ],
+                  )),
+              CustomCardItem.widgetPresentation(
+                  leading: Icon(Icons.format_color_text),
+                  title: 'RichText',
+                  dialog: WidgetPresentation.createDialogFrom(
                     title: 'RichText',
-                    dialog: WidgetPresentation.createDialogFrom(
-                      title: 'RichText',
-                      variantsData: [
-                        WidgetVariantData(
-                          null,
-                          variantExplanation: 'Displays text with multiple styles. The text to display is described using a tree of TextSpan objects.',
-                          iconBuilder: (p0) => Icon(Symbols.format_color_text),
-                          widgetBuilder: (p0, options) => Padding(
-                            padding: EdgeInsets.all(16),
-                            child: RichText(
-                              text: TextSpan(children: [
+                    variantsData: [
+                      WidgetVariantData(
+                        null,
+                        variantExplanation: 'Displays text with multiple styles. The text to display is described using a tree of TextSpan objects.',
+                        iconBuilder: (p0) => Icon(Symbols.format_color_text),
+                        widgetBuilder: (p0, options) => Padding(
+                          padding: EdgeInsets.all(16),
+                          child: RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: 'Lorem ✨Ipsum✨\n',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              TextSpan(style: Theme.of(context).textTheme.bodyLarge, children: [
+                                TextSpan(text: 'Lorem ipsum dolor sit amet', style: TextStyle(fontStyle: FontStyle.italic)),
+                                TextSpan(text: ' consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '),
                                 TextSpan(
-                                  text: 'Lorem ✨Ipsum✨\n',
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                                TextSpan(style: Theme.of(context).textTheme.bodyLarge, children: [
-                                  TextSpan(text: 'Lorem ipsum dolor sit amet', style: TextStyle(fontStyle: FontStyle.italic)),
-                                  TextSpan(text: ' consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. '),
-                                  TextSpan(
-                                      style: TextStyle(color: Colors.amber),
-                                      text:
-                                          'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, '),
-                                  TextSpan(
-                                      text:
-                                          'sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.'),
-                                  TextSpan(text: ' Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.', style: TextStyle(fontWeight: FontWeight.bold))
-                                ])
-                              ]),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.fade,
-                            ),
+                                    style: TextStyle(color: Colors.amber),
+                                    text:
+                                        'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, '),
+                                TextSpan(
+                                    text:
+                                        'sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.'),
+                                TextSpan(text: ' Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.', style: TextStyle(fontWeight: FontWeight.bold))
+                              ])
+                            ]),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.fade,
                           ),
                         ),
-                        WidgetVariantData(
-                          'DefaultTextStyle',
-                          variantExplanation: "Defines the style of reference for all descendants Text widgets that do not have their own style.",
-                          iconBuilder: (p0) => Icon(Icons.style),
-                          widgetBuilder: (p0, options) => Padding(
-                            padding: EdgeInsets.all(16),
-                            child: DefaultTextStyle(
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic) ?? TextStyle(),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.fade,
-                              child: Text(
-                                  'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.'),
-                            ),
+                      ),
+                      WidgetVariantData(
+                        'DefaultTextStyle',
+                        variantExplanation: "Defines the style of reference for all descendants Text widgets that do not have their own style.",
+                        iconBuilder: (p0) => Icon(Icons.style),
+                        widgetBuilder: (p0, options) => Padding(
+                          padding: EdgeInsets.all(16),
+                          child: DefaultTextStyle(
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic) ?? TextStyle(),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.fade,
+                            child: Text(
+                                'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.'),
                           ),
                         ),
-                      ],
-                    )),
-                CustomCardItem.widgetPresentation(
-                    leading: Icon(Icons.style),
+                      ),
+                    ],
+                  )),
+              CustomCardItem.widgetPresentation(
+                  leading: Icon(Icons.style),
+                  title: 'DefaultTextStyle',
+                  dialog: WidgetPresentation.createDialogFrom(
                     title: 'DefaultTextStyle',
-                    dialog: WidgetPresentation.createDialogFrom(
-                      title: 'DefaultTextStyle',
-                      variantsData: [
-                        WidgetVariantData(
-                          'DefaultTextStyle',
-                          variantExplanation: "Defines the style of reference for all descendants Text widgets that do not have their own style.",
-                          iconBuilder: (p0) => Icon(Icons.style),
-                          widgetBuilder: (p0, options) => Padding(
-                            padding: EdgeInsets.all(16),
-                            child: DefaultTextStyle(
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic) ?? TextStyle(),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.fade,
-                              child: Text(
-                                  'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.'),
-                            ),
+                    variantsData: [
+                      WidgetVariantData(
+                        'DefaultTextStyle',
+                        variantExplanation: "Defines the style of reference for all descendants Text widgets that do not have their own style.",
+                        iconBuilder: (p0) => Icon(Icons.style),
+                        widgetBuilder: (p0, options) => Padding(
+                          padding: EdgeInsets.all(16),
+                          child: DefaultTextStyle(
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic) ?? TextStyle(),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.fade,
+                            child: Text(
+                                'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.'),
                           ),
                         ),
-                      ],
-                    )),
-                CustomCardItem.widgetPresentation(
-                    leading: Icon(Icons.star, color: Colors.amber.shade700),
+                      ),
+                    ],
+                  )),
+              CustomCardItem.widgetPresentation(
+                  leading: Icon(Icons.star, color: Colors.amber.shade700),
+                  title: 'Icon',
+                  dialog: WidgetPresentation.createDialogFrom(
                     title: 'Icon',
-                    dialog: WidgetPresentation.createDialogFrom(
-                      title: 'Icon',
-                      variantsData: [
-                        WidgetVariantData(
-                          null,
-                          variantExplanation: 'A graphical icon widget drawn with a glyph from a font described in an IconData.',
-                          iconBuilder: (p0) => Icon(Symbols.emoji_symbols),
-                          widgetBuilder: (p0, options) => Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.star, color: Colors.amber.shade700),
-                                Icon(Icons.music_note),
-                                Icon(Icons.favorite, color: Colors.red),
-                              ],
-                            ),
+                    variantsData: [
+                      WidgetVariantData(
+                        null,
+                        variantExplanation: 'A graphical icon widget drawn with a glyph from a font described in an IconData.',
+                        iconBuilder: (p0) => Icon(Symbols.emoji_symbols),
+                        widgetBuilder: (p0, options) => Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(Icons.star, color: Colors.amber.shade700),
+                              Icon(Icons.music_note),
+                              Icon(Icons.favorite, color: Colors.red),
+                            ],
                           ),
-                          themeExplanation: IconThemeExplanation(treeNodeData: IconNodeData()),
-                          widgetTreeExplanation: IconNodeData(),
                         ),
-                      ],
-                      link: 'https://api.flutter.dev/flutter/widgets/Icon-class.html',
-                    )),
-              ],
-            ),
-            // TODO put container in correct category
-            _TitleRow('Container (missing category)'),
-            CustomCardItem.widgetPresentation(
-                leading: Icon(Symbols.square_dot),
+                        themeExplanation: IconThemeExplanation(treeNodeData: IconNodeData()),
+                        widgetTreeExplanation: IconNodeData(),
+                      ),
+                    ],
+                    link: 'https://api.flutter.dev/flutter/widgets/Icon-class.html',
+                  )),
+            ],
+          ),
+          // TODO put container in correct category
+          _TitleRow('Container (missing category)'),
+          CustomCardItem.widgetPresentation(
+              leading: Icon(Symbols.square_dot),
+              title: 'Container',
+              dialog: WidgetPresentation.createDialogFrom(
                 title: 'Container',
-                dialog: WidgetPresentation.createDialogFrom(
-                  title: 'Container',
-                  variantsData: [
-                    WidgetVariantData(
-                      null,
-                      iconBuilder: (p0) => Icon(Icons.check_box_outline_blank_sharp),
-                      widgetBuilder: (p0, options) => Container(color: Colors.amber),
-                      widgetTreeExplanation: ContainerNodeData(),
-                    ),
-                  ],
-                  link: 'https://api.flutter.dev/flutter/widgets/Container-class.html',
-                )),
-            _TitleRow('Base widgets'),
-            Wrap(children: basicWidgetsList..removeWhere((e) => e.title == 'RichText')),
+                variantsData: [
+                  WidgetVariantData(
+                    null,
+                    iconBuilder: (p0) => Icon(Icons.check_box_outline_blank_sharp),
+                    widgetBuilder: (p0, options) => Container(color: Colors.amber),
+                    widgetTreeExplanation: ContainerNodeData(),
+                  ),
+                ],
+                link: 'https://api.flutter.dev/flutter/widgets/Container-class.html',
+              )),
+
+          for (var category in baseWidgets.entries) ...[
+            _TitleRow(category.key ?? 'Other basic widgets'),
+            Wrap(children: category.value.toList()),
           ],
-        ),
-      );
+        ],
+      ),
+    );
+  }
 }
 
 class _TitleRow extends StatelessWidget {
