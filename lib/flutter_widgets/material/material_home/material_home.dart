@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/flutter_widgets/material/color_scheme_page.dart';
-import 'package:flutter_catalog/widget_dialog.dart';
+import 'package:flutter_catalog/presentation/base_presentation.dart';
+import 'package:flutter_catalog/presentation/widget_page.dart';
 import 'package:flutter_catalog/widget_tree_resolver/container_data.dart';
 import 'package:flutter_catalog/widget_tree_resolver/icon_data.dart';
 import 'package:flutter_svg/svg.dart';
@@ -154,7 +155,7 @@ class MaterialHomePresentationPage extends StatelessWidget {
               CustomCardItem.widgetPresentation(
                   leading: Icon(Icons.text_fields),
                   title: 'Text',
-                  dialog: WidgetPresentation.createDialogFrom(
+                  page: WidgetPresentation.createPageFrom(
                     title: 'Text',
                     variantsData: [
                       WidgetVariantData(
@@ -176,7 +177,7 @@ class MaterialHomePresentationPage extends StatelessWidget {
               CustomCardItem.widgetPresentation(
                   leading: Icon(Icons.format_color_text),
                   title: 'RichText',
-                  dialog: WidgetPresentation.createDialogFrom(
+                  page: WidgetPresentation.createPageFrom(
                     title: 'RichText',
                     variantsData: [
                       WidgetVariantData(
@@ -229,7 +230,7 @@ class MaterialHomePresentationPage extends StatelessWidget {
               CustomCardItem.widgetPresentation(
                   leading: Icon(Icons.style),
                   title: 'DefaultTextStyle',
-                  dialog: WidgetPresentation.createDialogFrom(
+                  page: WidgetPresentation.createPageFrom(
                     title: 'DefaultTextStyle',
                     variantsData: [
                       WidgetVariantData(
@@ -252,7 +253,7 @@ class MaterialHomePresentationPage extends StatelessWidget {
               CustomCardItem.widgetPresentation(
                   leading: Icon(Icons.star, color: Colors.amber.shade700),
                   title: 'Icon',
-                  dialog: WidgetPresentation.createDialogFrom(
+                  page: WidgetPresentation.createPageFrom(
                     title: 'Icon',
                     variantsData: [
                       WidgetVariantData(
@@ -283,7 +284,7 @@ class MaterialHomePresentationPage extends StatelessWidget {
           CustomCardItem.widgetPresentation(
               leading: Icon(Symbols.square_dot),
               title: 'Container',
-              dialog: WidgetPresentation.createDialogFrom(
+              page: WidgetPresentation.createPageFrom(
                 title: 'Container',
                 variantsData: [
                   WidgetVariantData(
@@ -390,11 +391,12 @@ class CustomCardItem extends StatelessWidget {
     Key? key,
     required Widget leading,
     required String title,
-    required WidgetPresentationDialog dialog,
+    required WidgetPresentationPage page,
   }) =>
       CustomCardItem(
         key: key,
-        onTap: (context) => showDialog(context: context, builder: (_) => dialog),
+        onTap: (context) => WidgetPresentation.showPresentation(context, page),
+        // onTap: (context) => showDialog(context: context, builder: (_) => dialog),
         leading: leading,
         title: title,
         trailing: Icon(Icons.widgets),
@@ -429,6 +431,39 @@ class CustomCardItem extends StatelessWidget {
                 trailing,
               ],
             ),
+          ),
+        ),
+      );
+}
+
+class SettingsDialog extends StatelessWidget {
+  const SettingsDialog({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) => AlertDialog(
+        title: Text('Settings'),
+        content: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: 300),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text('Theme'),
+                  Spacer(),
+                  SegmentedButton<bool>(
+                    showSelectedIcon: false,
+                    onSelectionChanged: (selection) => appCtrl.darkMode = selection.first,
+                    selected: {appCtrl.darkMode},
+                    segments: <ButtonSegment<bool>>[
+                      ButtonSegment(value: false, icon: Icon(Symbols.light_mode, fill: 1)),
+                      ButtonSegment(value: true, icon: Icon(Symbols.dark_mode, fill: 1)),
+                    ],
+                  )
+                ],
+              ),
+            ],
           ),
         ),
       );

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/main.dart';
+import 'package:flutter_catalog/presentation/base_presentation.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class StateActionsPresentationPage extends StatelessWidget {

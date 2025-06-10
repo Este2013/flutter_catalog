@@ -8,9 +8,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_catalog/main.dart';
 import 'package:flutter_catalog/flutter_widgets/basics_data.dart';
-import 'package:flutter_catalog/widget_dialog.dart';
+import 'package:flutter_catalog/presentation/base_presentation.dart';
+import 'package:flutter_catalog/presentation/widget_dialog.dart';
+import 'package:flutter_catalog/presentation/widget_page.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'material_home.dart';
 
@@ -149,10 +150,10 @@ Widget _iconFor(String className) {
   }
 }
 
-_dialogFor(String className) {
+_pageFor(String className) {
   switch (className) {
     case "Directionality":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Directionality',
         variantsData: [
           WidgetVariantData(
@@ -166,7 +167,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Directionality-class.html',
       );
     case "Opacity":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Opacity',
         variantsData: [
           WidgetVariantData(
@@ -180,7 +181,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Opacity-class.html',
       );
     case "ShaderMask":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'ShaderMask',
         variantsData: [
           WidgetVariantData(
@@ -194,7 +195,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/ShaderMask-class.html',
       );
     case "BackdropGroup":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'BackdropGroup',
         variantsData: [
           WidgetVariantData(
@@ -208,7 +209,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/BackdropGroup-class.html',
       );
     case "BackdropFilter":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'BackdropFilter',
         variantsData: [
           WidgetVariantData(
@@ -222,7 +223,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/BackdropFilter-class.html',
       );
     case "CustomPaint":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'CustomPaint',
         variantsData: [
           WidgetVariantData(
@@ -236,7 +237,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/CustomPaint-class.html',
       );
     case "ClipRect":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'ClipRect',
         variantsData: [
           WidgetVariantData(
@@ -283,7 +284,7 @@ _dialogFor(String className) {
       );
 
     case "PhysicalModel":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'PhysicalModel',
         variantsData: [
           WidgetVariantData(
@@ -297,7 +298,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/PhysicalModel-class.html',
       );
     case "PhysicalShape":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'PhysicalShape',
         variantsData: [
           WidgetVariantData(
@@ -311,7 +312,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/PhysicalShape-class.html',
       );
     case "Transform":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Transform',
         variantsData: [
           WidgetVariantData(
@@ -325,7 +326,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Transform-class.html',
       );
     case "CompositedTransformTarget":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'CompositedTransformTarget',
         variantsData: [
           WidgetVariantData(
@@ -339,7 +340,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/CompositedTransformTarget-class.html',
       );
     case "CompositedTransformFollower":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'CompositedTransformFollower',
         variantsData: [
           WidgetVariantData(
@@ -353,7 +354,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/CompositedTransformFollower-class.html',
       );
     case "FittedBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'FittedBox',
         variantsData: [
           WidgetVariantData(
@@ -367,7 +368,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/FittedBox-class.html',
       );
     case "FractionalTranslation":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'FractionalTranslation',
         variantsData: [
           WidgetVariantData(
@@ -381,7 +382,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/FractionalTranslation-class.html',
       );
     case "RotatedBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'RotatedBox',
         variantsData: [
           WidgetVariantData(
@@ -395,7 +396,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/RotatedBox-class.html',
       );
     case "Padding":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Padding',
         variantsData: [
           WidgetVariantData(
@@ -409,7 +410,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Padding-class.html',
       );
     case "Align":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Align',
         variantsData: [
           WidgetVariantData(
@@ -423,7 +424,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Align-class.html',
       );
     case "Center":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Center',
         variantsData: [
           WidgetVariantData(
@@ -437,7 +438,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Center-class.html',
       );
     case "CustomSingleChildLayout":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'CustomSingleChildLayout',
         variantsData: [
           WidgetVariantData(
@@ -451,7 +452,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/CustomSingleChildLayout-class.html',
       );
     case "LayoutId":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'LayoutId',
         variantsData: [
           WidgetVariantData(
@@ -465,7 +466,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/LayoutId-class.html',
       );
     case "CustomMultiChildLayout":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'CustomMultiChildLayout',
         variantsData: [
           WidgetVariantData(
@@ -479,7 +480,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/CustomMultiChildLayout-class.html',
       );
     case "SizedBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'SizedBox',
         variantsData: [
           WidgetVariantData(
@@ -493,7 +494,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/SizedBox-class.html',
       );
     case "ConstrainedBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'ConstrainedBox',
         variantsData: [
           WidgetVariantData(
@@ -524,7 +525,7 @@ _dialogFor(String className) {
       );
 
     case "FractionallySizedBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'FractionallySizedBox',
         variantsData: [
           WidgetVariantData(
@@ -538,7 +539,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/FractionallySizedBox-class.html',
       );
     case "LimitedBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'LimitedBox',
         variantsData: [
           WidgetVariantData(
@@ -552,7 +553,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/LimitedBox-class.html',
       );
     case "OverflowBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'OverflowBox',
         variantsData: [
           WidgetVariantData(
@@ -566,7 +567,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/OverflowBox-class.html',
       );
     case "SizedOverflowBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'SizedOverflowBox',
         variantsData: [
           WidgetVariantData(
@@ -580,7 +581,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/SizedOverflowBox-class.html',
       );
     case "Offstage":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Offstage',
         variantsData: [
           WidgetVariantData(
@@ -594,7 +595,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Offstage-class.html',
       );
     case "AspectRatio":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'AspectRatio',
         variantsData: [
           WidgetVariantData(
@@ -608,7 +609,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/AspectRatio-class.html',
       );
     case "IntrinsicWidth":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'IntrinsicWidth',
         variantsData: [
           WidgetVariantData(
@@ -622,7 +623,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/IntrinsicWidth-class.html',
       );
     case "IntrinsicHeight":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'IntrinsicHeight',
         variantsData: [
           WidgetVariantData(
@@ -636,7 +637,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/IntrinsicHeight-class.html',
       );
     case "Baseline":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Baseline',
         variantsData: [
           WidgetVariantData(
@@ -650,7 +651,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Baseline-class.html',
       );
     case "IgnoreBaseline":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'IgnoreBaseline',
         variantsData: [
           WidgetVariantData(
@@ -664,7 +665,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/IgnoreBaseline-class.html',
       );
     case "SliverToBoxAdapter":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'SliverToBoxAdapter',
         variantsData: [
           WidgetVariantData(
@@ -678,7 +679,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html',
       );
     case "SliverPadding":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'SliverPadding',
         variantsData: [
           WidgetVariantData(
@@ -692,7 +693,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/SliverPadding-class.html',
       );
     case "ListBody":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'ListBody',
         variantsData: [
           WidgetVariantData(
@@ -706,7 +707,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/ListBody-class.html',
       );
     case "Stack":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Stack',
         variantsData: [
           WidgetVariantData(
@@ -720,7 +721,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Stack-class.html',
       );
     case "IndexedStack":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'IndexedStack',
         variantsData: [
           WidgetVariantData(
@@ -734,7 +735,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/IndexedStack-class.html',
       );
     case "Positioned":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Positioned',
         variantsData: [
           WidgetVariantData(
@@ -748,7 +749,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Positioned-class.html',
       );
     case "PositionedDirectional":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'PositionedDirectional',
         variantsData: [
           WidgetVariantData(
@@ -762,7 +763,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/PositionedDirectional-class.html',
       );
     case "Flex":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Flex',
         variantsData: [
           WidgetVariantData(
@@ -776,7 +777,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Flex-class.html',
       );
     case "Row":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Row',
         variantsData: [
           WidgetVariantData(
@@ -790,7 +791,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Row-class.html',
       );
     case "Column":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Column',
         variantsData: [
           WidgetVariantData(
@@ -804,7 +805,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Column-class.html',
       );
     case "Flexible":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Flexible',
         variantsData: [
           WidgetVariantData(
@@ -818,7 +819,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
       );
     case "Expanded":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Expanded',
         variantsData: [
           WidgetVariantData(
@@ -832,7 +833,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Expanded-class.html',
       );
     case "Wrap":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Wrap',
         variantsData: [
           WidgetVariantData(
@@ -846,7 +847,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Wrap-class.html',
       );
     case "Flow":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Flow',
         variantsData: [
           WidgetVariantData(
@@ -860,7 +861,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Flow-class.html',
       );
     case "RichText":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'RichText',
         variantsData: [
           WidgetVariantData(
@@ -874,7 +875,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/RichText-class.html',
       );
     case "RawImage":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'RawImage',
         variantsData: [
           WidgetVariantData(
@@ -888,7 +889,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/RawImage-class.html',
       );
     case "DefaultAssetBundle":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'DefaultAssetBundle',
         variantsData: [
           WidgetVariantData(
@@ -902,7 +903,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/DefaultAssetBundle-class.html',
       );
     case "WidgetToRenderBoxAdapter":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'WidgetToRenderBoxAdapter',
         variantsData: [
           WidgetVariantData(
@@ -916,7 +917,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/WidgetToRenderBoxAdapter-class.html',
       );
     case "Listener":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Listener',
         variantsData: [
           WidgetVariantData(
@@ -930,7 +931,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Listener-class.html',
       );
     case "MouseRegion":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'MouseRegion',
         variantsData: [
           WidgetVariantData(
@@ -944,7 +945,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/MouseRegion-class.html',
       );
     case "RepaintBoundary":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'RepaintBoundary',
         variantsData: [
           WidgetVariantData(
@@ -958,7 +959,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/RepaintBoundary-class.html',
       );
     case "IgnorePointer":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'IgnorePointer',
         variantsData: [
           WidgetVariantData(
@@ -972,7 +973,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/IgnorePointer-class.html',
       );
     case "AbsorbPointer":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'AbsorbPointer',
         variantsData: [
           WidgetVariantData(
@@ -986,7 +987,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/AbsorbPointer-class.html',
       );
     case "MetaData":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'MetaData',
         variantsData: [
           WidgetVariantData(
@@ -1000,7 +1001,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/MetaData-class.html',
       );
     case "Semantics":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Semantics',
         variantsData: [
           WidgetVariantData(
@@ -1047,7 +1048,7 @@ _dialogFor(String className) {
       );
 
     case "KeyedSubtree":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'KeyedSubtree',
         variantsData: [
           WidgetVariantData(
@@ -1061,7 +1062,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/KeyedSubtree-class.html',
       );
     case "Builder":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'Builder',
         variantsData: [
           WidgetVariantData(
@@ -1075,7 +1076,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/Builder-class.html',
       );
     case "ColoredBox":
-      return WidgetPresentation.createDialogFrom(
+      return WidgetPresentation.createPageFrom(
         title: 'ColoredBox',
         variantsData: [
           WidgetVariantData(
@@ -1089,7 +1090,7 @@ _dialogFor(String className) {
         link: 'https://api.flutter.dev/flutter/widgets/ColoredBox-class.html',
       );
     default:
-      return WidgetPresentationDialog('NULL', variantsData: []);
+      return WidgetPresentationPage('NULL', variantsData: []);
   }
 }
 
@@ -1106,6 +1107,45 @@ Map<String?, Iterable<CustomCardItem>> get groupedBasicWidgetsList {
               'SizedBox',
               'ConstrainedBox',
               'LimitedBox',
+              'IntrinsicWidth',
+              'IntrinsicHeight',
+              'FractionallySizedBox',
+              'AspectRatio',
+            ].contains(e.title)),
+    'Rows and columns': _removeWhereAndReturn(
+        list,
+        (e) => [
+              'Flex',
+              'Row',
+              'Column',
+              'Flexible',
+              'Expanded',
+              'Wrap',
+            ].contains(e.title)),
+    'Stacking': _removeWhereAndReturn(
+        list,
+        (e) => [
+              'Stack',
+              'IndexedStack',
+              'Positioned',
+              'PositionedDirectional',
+            ].contains(e.title)),
+    'Transformations': _removeWhereAndReturn(
+        list,
+        (e) => [
+              'Transform',
+              'CompositedTransformTarget',
+              'CompositedTransformFollower',
+              'FractionalTranslation',
+              'RotatedBox',
+            ].contains(e.title)),
+    'Mouse interactions': _removeWhereAndReturn(
+        list,
+        (e) => [
+              'Listener',
+              'MouseRegion',
+              'IgnorePointer',
+              'AbsorbPointer',
             ].contains(e.title)),
     null: list,
   };
@@ -1147,356 +1187,356 @@ List<CustomCardItem> get basicWidgetsList => [
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Directionality"),
         title: 'Directionality',
-        dialog: _dialogFor("Directionality"),
+        page: _pageFor("Directionality"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Opacity"),
         title: 'Opacity',
-        dialog: _dialogFor("Opacity"),
+        page: _pageFor("Opacity"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ShaderMask"),
         title: 'ShaderMask',
-        dialog: _dialogFor("ShaderMask"),
+        page: _pageFor("ShaderMask"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("BackdropGroup"),
         title: 'BackdropGroup',
-        dialog: _dialogFor("BackdropGroup"),
+        page: _pageFor("BackdropGroup"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("BackdropFilter"),
         title: 'BackdropFilter',
-        dialog: _dialogFor("BackdropFilter"),
+        page: _pageFor("BackdropFilter"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("CustomPaint"),
         title: 'CustomPaint',
-        dialog: _dialogFor("CustomPaint"),
+        page: _pageFor("CustomPaint"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ClipRect"),
         title: 'ClipRect',
-        dialog: _dialogFor("ClipRect"),
+        page: _pageFor("ClipRect"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ClipRRect"),
         title: 'ClipRRect',
-        dialog: _dialogFor("ClipRRect"),
+        page: _pageFor("ClipRRect"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ClipRSuperellipse"),
         title: 'ClipRSuperellipse',
-        dialog: _dialogFor("ClipRSuperellipse"),
+        page: _pageFor("ClipRSuperellipse"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ClipOval"),
         title: 'ClipOval',
-        dialog: _dialogFor("ClipOval"),
+        page: _pageFor("ClipOval"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ClipPath"),
         title: 'ClipPath',
-        dialog: _dialogFor("ClipPath"),
+        page: _pageFor("ClipPath"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("PhysicalModel"),
         title: 'PhysicalModel',
-        dialog: _dialogFor("PhysicalModel"),
+        page: _pageFor("PhysicalModel"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("PhysicalShape"),
         title: 'PhysicalShape',
-        dialog: _dialogFor("PhysicalShape"),
+        page: _pageFor("PhysicalShape"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Transform"),
         title: 'Transform',
-        dialog: _dialogFor("Transform"),
+        page: _pageFor("Transform"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("CompositedTransformTarget"),
         title: 'CompositedTransformTarget',
-        dialog: _dialogFor("CompositedTransformTarget"),
+        page: _pageFor("CompositedTransformTarget"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("CompositedTransformFollower"),
         title: 'CompositedTransformFollower',
-        dialog: _dialogFor("CompositedTransformFollower"),
+        page: _pageFor("CompositedTransformFollower"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("FittedBox"),
         title: 'FittedBox',
-        dialog: _dialogFor("FittedBox"),
+        page: _pageFor("FittedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("FractionalTranslation"),
         title: 'FractionalTranslation',
-        dialog: _dialogFor("FractionalTranslation"),
+        page: _pageFor("FractionalTranslation"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("RotatedBox"),
         title: 'RotatedBox',
-        dialog: _dialogFor("RotatedBox"),
+        page: _pageFor("RotatedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Padding"),
         title: 'Padding',
-        dialog: _dialogFor("Padding"),
+        page: _pageFor("Padding"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Align"),
         title: 'Align',
-        dialog: _dialogFor("Align"),
+        page: _pageFor("Align"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Center"),
         title: 'Center',
-        dialog: _dialogFor("Center"),
+        page: _pageFor("Center"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("CustomSingleChildLayout"),
         title: 'CustomSingleChildLayout',
-        dialog: _dialogFor("CustomSingleChildLayout"),
+        page: _pageFor("CustomSingleChildLayout"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("LayoutId"),
         title: 'LayoutId',
-        dialog: _dialogFor("LayoutId"),
+        page: _pageFor("LayoutId"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("CustomMultiChildLayout"),
         title: 'CustomMultiChildLayout',
-        dialog: _dialogFor("CustomMultiChildLayout"),
+        page: _pageFor("CustomMultiChildLayout"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("SizedBox"),
         title: 'SizedBox',
-        dialog: _dialogFor("SizedBox"),
+        page: _pageFor("SizedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ConstrainedBox"),
         title: 'ConstrainedBox',
-        dialog: _dialogFor("ConstrainedBox"),
+        page: _pageFor("ConstrainedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ConstraintsTransformBox"),
         title: 'ConstraintsTransformBox',
-        dialog: _dialogFor("ConstraintsTransformBox"),
+        page: _pageFor("ConstraintsTransformBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("UnconstrainedBox"),
         title: 'UnconstrainedBox',
-        dialog: _dialogFor("UnconstrainedBox"),
+        page: _pageFor("UnconstrainedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("FractionallySizedBox"),
         title: 'FractionallySizedBox',
-        dialog: _dialogFor("FractionallySizedBox"),
+        page: _pageFor("FractionallySizedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("LimitedBox"),
         title: 'LimitedBox',
-        dialog: _dialogFor("LimitedBox"),
+        page: _pageFor("LimitedBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("OverflowBox"),
         title: 'OverflowBox',
-        dialog: _dialogFor("OverflowBox"),
+        page: _pageFor("OverflowBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("SizedOverflowBox"),
         title: 'SizedOverflowBox',
-        dialog: _dialogFor("SizedOverflowBox"),
+        page: _pageFor("SizedOverflowBox"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Offstage"),
         title: 'Offstage',
-        dialog: _dialogFor("Offstage"),
+        page: _pageFor("Offstage"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("AspectRatio"),
         title: 'AspectRatio',
-        dialog: _dialogFor("AspectRatio"),
+        page: _pageFor("AspectRatio"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("IntrinsicWidth"),
         title: 'IntrinsicWidth',
-        dialog: _dialogFor("IntrinsicWidth"),
+        page: _pageFor("IntrinsicWidth"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("IntrinsicHeight"),
         title: 'IntrinsicHeight',
-        dialog: _dialogFor("IntrinsicHeight"),
+        page: _pageFor("IntrinsicHeight"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Baseline"),
         title: 'Baseline',
-        dialog: _dialogFor("Baseline"),
+        page: _pageFor("Baseline"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("IgnoreBaseline"),
         title: 'IgnoreBaseline',
-        dialog: _dialogFor("IgnoreBaseline"),
+        page: _pageFor("IgnoreBaseline"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("SliverToBoxAdapter"),
         title: 'SliverToBoxAdapter',
-        dialog: _dialogFor("SliverToBoxAdapter"),
+        page: _pageFor("SliverToBoxAdapter"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("SliverPadding"),
         title: 'SliverPadding',
-        dialog: _dialogFor("SliverPadding"),
+        page: _pageFor("SliverPadding"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ListBody"),
         title: 'ListBody',
-        dialog: _dialogFor("ListBody"),
+        page: _pageFor("ListBody"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Stack"),
         title: 'Stack',
-        dialog: _dialogFor("Stack"),
+        page: _pageFor("Stack"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("IndexedStack"),
         title: 'IndexedStack',
-        dialog: _dialogFor("IndexedStack"),
+        page: _pageFor("IndexedStack"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Positioned"),
         title: 'Positioned',
-        dialog: _dialogFor("Positioned"),
+        page: _pageFor("Positioned"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("PositionedDirectional"),
         title: 'PositionedDirectional',
-        dialog: _dialogFor("PositionedDirectional"),
+        page: _pageFor("PositionedDirectional"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Flex"),
         title: 'Flex',
-        dialog: _dialogFor("Flex"),
+        page: _pageFor("Flex"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Row"),
         title: 'Row',
-        dialog: _dialogFor("Row"),
+        page: _pageFor("Row"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Column"),
         title: 'Column',
-        dialog: _dialogFor("Column"),
+        page: _pageFor("Column"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Flexible"),
         title: 'Flexible',
-        dialog: _dialogFor("Flexible"),
+        page: _pageFor("Flexible"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Expanded"),
         title: 'Expanded',
-        dialog: _dialogFor("Expanded"),
+        page: _pageFor("Expanded"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Wrap"),
         title: 'Wrap',
-        dialog: _dialogFor("Wrap"),
+        page: _pageFor("Wrap"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Flow"),
         title: 'Flow',
-        dialog: _dialogFor("Flow"),
+        page: _pageFor("Flow"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("RichText"),
         title: 'RichText',
-        dialog: _dialogFor("RichText"),
+        page: _pageFor("RichText"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("RawImage"),
         title: 'RawImage',
-        dialog: _dialogFor("RawImage"),
+        page: _pageFor("RawImage"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("DefaultAssetBundle"),
         title: 'DefaultAssetBundle',
-        dialog: _dialogFor("DefaultAssetBundle"),
+        page: _pageFor("DefaultAssetBundle"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("WidgetToRenderBoxAdapter"),
         title: 'WidgetToRenderBoxAdapter',
-        dialog: _dialogFor("WidgetToRenderBoxAdapter"),
+        page: _pageFor("WidgetToRenderBoxAdapter"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Listener"),
         title: 'Listener',
-        dialog: _dialogFor("Listener"),
+        page: _pageFor("Listener"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("MouseRegion"),
         title: 'MouseRegion',
-        dialog: _dialogFor("MouseRegion"),
+        page: _pageFor("MouseRegion"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("RepaintBoundary"),
         title: 'RepaintBoundary',
-        dialog: _dialogFor("RepaintBoundary"),
+        page: _pageFor("RepaintBoundary"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("IgnorePointer"),
         title: 'IgnorePointer',
-        dialog: _dialogFor("IgnorePointer"),
+        page: _pageFor("IgnorePointer"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("AbsorbPointer"),
         title: 'AbsorbPointer',
-        dialog: _dialogFor("AbsorbPointer"),
+        page: _pageFor("AbsorbPointer"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("MetaData"),
         title: 'MetaData',
-        dialog: _dialogFor("MetaData"),
+        page: _pageFor("MetaData"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Semantics"),
         title: 'Semantics',
-        dialog: _dialogFor("Semantics"),
+        page: _pageFor("Semantics"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("MergeSemantics"),
         title: 'MergeSemantics',
-        dialog: _dialogFor("MergeSemantics"),
+        page: _pageFor("MergeSemantics"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("BlockSemantics"),
         title: 'BlockSemantics',
-        dialog: _dialogFor("BlockSemantics"),
+        page: _pageFor("BlockSemantics"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ExcludeSemantics"),
         title: 'ExcludeSemantics',
-        dialog: _dialogFor("ExcludeSemantics"),
+        page: _pageFor("ExcludeSemantics"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("IndexedSemantics"),
         title: 'IndexedSemantics',
-        dialog: _dialogFor("IndexedSemantics"),
+        page: _pageFor("IndexedSemantics"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("KeyedSubtree"),
         title: 'KeyedSubtree',
-        dialog: _dialogFor("KeyedSubtree"),
+        page: _pageFor("KeyedSubtree"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("Builder"),
         title: 'Builder',
-        dialog: _dialogFor("Builder"),
+        page: _pageFor("Builder"),
       ),
       CustomCardItem.widgetPresentation(
         leading: _iconFor("ColoredBox"),
         title: 'ColoredBox',
-        dialog: _dialogFor("ColoredBox"),
+        page: _pageFor("ColoredBox"),
       ),
     ];

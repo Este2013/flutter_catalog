@@ -1,16 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/presentation/base_presentation.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
-import 'main.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-import 'widget_tree_resolver/data.dart';
+import '../widget_tree_resolver/data.dart';
 
 class WidgetPresentationDialog extends StatefulWidget {
   const WidgetPresentationDialog(this.mainVariantName, {super.key, required this.variantsData, this.link, this.defaultIconBuilder, this.defaultOptionsBuilder});
