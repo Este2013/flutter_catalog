@@ -39,7 +39,8 @@ class WidgetPresentation extends StatefulWidget {
 
   final Widget Function(Map<String, dynamic>? currentOptions, void Function(Map<String, dynamic>? newOptions) submitNewOptions)? defaultOptionsBuilder;
 
-  static void showPresentation(BuildContext context, WidgetPresentationPage page) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+  static void showPresentationFrom(BuildContext context, WidgetPresentationPage page) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+  void showPresentation(BuildContext context) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => createPage()));
 
   static WidgetPresentationPage createPageFrom({
     required String title,
@@ -49,6 +50,13 @@ class WidgetPresentation extends StatefulWidget {
   }) =>
       WidgetPresentationPage(
         title,
+        variantsData: variantsData,
+        link: link,
+        defaultOptionsBuilder: defaultOptionsBuilder,
+      );
+
+  WidgetPresentationPage createPage() => WidgetPresentation.createPageFrom(
+        title: title,
         variantsData: variantsData,
         link: link,
         defaultOptionsBuilder: defaultOptionsBuilder,
@@ -116,7 +124,7 @@ class _WidgetPresentationState extends State<WidgetPresentation> {
               )
             : null,
         trailingTitle: (_currentVariantIndex > 0) ? Text('(${widget.variantsData[_currentVariantIndex].name ?? 'variant $_currentVariantIndex'})') : null,
-        onTap: () => showDialog(context: context, builder: (_) => widget.createDialog()),
+        onTap: () => widget.showPresentation(context),
         child: AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
           transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_catalog/presentation/docs_display.dart';
 import 'package:flutter_catalog/utils/adaptive_tab_bar.dart';
 import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:flutter_catalog/presentation/widget_dialog.dart';

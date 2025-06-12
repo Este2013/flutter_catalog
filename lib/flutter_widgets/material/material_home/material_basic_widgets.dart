@@ -10,7 +10,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/flutter_widgets/basics_data.dart';
 import 'package:flutter_catalog/presentation/base_presentation.dart';
-import 'package:flutter_catalog/presentation/widget_dialog.dart';
 import 'package:flutter_catalog/presentation/widget_page.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'material_home.dart';

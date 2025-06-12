@@ -6,10 +6,7 @@ import 'package:flutter_catalog/utils/better_widget_span.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:html/parser.dart' show parse;
-import 'package:http/http.dart' as http;
-import 'package:flutter_html/flutter_html.dart';
-
+import 'docs_display.dart';
 import '../widget_tree_resolver/data.dart';
 
 class WidgetPresentationPage extends StatefulWidget {
@@ -36,80 +33,86 @@ class _WidgetPresentationPageState extends State<WidgetPresentationPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.mainVariantName),
-          actions: [
-            if (widget.link != null)
-              IconButton.filled(
-                tooltip: 'Open the documentation',
-                onPressed: () => launchUrl(Uri.parse(widget.link!)),
-                icon: Icon(Symbols.book_2, fill: 1),
-              ),
-          ],
-        ),
-        body: SizedBox(
-          width: double.maxFinite,
-          child: Row(
-            children: [
-              if (widget.variantsData.length > 1)
-                SizedBox(
-                  width: 200,
-                  child: Builder(
-                    builder: (context) => ListView(
-                      children: [
+  Widget build(BuildContext context) {
+    var variantExplanation = selectedVariant.variantExplanation;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(selected),
+        actionsPadding: EdgeInsets.only(right: 8),
+        actions: [
+          if (variantExplanation != null) Text(variantExplanation, textAlign: TextAlign.end),
+          if (widget.link != null)
+            IconButton.filledTonal(
+              tooltip: 'Open the documentation',
+              onPressed: () => launchUrl(Uri.parse(widget.link!)),
+              icon: Icon(Symbols.book_2, fill: 1),
+            ),
+        ],
+      ),
+      body: SizedBox(
+        width: double.maxFinite,
+        child: Row(
+          children: [
+            if (widget.variantsData.length > 1)
+              Container(
+                padding: EdgeInsets.only(left: 8),
+                width: 200,
+                child: Builder(
+                  builder: (context) => ListView(
+                    children: [
+                      Card(
+                        clipBehavior: Clip.hardEdge,
+                        color: (selected == widget.mainVariantName) ? Theme.of(context).colorScheme.secondaryContainer : null,
+                        child: InkWell(
+                          onTap: () => setState(() => selected = widget.mainVariantName),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(child: Center(child: widget.variantsData.first.iconBuilder?.call(context) ?? widget.defaultIconBuilder?.call(context) ?? Placeholder())),
+                                Expanded(flex: 2, child: Text(widget.mainVariantName)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      for (var variant in widget.variantsData.sublist(1))
                         Card(
                           clipBehavior: Clip.hardEdge,
-                          color: (selected == widget.mainVariantName) ? Theme.of(context).colorScheme.secondaryContainer : null,
+                          color: (selected == variant.name) ? Theme.of(context).colorScheme.secondaryContainer : null,
                           child: InkWell(
-                            onTap: () => setState(() => selected = widget.mainVariantName),
+                            onTap: () => setState(() => selected = variant.name!),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Expanded(child: Center(child: widget.variantsData.first.iconBuilder?.call(context) ?? widget.defaultIconBuilder?.call(context) ?? Placeholder())),
-                                  Expanded(flex: 2, child: Text(widget.mainVariantName)),
+                                  Expanded(child: Center(child: variant.iconBuilder?.call(context) ?? widget.defaultIconBuilder?.call(context) ?? Placeholder())),
+                                  Expanded(flex: 2, child: Text(variant.name!)),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                        Divider(),
-                        for (var variant in widget.variantsData.sublist(1))
-                          Card(
-                            clipBehavior: Clip.hardEdge,
-                            color: (selected == variant.name) ? Theme.of(context).colorScheme.secondaryContainer : null,
-                            child: InkWell(
-                              onTap: () => setState(() => selected = variant.name!),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(child: Center(child: variant.iconBuilder?.call(context) ?? widget.defaultIconBuilder?.call(context) ?? Placeholder())),
-                                    Expanded(flex: 2, child: Text(variant.name!)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
-              if (widget.variantsData.length > 1) VerticalDivider(),
-              Expanded(
-                child: DialogPresentationSection(
-                  widget.mainVariantName,
-                  variantsData: widget.variantsData,
-                  selected: selected,
-                  optionsBuilder: selectedVariant.optionsBuilder ?? widget.defaultOptionsBuilder,
-                  docsLink: widget.link,
-                ),
-              )
-            ],
-          ),
+              ),
+            if (widget.variantsData.length > 1) VerticalDivider(),
+            Expanded(
+              child: WidgetShowRoom(
+                widget.mainVariantName,
+                variantsData: widget.variantsData,
+                selected: selected,
+                optionsBuilder: selectedVariant.optionsBuilder ?? widget.defaultOptionsBuilder,
+                docsLink: widget.link,
+              ),
+            )
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   WidgetVariantData get selectedVariant => widget.variantsData.firstWhere(
         (v) => v.name == selected,
@@ -117,8 +120,8 @@ class _WidgetPresentationPageState extends State<WidgetPresentationPage> {
       );
 }
 
-class DialogPresentationSection extends StatefulWidget {
-  const DialogPresentationSection(
+class WidgetShowRoom extends StatefulWidget {
+  const WidgetShowRoom(
     this.mainVariantName, {
     super.key,
     required this.variantsData,
@@ -134,10 +137,10 @@ class DialogPresentationSection extends StatefulWidget {
   final String? docsLink;
 
   @override
-  State<DialogPresentationSection> createState() => _DialogPresentationSectionState();
+  State<WidgetShowRoom> createState() => _WidgetShowRoomState();
 }
 
-class _DialogPresentationSectionState extends State<DialogPresentationSection> {
+class _WidgetShowRoomState extends State<WidgetShowRoom> {
   late bool showOptions;
   Map<String, dynamic>? currentOptions;
   String? showedMode;
@@ -156,135 +159,79 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
   @override
   Widget build(BuildContext context) {
     var data = widget.variantsData.firstWhere((v) => (v.name ?? widget.mainVariantName) == widget.selected);
-    return Column(
-      spacing: 8,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (data.variantExplanation != null || data.themeExplanation != null || data.docsLink != null || widget.docsLink != null)
-          Row(
+    int availableOptionsNumber = [
+      data.themeExplanation,
+      data.docsLink ?? widget.docsLink,
+      data.widgetTreeExplanation,
+    ].where((e) => e != null).length;
+
+    return DefaultTabController(
+      length: 1 + availableOptionsNumber,
+      child: Scaffold(
+        appBar: TabBar(tabs: [
+          Tab(icon: Icon(Symbols.code_blocks, fill: 1), text: 'Demo'),
+          if (data.themeExplanation != null) Tab(icon: Icon(Symbols.color_lens), text: 'Theme'),
+          if (data.docsLink != null || widget.docsLink != null) Tab(icon: Icon(Symbols.book_2, fill: 1), text: 'Documentation'),
+          if (data.widgetTreeExplanation != null) Tab(icon: Transform.rotate(angle: pi, child: Icon(Symbols.view_object_track, fill: 1)), text: 'Widget building tree'),
+        ]),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TabBarView(
             children: [
-              if (data.variantExplanation != null) Expanded(child: Text(data.variantExplanation!, style: Theme.of(context).textTheme.bodyLarge)) else Spacer(),
-              if (data.themeExplanation != null || data.docsLink != null || widget.docsLink != null)
-                SegmentedButton<String?>(
-                  showSelectedIcon: false,
-                  segments: [
-                    ButtonSegment(value: null, icon: Icon(Symbols.code_blocks, fill: 1), tooltip: 'Demo'),
-                    if (data.themeExplanation != null) ButtonSegment(value: 'theme', icon: Icon(Icons.color_lens), tooltip: 'Theme'),
-                    if (data.docsLink != null || widget.docsLink != null) ButtonSegment(value: 'docs', icon: Icon(Symbols.book_2, fill: 1), tooltip: 'Documentation'),
-                    if (data.widgetTreeExplanation != null)
-                      ButtonSegment(value: 'tree', icon: Transform.rotate(angle: pi, child: Icon(Symbols.view_object_track, fill: 1)), tooltip: 'Widget building tree')
+              Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: _DecorationContainer(child: data.widgetBuilder?.call(context, currentOptions)),
+                  ),
+
+                  // TODO Make a better options panel
+                  if (showOptions && showedMode == null) ...[
+                    Divider(),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: widget.optionsBuilder?.call(currentOptions, (options) => setState(() => currentOptions = options)) ?? Placeholder(),
+                    )
                   ],
-                  selected: {showedMode},
-                  onSelectionChanged: (v) => setState(() => showedMode = v.first),
+                ],
+              ),
+              if (data.themeExplanation != null) _DecorationContainer(child: data.themeExplanation),
+              if (data.docsLink != null || widget.docsLink != null) _DecorationContainer(child: DocsDisplayer(data.docsLink ?? widget.docsLink!)),
+              if (data.widgetTreeExplanation != null)
+                _DecorationContainer(
+                  child: Builder(builder: (context) {
+                    var selected = widget.selected == widget.mainVariantName ? widget.variantsData.first : widget.variantsData.firstWhere((v) => v.name == widget.selected);
+                    bool hasWidgetTreeData = selected.widgetTreeExplanation != null;
+                    if (hasWidgetTreeData) {
+                      return WidgetBuildTreeDisplayer(selected.widgetTreeExplanation!);
+                    }
+                    return Placeholder();
+                  }),
                 ),
             ],
           ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              border: Border.all(color: Theme.of(context).dividerColor, width: 5),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Center(
-                child: showedMode == null
-                    ? data.widgetBuilder?.call(context, currentOptions) ?? Placeholder()
-                    : showedMode == 'theme'
-                        ? data.themeExplanation
-                        : showedMode == 'docs'
-                            ? DocsDisplayer(data.docsLink ?? widget.docsLink!)
-                            : showedMode == 'tree'
-                                ? Builder(builder: (context) {
-                                    var selected = widget.selected == widget.mainVariantName ? widget.variantsData.first : widget.variantsData.firstWhere((v) => v.name == widget.selected);
-                                    bool hasWidgetTreeData = selected.widgetTreeExplanation != null;
-                                    if (hasWidgetTreeData) {
-                                      return WidgetBuildTreeDisplayer(selected.widgetTreeExplanation!);
-                                    } else {
-                                      return Placeholder();
-                                    }
-                                  })
-                                : Placeholder(),
-              ),
-            ),
-          ),
         ),
-        if (showOptions && showedMode == null) ...[
-          Divider(),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: widget.optionsBuilder?.call(currentOptions, (options) => setState(() => currentOptions = options)) ?? Placeholder(),
-          )
-        ],
-      ],
+      ),
     );
   }
 }
 
-class DocsDisplayer extends StatelessWidget {
-  const DocsDisplayer(this.url, {super.key, this.pageName});
+class _DecorationContainer extends StatelessWidget {
+  const _DecorationContainer({this.child});
 
-  final String url;
-  final String? pageName;
-
-  Future<String> _fetchApiPage(String url) async {
-    final resp = await http.get(Uri.parse(url));
-    if (resp.statusCode != 200) {
-      throw Exception('Failed to load documentation ($url)');
-    }
-    return resp.body;
-  }
-
-  dynamic _extractDocComment(String htmlSource) {
-    final document = parse(htmlSource);
-
-    // Look specifically for the 'desc markdown' section
-    final descSection = document.querySelector('.desc.markdown');
-
-    // Return its text (or an empty string if not found)
-    return descSection?.innerHtml.trim(); //?.text.trim() ?? '';
-  }
-
-  Future<dynamic> _fetchAndParseDoc(String apiDocUrl) async {
-    final html = await _fetchApiPage(apiDocUrl);
-    return _extractDocComment(html);
-  }
+  final Widget? child;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('${pageName != null ? "$pageName " : ""}Documentation'),
-          automaticallyImplyLeading: false,
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          border: Border.all(color: Theme.of(context).dividerColor, width: 5),
+          borderRadius: BorderRadius.circular(15),
         ),
-        body: FutureBuilder(
-          future: _fetchAndParseDoc(url),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) return ErrorWidget(snapshot.error!);
-            if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: SingleChildScrollView(
-                child: Html(
-                  data: snapshot.data!.toString(),
-                  // you can customize link tap behavior, styling, etc.
-                  onLinkTap: (href, _, __) {
-                    if (href == null) return;
-                    if (!href.startsWith('https://api.flutter.dev/flutter/')) href = 'https://api.flutter.dev/flutter/$href';
-                    launchUrl(Uri.parse(href));
-                  },
-                  style: {
-                    // override any tags if you like
-                    "code": Style(
-                      backgroundColor: Colors.grey.shade200,
-                      padding: HtmlPaddings.all(4),
-                    ),
-                  },
-                ),
-              ),
-            );
-          },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Center(child: child ?? Placeholder()),
         ),
       );
 }

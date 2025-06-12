@@ -395,7 +395,7 @@ class CustomCardItem extends StatelessWidget {
   }) =>
       CustomCardItem(
         key: key,
-        onTap: (context) => WidgetPresentation.showPresentation(context, page),
+        onTap: (context) => WidgetPresentation.showPresentationFrom(context, page),
         // onTap: (context) => showDialog(context: context, builder: (_) => dialog),
         leading: leading,
         title: title,
