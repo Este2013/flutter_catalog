@@ -41,6 +41,7 @@ class _WidgetPresentationPageState extends State<WidgetPresentationPage> {
         actionsPadding: EdgeInsets.only(right: 8),
         actions: [
           if (variantExplanation != null) Text(variantExplanation, textAlign: TextAlign.end),
+          SizedBox(width: 8),
           if (widget.link != null)
             IconButton.filledTonal(
               tooltip: 'Open the documentation',

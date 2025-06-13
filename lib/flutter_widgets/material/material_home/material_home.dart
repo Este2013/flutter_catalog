@@ -156,24 +156,24 @@ class MaterialHomePresentationPage extends StatelessWidget {
                   leading: Icon(Icons.text_fields),
                   title: 'Text',
                   page: WidgetPresentation.createPageFrom(
-                    title: 'Text',
-                    variantsData: [
-                      WidgetVariantData(
-                        null,
-                        variantExplanation: 'A run of text with a single style.',
-                        iconBuilder: (p0) => Icon(Icons.text_fields),
-                        widgetBuilder: (p0, options) => Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text(
-                            'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-                            style: Theme.of(context).textTheme.titleMedium,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.fade,
+                      title: 'Text',
+                      variantsData: [
+                        WidgetVariantData(
+                          null,
+                          variantExplanation: 'A run of text with a single style.',
+                          iconBuilder: (p0) => Icon(Icons.text_fields),
+                          widgetBuilder: (p0, options) => Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text(
+                              'Lorem Ipsum\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+                              style: Theme.of(context).textTheme.titleMedium,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.fade,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )),
+                      ],
+                      link: 'https://api.flutter.dev/flutter/widgets/Text-class.html')),
               CustomCardItem.widgetPresentation(
                   leading: Icon(Icons.format_color_text),
                   title: 'RichText',
