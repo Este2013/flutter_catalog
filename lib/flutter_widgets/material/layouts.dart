@@ -164,30 +164,40 @@ class _LayoutsPresentationPageState extends State<LayoutsPresentationPage> {
                     ),
                     defaultOptionsBuilder: (currentOptions, submitNewOptions) => Column(
                       spacing: 8,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            Text('UI elements', style: Theme.of(context).textTheme.titleMedium),
-                            FilterChip(
-                              label: Text('AppBar'),
-                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['appBar'] = v),
-                              selected: currentOptions?['appBar'] ?? true,
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 8,
+                              children: [
+                                Text('Add basic UI elements:', style: Theme.of(context).textTheme.titleMedium),
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    FilterChip(
+                                      label: Text('AppBar'),
+                                      onSelected: (v) => submitNewOptions((currentOptions ?? {})..['appBar'] = v),
+                                      selected: currentOptions?['appBar'] ?? true,
+                                    ),
+                                    FilterChip(
+                                      label: Text('BottomNavBar'),
+                                      onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomNavBar'] = v),
+                                      selected: currentOptions?['bottomNavBar'] ?? true,
+                                    ),
+                                    FilterChip(
+                                      label: Text('BottomSheet'),
+                                      onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomSheet'] = v),
+                                      selected: currentOptions?['bottomSheet'] ?? false,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            FilterChip(
-                              label: Text('BottomNavBar'),
-                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomNavBar'] = v),
-                              selected: currentOptions?['bottomNavBar'] ?? true,
-                            ),
-                            FilterChip(
-                              label: Text('BottomSheet'),
-                              onSelected: (v) => submitNewOptions((currentOptions ?? {})..['bottomSheet'] = v),
-                              selected: currentOptions?['bottomSheet'] ?? false,
-                            ),
-                          ],
+                          ),
                         ),
                         Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 8, runSpacing: 8, children: [
                           Text('Body:'),

@@ -227,11 +227,12 @@ class _DialogPresentationSectionState extends State<DialogPresentationSection> {
 typedef ObservedRoute = (int orderLeft, WidgetPropertyData prop, WidgetPropertyDataLink link);
 
 class WidgetBuildTreeDisplayer extends StatefulWidget {
-  const WidgetBuildTreeDisplayer(this.data, {super.key, this.defaultProperty, this.showPropertySelection = true});
+  const WidgetBuildTreeDisplayer(this.data, {super.key, this.defaultProperty, this.showPropertySelection = true, this.actions});
 
   final WidgetTreeNodeData data;
   final String? defaultProperty;
   final bool showPropertySelection;
+  final List<Widget>? actions;
 
   @override
   State<WidgetBuildTreeDisplayer> createState() => _WidgetBuildTreeDisplayerState();
@@ -251,9 +252,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Scaffold(
+  Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text('Building Tree View'),
           actions: [
@@ -268,8 +267,10 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
                 ],
                 initialSelection: observedProperties?.propertyName,
                 onSelected: (value) => setState(() => observedProperties = value as WidgetPropertyData),
-              )
+              ),
+            ...?widget.actions,
           ],
+          actionsPadding: EdgeInsets.only(right: 8),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
@@ -277,7 +278,7 @@ class _WidgetBuildTreeDisplayerState extends State<WidgetBuildTreeDisplayer> {
             observedProperties: (observedProperties == null) ? const <ObservedRoute>[] : [for (final link in observedProperties!.dataLinks ?? const []) (link.order, observedProperties!, link)],
           ),
         ),
-      ));
+      );
 
   Widget recursiveLayerBuilder({TreeNodeData? givendata, int depth = 1, List<ObservedRoute>? observedProperties}) {
     var widgetData = givendata ?? widget.data;

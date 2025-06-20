@@ -10,7 +10,14 @@ import 'docs_display.dart';
 import '../widget_tree_resolver/data.dart';
 
 class WidgetPresentationPage extends StatefulWidget {
-  const WidgetPresentationPage(this.mainVariantName, {super.key, required this.variantsData, this.link, this.defaultIconBuilder, this.defaultOptionsBuilder});
+  const WidgetPresentationPage(
+    this.mainVariantName, {
+    super.key,
+    required this.variantsData,
+    this.link,
+    this.defaultIconBuilder,
+    this.defaultOptionsBuilder,
+  });
 
   final String mainVariantName;
 
@@ -153,7 +160,6 @@ class _WidgetShowRoomState extends State<WidgetShowRoom> {
     } else {
       showOptions = false;
     }
-
     super.initState();
   }
 
@@ -179,7 +185,7 @@ class _WidgetShowRoomState extends State<WidgetShowRoom> {
           padding: const EdgeInsets.all(8.0),
           child: TabBarView(
             children: [
-              Column(
+              Row(
                 spacing: 8,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -189,8 +195,9 @@ class _WidgetShowRoomState extends State<WidgetShowRoom> {
 
                   // TODO Make a better options panel
                   if (showOptions && showedMode == null) ...[
-                    Divider(),
-                    Padding(
+                    VerticalDivider(),
+                    Container(
+                      constraints: BoxConstraints(minWidth: 300, maxWidth: 400),
                       padding: EdgeInsets.all(8),
                       child: widget.optionsBuilder?.call(currentOptions, (options) => setState(() => currentOptions = options)) ?? Placeholder(),
                     )

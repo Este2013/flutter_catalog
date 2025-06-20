@@ -171,6 +171,8 @@ class MaterialHomePresentationPage extends StatelessWidget {
                               overflow: TextOverflow.fade,
                             ),
                           ),
+                          // TODO
+                          optionsBuilder: (currentOptions, submitNewOptions) => Text('Hi'),
                         ),
                       ],
                       link: 'https://api.flutter.dev/flutter/widgets/Text-class.html')),

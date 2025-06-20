@@ -6,10 +6,11 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DocsDisplayer extends StatelessWidget {
-  const DocsDisplayer(this.url, {super.key, this.pageName});
+  const DocsDisplayer(this.url, {super.key, this.pageName, this.actions});
 
   final String url;
   final String? pageName;
+  final List<Widget>? actions;
 
   Future<String> _fetchApiPage(String url) async {
     final resp = await http.get(Uri.parse(url));
@@ -46,13 +47,14 @@ class DocsDisplayer extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text('${pageName != null ? "$pageName " : ""}Documentation'),
-          actionsPadding: EdgeInsets.only(right: 16),
+          actionsPadding: EdgeInsets.only(right: 8),
           actions: [
             IconButton.filledTonal(
               tooltip: 'Open the documentation',
               onPressed: () => launchUrl(Uri.parse(url)),
               icon: Icon(Symbols.book_2, fill: 1),
             ),
+            ...?actions,
           ],
           automaticallyImplyLeading: false,
         ),
